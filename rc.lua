@@ -6,9 +6,9 @@ awful.indicator   = require("awful.indicator")
 awful.screensaver = require("awful.screensaver")
 local wibox       = require("wibox")
 local beautiful   = require("beautiful")
-local quake = require("quake")
-local unity  = require("unity")
-local lain = require("lain")
+local quake       = require("quake")
+local unity       = require("unity")
+local lain        = require("lain")
 
 -- When loaded, this module makes sure that there's always a client that will have focus
 require("awful.autofocus")
@@ -16,11 +16,9 @@ require("awful.autofocus")
 -- Initializes the theme system
 beautiful.init(awful.util.getdir("config").."/themes/level/theme.lua")
 
-
 -- This is used later as the default terminal and editor to run.
---terminal = "tortosa -c \"" .. home_dir .. "/.config/tortosa/tortosa_awesome.rc\""
 terminal = "Urxvt"
-editor = os.getenv("EDITOR") or "geany"
+editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " 
 music_player = "mocp"
 language = string.gsub(os.getenv("LANG"), ".utf8", "")
@@ -53,8 +51,6 @@ layouts = {
    awful.layout.suit.spiral,
 }
 
-
-
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {}
@@ -63,27 +59,17 @@ do
    for s = 1, screen.count() do
       -- Each screen has its own tag table.
       tags[s] = awful.tag({ " 𝟏 ", " 𝟐 ", " 𝟑 ", " 𝟒 ", " 𝟓 ", " 𝟔 "}, s,
-                          {  fm ,  f ,  f ,  f ,  f ,  fl })
+                          {  fm ,  fm ,  f ,  f ,  f ,  fl })
    end
 end
 -- }}}
 	
    --Lain widgets
-
   mocwidget = lain.widgets.contrib.moc()
-
-
-
---local unitybar = unity.unitybar({ position = beautiful.unitybar.position, width = beautiful.unitybar.width,
- --                                 img_focused = beautiful.unitybar.img_focused })
-
 -- Wibox table
 local bar  = {}
-
 -- Keybindings table
 local keys = {}
-
-
 
 -- Create wibox 'main'
 bar["main"] = awful.wibox({ position = beautiful.wibox.position, width = beautiful.wibox.width })
@@ -108,20 +94,27 @@ bar["bottom"]:add(unity.calendar())
 bar["bottom"]:add(unity.clock())
 bar["bottom"]:add(unity.skb_exit())
 
-
 bar["wibox"] = wibox.layout.align.vertical()
 bar["wibox"]:set_top(bar["top"])
 bar["wibox"]:set_middle(bar["middle"])
 bar["wibox"]:set_bottom(bar["bottom"])
-
 bar["main"]:set_widget(bar["wibox"])
+
+local tray        = require("wibox")
+
+bar["tmain"] = awful.wibox({ position = beautiful.tray.position, height = beautiful.tray.height })
+bar["tmain"]:set_bg(beautiful.tray.bg)
+bar["left"] = tray.layout.fixed.horizontal()
+bar["right"] = tray.layout.fixed.horizontal()
+bar["tray"] = wibox.layout.align.horizontal()
+bar["tray"]:set_left(unity.tasklist())
+bar["tray"]:set_right(wibox.widget.systray())
+bar["tmain"]:set_widget(bar["tray"])
+
 -- Spawn a program.
 local function spawn(cmd)
     awful.util.spawn(cmd, false)
 end
-
-
-
 
 -- Kill window
 local function killClient()
@@ -188,10 +181,13 @@ keys["client"] = awful.util.table.join(
 --  Key bindings
 keys["global"] = awful.util.table.join(
     awful.key({ "Mod4",           }, "Left",   awful.tag.viewprev       ),
-    awful.key({ "Mod4",           }, "Right",  awful.tag.viewnext       ),
-    awful.key({ "Mod4"            }, "a",            function(c) c.above = not c.above                       end),
+    awful.key({ "Mod4",           }, "Right",  awful.tag.viewnext       ),   
+    awful.key({ "Mod4"            }, "a",            function(c) c.above = not c.above                    end),
+    awful.key({ "Mod4",           }, ".", function () bar["main"].visible = not bar["main"].visible       end),
+    awful.key({ "Mod4",           }, "/", function () bar["tmain"].visible = not bar["tmain"].visible       end),
     -- Prompt
     awful.key({ "Mod4"            }, "l",            function() unity.prompt.lua()                         end),
+   
     awful.key({ "Mod4"            }, "x",            function() unity.prompt.run()                         end),
     awful.key({ "Mod4"            }, "r",            function() unity.prompt.run()                         end),
     awful.key({ "Mod4"            }, "z",            function() unity.prompt.cmd()                         end),
@@ -199,8 +195,7 @@ keys["global"] = awful.util.table.join(
     awful.key({ "Mod4"            }, "space",        function() unity.layout.main()                        end),
     -- Applications menu
     awful.key({ "Mod4"            }, "q",            function() unity.menu_layout.main_qapp()                     end),
-   awful.key({ "Mod1"            }, "x",            function() gadjets.xombrero.main_xapp()                     end),
- 
+    awful.key({ "Mod1"            }, "x",            function() gadjets.xombrero.main_xapp()                     end),
     awful.key({ "Mod4"            }, "e",            function() unity.exit.main_eapp()                     end),
     awful.key({ "Mod1"            }, "v",            function() unity.mixer_places.main()                         end),
     awful.key({ "Mod4", "Shift"   }, "q",            function() unity.menu.main_app()                      end),
@@ -208,15 +203,15 @@ keys["global"] = awful.util.table.join(
     -- Notifications history
    -- awful.key({ "Mod4",           }, "n",            function() gadjets.notifications.main()                 end),
     -- Change tags
-    awful.key({ "Mod4",           }, "t" ,           function() gadjets.taglist.main()                       end),
-    awful.key({ "Mod1",           }, "b" ,           function() unity.bass.main()                       end),
-    awful.key({ "Mod1",           }, "t" ,           function() unity.treble.main()                       end),
+    awful.key({ "Mod4",           }, "t" ,           function() unity.tagmenu.main()                       end),
+    awful.key({ "Mod1",           }, "b" ,           function() unity.bass.main()                          end),
+    awful.key({ "Mod1",           }, "t" ,           function() unity.treble.main()                        end),
    
     -- Places menu
     awful.key({ "Mod4"            }, "p",            function() unity.places.main()                        end),
     awful.key({ "Mod4"            }, "s",            function() unity.places.main()                        end),
     -- Select clients with the alt+tab menu
-    awful.key({ "Mod1"            }, "Tab",          function() gadjets.altTab()                             end),
+    awful.key({ "Mod1"            }, "Tab",          function() gadjets.altTab()                            end),
     -- Revert tag history.
     awful.key({ "Control"         }, "Tab",          awful.tag.history.restore                                  ),
    
@@ -339,7 +334,6 @@ function run_once(cmd)
   awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
  end 
 
-run_once("kbdd")
 --run_once("setxkbmap -layout us,ru -variant , -option -option grp:alt_shift_toggle")
 run_once("~/.autostart.sh")
 -- }}}

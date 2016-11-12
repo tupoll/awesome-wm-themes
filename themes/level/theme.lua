@@ -36,14 +36,12 @@ theme.menu_timeout                    = 10
 theme.default_height                  = 16
 theme.icon_theme                      = nil
 
-
 -- Main wibox settings
 theme.wibox={}
 theme.wibox.position                  = "right"
 theme.wibox.width                     = 58
 theme.wibox.bg                        = pattern(theme.path.."/background/wibox.png")
 theme.wibox.fg                        = "#4D4D4D"
-
 
 
 -- Taglist widget
@@ -85,6 +83,13 @@ theme.titlebar["font"]                = "Liberation Mono 8"
 theme.titlebar["bg_focus"]            = pattern(theme.path.."/background/titlebar_focus.png")
 theme.titlebar["fg"]                  = "#7F7F7F"
 theme.titlebar["bg"]                  = pattern(theme.path.."/background/titlebar.png")
+
+-- Tray
+theme.tray={}
+theme.tray.position                   = "bottom"
+theme.tray.height                     = 10
+theme.tray.bg                         = pattern(theme.path.."/background/tasklist.png")
+theme.tray.fg                         = "#4D4D4D"
 
 -- Prompt style
 theme.prompt={}  
