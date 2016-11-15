@@ -7,14 +7,14 @@ awful.screensaver = require("awful.screensaver")
 local wibox       = require("wibox")
 local beautiful   = require("beautiful")
 local quake       = require("quake")
-local compact       = require("compact")
+local unity       = require("unity")
 local lain        = require("lain")
 
 -- When loaded, this module makes sure that there's always a client that will have focus
 require("awful.autofocus")
 
 -- Initializes the theme system
-beautiful.init(awful.util.getdir("config").."/themes/multilevel/theme.lua")
+beautiful.init(awful.util.getdir("config").."/themes/level/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "Urxvt"
@@ -46,22 +46,20 @@ layouts = {
    awful.layout.suit.floating, 	        -- 1
    awful.layout.suit.tile, 		-- 2
    awful.layout.suit.tile.bottom,	-- 3
-   awful.layout.suit.tile.left,     --4 
-   awful.layout.suit.max.fullscreen,     --5    
-   awful.layout.suit.spiral,      --6
-   awful.layout.suit.magnifier,  --7
+   awful.layout.suit.tile.left,
+   awful.layout.suit.max.fullscreen,
+   awful.layout.suit.spiral,
 }
-
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {}
 do
-   local f, t, b, fl, fs, fm, m = layouts[1], layouts[2], layouts[3], layouts[4], layouts[5], layouts[6], layouts[7]
+   local f, t, b, fl, fs, fm = layouts[1], layouts[2], layouts[3], layouts[4], layouts[5], layouts[6]
    for s = 1, screen.count() do
       -- Each screen has its own tag table.
       tags[s] = awful.tag({ " 𝟏 ", " 𝟐 ", " 𝟑 ", " 𝟒 ", " 𝟓 ", " 𝟔 "}, s,
-                          {  fm ,  fm ,  m ,  f ,  f ,  fl })
+                          {  fm ,  fm ,  f ,  f ,  f ,  fl })
    end
 end
 -- }}}
@@ -74,31 +72,44 @@ local bar  = {}
 local keys = {}
 
 -- Create wibox 'main'
-bar["main"] = awful.wibox({ position = beautiful.wibox.position, height = beautiful.wibox.height })
+bar["main"] = awful.wibox({ position = beautiful.wibox.position, width = beautiful.wibox.width })
 bar["main"]:set_bg(beautiful.wibox.bg)
 
--- Widgets that are aligned to the left
-bar["left"] = wibox.layout.fixed.horizontal()
-bar["left"]:add(compact.left())
+bar["top"] = wibox.layout.fixed.vertical()
+bar["top"]:add(unity.menu_layout())
+bar["top"]:add(unity.prompt())
+bar["top"]:add(unity.weather())
 
---Center
-bar["middle"] = wibox.layout.fixed.horizontal()
-bar["middle"]:add(compact.middle())
--- Widgets that are aligned to the right
-bar["right"] = wibox.layout.fixed.horizontal()
-bar["right"]:add(compact.right())
+bar["middle"] = wibox.layout.fixed.vertical()
+bar["middle"]:add(unity.unitybar())
 
+bar["bottom"] = wibox.layout.fixed.vertical()
+bar["bottom"]:add(unity.net_up())
+bar["bottom"]:add(unity.net_down())
+bar["bottom"]:add(unity.zfs())
+bar["bottom"]:add(unity.memory())
+bar["bottom"]:add(unity.cpu())
+bar["bottom"]:add(unity.mixer_places())
+bar["bottom"]:add(unity.calendar())
+bar["bottom"]:add(unity.clock())
+bar["bottom"]:add(unity.skb_exit())
 
-
-
-
--- Now bring it all together (with the tasklist in the middle)
-bar["wibox"] = wibox.layout.align.horizontal()
-bar["wibox"]:set_left(bar["left"])
+bar["wibox"] = wibox.layout.align.vertical()
+bar["wibox"]:set_top(bar["top"])
 bar["wibox"]:set_middle(bar["middle"])
-bar["wibox"]:set_right(bar["right"])
-
+bar["wibox"]:set_bottom(bar["bottom"])
 bar["main"]:set_widget(bar["wibox"])
+
+local tray        = require("wibox")
+
+bar["tmain"] = awful.wibox({ position = beautiful.tray.position, height = beautiful.tray.height })
+bar["tmain"]:set_bg(beautiful.tray.bg)
+bar["left"] = tray.layout.fixed.horizontal()
+bar["right"] = tray.layout.fixed.horizontal()
+bar["tray"] = wibox.layout.align.horizontal()
+bar["tray"]:set_left(unity.tasklist())
+bar["tray"]:set_right(wibox.widget.systray())
+bar["tmain"]:set_widget(bar["tray"])
 
 -- Spawn a program.
 local function spawn(cmd)
@@ -113,7 +124,7 @@ end
 
 -- Mouse bindings
 keys["mouse"] = awful.util.table.join(
-    awful.button({ }, 3, function() compact.menu.main_app() end)
+    awful.button({ }, 3, function() unity.menu_layout.main_app() end)
 )
 -- Client mouse bindings
 keys["buttons"] = awful.util.table.join(
@@ -125,7 +136,7 @@ keys["buttons"] = awful.util.table.join(
 -- Client keys
 keys["client"] = awful.util.table.join(
     -- Show/Hide client's titlebar.
-    awful.key({ "Mod4"            }, "Insert",       function(c) compact.titlebar(c)                         end),
+    awful.key({ "Mod4"            }, "Insert",       function(c) gadjets.titlebar(c)                         end),
     awful.key({ "Mod4"            }, "Delete",       function(c) awful.titlebar.hide(c)                      end),
     awful.key({ "Mod4",           }, "o",                     smart_movetoscreen                                ),
     -- Kill a client.
@@ -164,7 +175,7 @@ keys["client"] = awful.util.table.join(
     -- Save client
     --awful.key({ "Mod4"            }, "w",            function(c) awful.clientdb.save(c)                      end),
     -- Show client menu
-    awful.key({ "Mod4"            }, "c",            function(c) compact.tasklist.main(c)                    end)
+    awful.key({ "Mod4"            }, "c",            function(c) widgets.tasklist.main(c)                    end)
 )
 
 --  Key bindings
@@ -172,35 +183,35 @@ keys["global"] = awful.util.table.join(
     awful.key({ "Mod4",           }, "Left",   awful.tag.viewprev       ),
     awful.key({ "Mod4",           }, "Right",  awful.tag.viewnext       ),   
     awful.key({ "Mod4"            }, "a",            function(c) c.above = not c.above                    end),
-    awful.key({ "Mod4",           }, "/", function () bar["main"].visible = not bar["main"].visible       end),
-   
+    awful.key({ "Mod4",           }, ".", function () bar["main"].visible = not bar["main"].visible       end),
+    awful.key({ "Mod4",           }, "/", function () bar["tmain"].visible = not bar["tmain"].visible       end),
     -- Prompt
-    awful.key({ "Mod4"            }, "l",            function() compact.prompt.lua()                         end),
+    awful.key({ "Mod4"            }, "l",            function() unity.prompt.lua()                         end),
    
-    awful.key({ "Mod4"            }, "x",            function() compact.prompt.run()                         end),
-    awful.key({ "Mod4"            }, "r",            function() compact.prompt.run()                         end),
-    awful.key({ "Mod4"            }, "z",            function() compact.prompt.cmd()                         end),
+    awful.key({ "Mod4"            }, "x",            function() unity.prompt.run()                         end),
+    awful.key({ "Mod4"            }, "r",            function() unity.prompt.run()                         end),
+    awful.key({ "Mod4"            }, "z",            function() unity.prompt.cmd()                         end),
     -- Layout menu
-    awful.key({ "Mod4"            }, "space",        function() compact.layout.main()                        end),
+    awful.key({ "Mod4"            }, "space",        function() unity.layout.main()                        end),
     -- Applications menu
-    awful.key({ "Mod4"            }, "q",            function() compact.menu.main_qapp()                     end),
-    awful.key({ "Mod1"            }, "x",            function() compact.xombrero.main_xapp()                     end),
-    awful.key({ "Mod4"            }, "e",            function() compact.exit.main_eapp()                     end),
-    awful.key({ "Mod1"            }, "v",            function() compact.mixer.main()                         end),
-    awful.key({ "Mod4", "Shift"   }, "q",            function() compact.menu.main_app()                      end),
-    awful.key({         "Shift"   }, "Menu",         function() compact.menu.main_app()                      end),
+    awful.key({ "Mod4"            }, "q",            function() unity.menu_layout.main_qapp()                     end),
+    awful.key({ "Mod1"            }, "x",            function() gadjets.xombrero.main_xapp()                     end),
+    awful.key({ "Mod4"            }, "e",            function() unity.exit.main_eapp()                     end),
+    awful.key({ "Mod1"            }, "v",            function() unity.mixer_places.main()                         end),
+    awful.key({ "Mod4", "Shift"   }, "q",            function() unity.menu.main_app()                      end),
+    awful.key({         "Shift"   }, "Menu",         function() unity.menu.main_app()                      end),
     -- Notifications history
-   -- awful.key({ "Mod4",           }, "n",            function() compact.notifications.main()                 end),
+   -- awful.key({ "Mod4",           }, "n",            function() gadjets.notifications.main()                 end),
     -- Change tags
-    awful.key({ "Mod4",           }, "t" ,           function() compact.tagmenu.main()                       end),
-    awful.key({ "Mod1",           }, "b" ,           function() compact.bass.main()                          end),
-    awful.key({ "Mod1",           }, "t" ,           function() compact.treble.main()                        end),
+    awful.key({ "Mod4",           }, "t" ,           function() unity.tagmenu.main()                       end),
+    awful.key({ "Mod1",           }, "b" ,           function() unity.bass.main()                          end),
+    awful.key({ "Mod1",           }, "t" ,           function() unity.treble.main()                        end),
    
     -- Places menu
-    awful.key({ "Mod4"            }, "p",            function() compact.places.main()                        end),
-    awful.key({ "Mod4"            }, "s",            function() compact.places.main()                        end),
+    awful.key({ "Mod4"            }, "p",            function() unity.places.main()                        end),
+    awful.key({ "Mod4"            }, "s",            function() unity.places.main()                        end),
     -- Select clients with the alt+tab menu
-    awful.key({ "Mod1"            }, "Tab",          function() compact.altTab()                            end),
+    awful.key({ "Mod1"            }, "Tab",          function() gadjets.altTab()                            end),
     -- Revert tag history.
     awful.key({ "Control"         }, "Tab",          awful.tag.history.restore                                  ),
    
