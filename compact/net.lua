@@ -15,14 +15,14 @@ vicious.register(netupinfo, vicious.widgets.net,"${eth1 up_kb}", 2 )
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()
-    layout:add(common.textbox({ text=" ", width=60 }))     
+    layout:add(common.textbox({ text=" ", width=40 }))     
     layout:add(common.imagebox({ icon=beautiful.path.."/widgets/up.png" }))
     layout:add(netupinfo)
     layout:add(common.imagebox({ icon=beautiful.path.."/widgets/kbs.png" }))
     layout:add(common.imagebox({ icon=beautiful.path.."/widgets/down.png" }))
     layout:add(netdowninfo)
     layout:add(common.imagebox({ icon=beautiful.path.."/widgets/kbs.png" }))
-    layout:add(common.textbox({ text=" ", width=60 }))
+    layout:add(common.textbox({ text=" ", width=40 }))
     return layout
 end
 
