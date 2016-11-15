@@ -7,14 +7,15 @@ local lain = require("lain")
 
 local module = {}
 
-myweather = lain.widgets.weather()
+myweather = lain.widgets.weather1()
 
 
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()
+    layout:add(myweather.icon)
     layout:add(myweather)       
-    layout:add(myweather.icon)   
+    --layout:add(myweather.icon)   
     return layout
 end
 
