@@ -59,7 +59,7 @@ local function worker(args)
                                       local desc = wn["weather"][1]["description"]
                                       return string.format("<b>%s</b>: %s, %d - %d ", day, desc, tmin, tmax)
                                   end
-    local weather_na_markup     = args.weather_na_markup or "*"
+    local weather_na_markup     = args.weather_na_markup or " "
     local followmouse           = args.followmouse or false
     local settings              = args.settings or function() end
 

@@ -48,10 +48,6 @@ end
 
 
     local vol_icon = wibox.widget.imagebox()
-    vol_icon:set_image(ICON_DIR.."audio-volume-muted-blocking-panel.png")
-   -- w:set_align("center")
-  -- w:set_valign("center")
-   -- w.fit = function() return 30,35 end 
     vol_icon.inc = mixer_vol.inc
     vol_icon.dec = mixer_vol.dec
     vol_icon.mute = mixer_vol.mute
