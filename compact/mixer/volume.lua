@@ -1,7 +1,6 @@
 --local iconic = require('iconic')
 local wibox = require('wibox')
 local naughty = require('naughty')
-local utility = require('utility')
 local awful = require("awful")
 
 

@@ -1,4 +1,5 @@
 return {
+      avplay        = require("compact.avplay"),
       menu          = require("compact.menu"),
       layout        = require("compact.layout"),
       common        = require("compact.common"),

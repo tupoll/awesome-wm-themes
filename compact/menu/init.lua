@@ -103,7 +103,7 @@ module.mapp["Настройки"] = {
 -- Quick menu table.
 module.qapp = {}
 module.qapp["Terminal"]     = { command="urxvt",       key="t", icon="terminal.svg",         tag=1 }
-module.qapp["File Manager"] = { command="thunar",      key="f", icon="file-manager.svg",     tag=1 }
+module.qapp["File Manager"] = { command="pcmanfm",      key="f", icon="file-manager.svg",     tag=1 }
 module.qapp["Web browser"]  = { command="qupzilla",    key="w", icon="browser.svg",          tag=3 }
 module.qapp["Editor"]       = { command="geany",       key="e", icon="editor.svg",           tag=2 }
 module.qapp["MOC"]          = { command="xterm -e mocp",  key="m", icon="thunderbird.svg",             tag=6 }

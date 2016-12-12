@@ -71,8 +71,8 @@ end
     mem_timer:start()
     mem_icon:connect_signal(
    "mouse::enter", function()
-       memory = naughty.notify(
-         {text=awful.util.pread("~/.config/awesome/unity/memory/memory.sh") ,
+       memory = naughty.notify(       
+          {text=awful.util.pread("~/.config/awesome/unity/memory/memory.sh") ,
           position      =  "bottom_left",
           timeout = 80, hover_timeout = 0.5,
           width = 680

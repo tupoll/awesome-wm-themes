@@ -3,7 +3,8 @@ local beautiful = require("beautiful")
 local radical   = require("radical")
 local awful     = require("awful")
 local common    = require("compact.common")
-local iconsvol    = require("compact.mixer.iconsvol")
+local iconsvol  = require("compact.mixer.iconsvol")
+local volume    = require("compact.mixer.volume")
 
 local module = {}
 
