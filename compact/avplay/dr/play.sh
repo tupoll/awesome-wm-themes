@@ -1,5 +1,6 @@
 #!/usr/local/bin/zsh
 
+PLAY1=~/.config/awesome/compact/avplay/dr/play1.sh
 DIR1=~/Музыка
 mkdir -p ~/tmp/avplay/players/
 DIR2=~/tmp/avplay/players
@@ -28,4 +29,4 @@ cat $P |sed '1,2d'|  /usr/bin/awk '{print $0}'>~/tmp/playlist
 rm -rf ~/tmp/avplay/players/1
 rm -rf ~/tmp/avplay/name
 rm -rf ~/tmp/avplay/playlist
-~/play1.sh
+$PLAY1

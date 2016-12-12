@@ -49,22 +49,31 @@ end
    function trac()   
    os.execute("~/.config/awesome/compact/avplay/dr/timer.sh>~/tmp/avplay/timer &")
 end
-
+ 
+    function next()
+    os.execute("~/.config/awesome/compact/avplay/dr/play1.sh &")
+end   
+ 
+    local pl = wibox.widget.imagebox()
+    pl_next=next
+    pl:set_image(icons.."play.png")
+        
     local ff = wibox.widget.imagebox()
     ff_forward=forward
     ff:set_image(icons.."next.png")
    
     local av = wibox.widget.imagebox()
     av_play=play, function() trac() end
-    av:set_image(icons.."play.png")
+    av:set_image(icons.."make.png")
 
     local st = wibox.widget.imagebox()
     st_stop=stop
     st:set_image(icons.."stop.png")   
    
-    widgets_table["imagebox"]	= av, st ,ff 
+    widgets_table["imagebox"]	= av, pl, st, ff 
     if widget then	    
 	    widget:add(av)
+        widget:add(pl)
         widget:add(st)
         widget:add(ff)    
         
@@ -77,7 +86,9 @@ end
        
       ff:buttons(
       keymap({ mouse.LEFT, function() ff_forward() end }))
-             
+      pl:buttons(
+      keymap({ mouse.LEFT, function() pl_next() end }))     
+
       return widget
     
 end
