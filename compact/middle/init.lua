@@ -16,6 +16,7 @@ local m    = require("compact.mixer")
 local r    = require("compact.memory")
 local i    = require("compact.cpu")
 local z    = require("compact.zfs")
+local y    = require("compact.prompt")
 
 local function new()
     local layout = wibox.layout.flex.horizontal()
@@ -29,7 +30,8 @@ local function new()
     middle_layout:add(m())
     middle_layout:add(c())
     local right_layout = wibox.layout.flex.vertical()    
-    local top_layout = wibox.layout.flex.horizontal()    
+    local top_layout = wibox.layout.fixed.horizontal()    
+    top_layout:add(y())
     top_layout:add(t())
     
     

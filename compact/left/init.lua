@@ -6,7 +6,6 @@ local common    = require("compact.common")
 local l    = require("compact.layout")
 local m    = require("compact.menu")
 local t    = require("wibox.widget.systray")
-local p       = require("compact.prompt")
 local a       = require("compact.avplay")
 
 local function new()
@@ -15,8 +14,7 @@ local function new()
     top_layout:add(l())   
     top_layout:add(m())
     
-    local bottom_layout = wibox.layout.fixed.horizontal()    
-    bottom_layout:add(p())    
+    local bottom_layout = wibox.layout.fixed.horizontal()        
     bottom_layout:add(t())
     bottom_layout:add(a())
     
