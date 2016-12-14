@@ -171,7 +171,7 @@ keys["client"] = awful.util.table.join(
 keys["global"] = awful.util.table.join(
     awful.key({ "Mod4",           }, "Left",   awful.tag.viewprev       ),
     awful.key({ "Mod4",           }, "Right",  awful.tag.viewnext       ),   
-    awful.key({ "Mod4"            }, "a",            function(c) c.above = not c.above                    end),
+   -- awful.key({ "Mod4"            }, "a",            function(c) c.above = not c.above                    end),
     awful.key({ "Mod4",           }, "/", function () bar["main"].visible = not bar["main"].visible       end),
    
     -- Prompt
@@ -184,7 +184,7 @@ keys["global"] = awful.util.table.join(
     awful.key({ "Mod4"            }, "space",        function() compact.layout.main()                        end),
     -- Applications menu
     awful.key({ "Mod4"            }, "q",            function() compact.menu.main_qapp()                     end),
-    awful.key({ "Mod1"            }, "x",            function() compact.xombrero.main_xapp()                     end),
+    awful.key({ "Mod4"            }, "a",            function() compact.avplay.main_aapp()                     end),
     awful.key({ "Mod4"            }, "e",            function() compact.exit.main_eapp()                     end),
     awful.key({ "Mod1"            }, "v",            function() compact.mixer.main()                         end),
     awful.key({ "Mod4", "Shift"   }, "q",            function() compact.menu.main_app()                      end),

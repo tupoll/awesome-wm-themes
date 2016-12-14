@@ -4,5 +4,3 @@
 chmod +x ~/tmp/stop.sh
 ~/tmp/stop.sh 
 
-
-exit 0

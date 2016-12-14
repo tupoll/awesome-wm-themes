@@ -1,6 +1,6 @@
 #!/usr/local/bin/zsh
 
 
-rm -r ~/tmp/avplay
-~/.config/awesome/compact/avplay/dr/pid.sh
 
+xterm -e ~/.config/awesome/compact/avplay/dr/pid.sh 
+rm -R ~/tmp/avplay
