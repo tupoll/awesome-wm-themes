@@ -15,14 +15,14 @@ function home.new()
    dftimer = timer({ timeout = 1 ,hover_timeout = 0.5})     -- Update every 15 minutes.
    dftimer:connect_signal(
    "timeout", function()
-      w:set_text(awful.util.pread("df /home|/usr/bin/awk '{print $5}' | sed '1d'"))
+      w:set_text(awful.util.pread("df /home/tupoll|/usr/bin/awk '{print $5}' | sed '1d'"))
       end)
 
   dftimer:start() -- Start the timer
     w:connect_signal(
    "mouse::enter", function()
       home = naughty.notify(
-         {title="ЗАНЯТО НА RAID",text=awful.util.pread("df  /home|/usr/bin/awk  '{print $1,$5}' | sed '1d' | cut -c9-18 && df /|/usr/bin/awk '{print $6,$5}'| sed '1d' && echo СТАТУС && zpool status |/usr/bin/awk '{print $1,$2}'| sed '5,11d'") ,
+         {title="ЗАНЯТО НА RAID",text=awful.util.pread("df  /home/tupoll|/usr/bin/awk  '{print $1,$5}' | sed '1d' | cut -c1-18 && df /|/usr/bin/awk '{print $6,$5}'| sed '1d' && echo СТАТУС && zpool status |/usr/bin/awk '{print $1,$2}'| sed '5,11d'") ,
         timeout = 0, hover_timeout = 0.5,
      position      =  "bottom_left",
      width = 150

@@ -43,6 +43,7 @@ theme.wibox.height                    = 28
 theme.wibox.bg                        = pattern(theme.path.."/background/wibox.png")
 theme.wibox.fg                        = "#4D4D4D"
 
+
 -- Taglist widget
 theme.unitybar={}
 theme.unitybar.width                     = 58

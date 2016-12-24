@@ -25,7 +25,7 @@ local function worker(args)
     local home_timer = timer({ timeout = timeout })
     local signal_level = 0
     local function home_update()
-        signal_level = tonumber(awful.util.pread("df /home|/usr/bin/awk '{print $5}"))
+        signal_level = tonumber(awful.util.pread("df /home/tupoll|/usr/bin/awk '{print $5} | sed 1d"))
         if signal_level == nil then
             connected = true         
             home_icon:set_image(ICON_DIR.."home0.png")
@@ -55,7 +55,7 @@ end
     home_icon:connect_signal(
     "mouse::enter", function()
        home = naughty.notify(
-         {title="ЗАНЯТО НА RAID",text=awful.util.pread("df  /home|/usr/bin/awk  '{print $1,$5}' | sed '1d' | cut -c9-18 && df /|/usr/bin/awk '{print $6,$5}'| sed '1d' && echo СТАТУС && zpool status |/usr/bin/awk '{print $1,$2}'| sed '5,11d'") ,
+         {title="ЗАНЯТО НА RAID",text=awful.util.pread("df  /home/tupoll|/usr/bin/awk  '{print $1,$5}' | sed '1d' | cut -c1-18 && df /|/usr/bin/awk '{print $6,$5}'| sed '1d' && echo СТАТУС && zpool status |/usr/bin/awk '{print $1,$2}'| sed '5,11d'") ,
         timeout = 0, hover_timeout = 0.5,
      position      =  "bottom_left",
      width = 150

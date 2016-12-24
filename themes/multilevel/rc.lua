@@ -65,7 +65,7 @@ do
    end
 end
 -- }}}
-	
+
    --Lain widgets
   mocwidget = lain.widgets.contrib.moc()
 -- Wibox table
@@ -198,7 +198,7 @@ keys["global"] = awful.util.table.join(
    
     -- Places menu
     awful.key({ "Mod4"            }, "p",            function() compact.places.main()                        end),
-    awful.key({ "Mod4"            }, "s",            function() compact.places.main()                        end),
+    --awful.key({ "Mod4"            }, "s",            function() compact.places.main()                        end),
     -- Select clients with the alt+tab menu
     awful.key({ "Mod1"            }, "Tab",          function() compact.altTab()                            end),
     -- Revert tag history.

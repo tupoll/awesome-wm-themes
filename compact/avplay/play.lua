@@ -2,6 +2,7 @@ local wibox         = require("wibox")
 local awful         = require("awful")
 local naughty       = require('naughty')
 local beautiful     = require("beautiful")
+
 local avplay = {}
 local function worker(args)
     local args = args or {}
@@ -38,23 +39,24 @@ end
     os.execute("killall avplay")
 end
   
- function play()
+ function next()
     os.execute("~/.config/awesome/compact/avplay/dr/play.sh &")
 end
     
   function stop()
-    os.execute("~/.config/awesome/compact/avplay/dr/stop.sh ")
+    os.execute("~/.config/awesome/compact/avplay/dr/stop.sh")
 end
-
    
- 
-    function next()
+    function play()
     os.execute("~/.config/awesome/compact/avplay/dr/play1.sh &")
 end   
+   
+ 
+ 
  
     local pl = wibox.widget.imagebox()
     pl_next=next
-    pl:set_image(icons.."play.png")
+    pl:set_image(icons.."repeat.png")
         
     local ff = wibox.widget.imagebox()
     ff_forward=forward
@@ -62,7 +64,7 @@ end
    
     local av = wibox.widget.imagebox()
     av_play=play
-    av:set_image(icons.."make.png")
+    av:set_image(icons.."play.png")
 
     local st = wibox.widget.imagebox()
     st_stop=stop
@@ -70,13 +72,31 @@ end
    
     widgets_table["imagebox"]	= av, pl, st, ff 
     if widget then	    
-	    widget:add(av)
-        widget:add(pl)
+	    widget:add(pl)
         widget:add(st)
-        widget:add(ff)    
-        
+        widget:add(av)
+        widget:add(ff)     
     end 
-        
+     
+ widget:connect_signal(
+   "mouse::enter", function()
+       avplay = naughty.notify({
+          title="сейчас: " ,
+          text = awful.util.pread("cat ~/tmp/avplay/name | cut -c21-100 ") ,
+          
+          position      =  "bottom_left",
+          timeout = 15, hover_timeout = 5,
+          width = 580
+  })  
+end)
+widget:connect_signal(
+   "mouse::leave", function()
+      naughty.destroy(avplay)
+end)
+ 
+
+
+ 
       av:buttons(
       keymap({ mouse.LEFT, function() av_play() end }))
       st:buttons(
@@ -89,8 +109,10 @@ end
       
       
       return widget
+  end  
+   
     
-end
+
 
    
    
