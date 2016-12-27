@@ -7,8 +7,8 @@ local menu         = require( "radical.context"            )
 local separ        = require( "radical.widgets.separator"  )
 local style        = require( "radical.style.classic"      )
 local item_style   = require( "radical.item.style.classic" )
-local filetree     = require("compact.filetree")
-local fd_async = require("compact.fd_async")
+local filetree     = require("compact.avplay.filetree")
+local fd_async = require("compact.avplay.fd_async")
 local capi = { screen = screen }
 
 local module = {}

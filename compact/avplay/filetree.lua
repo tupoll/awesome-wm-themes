@@ -1,5 +1,5 @@
 local radical  = require("radical")
-local fd_async = require("compact.fd_async")
+local fd_async = require("compact.avplay.fd_async")
 local util     = require("awful.util")
 
 local module = {}

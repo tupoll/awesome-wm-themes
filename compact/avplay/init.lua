@@ -5,9 +5,10 @@ local radical   = require("radical")
 local common    = require("compact.common")
 local play      = require("compact.avplay.play")
 
+
 local module = {}
 
--- Quick menu table.
+
 module.aapp = {}
 
 module.aapp["cplay"] = { command="urxvt -e /usr/home/tupoll/cplay -r Музыка ",               key="r", icon="cplay.png", }
@@ -52,7 +53,7 @@ end
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()   
-    layout:add(common.textbox({text="avplay", width=50, b1=module.main_aapp }))
+    layout:add(common.textbox({text="avplay", width=50, b1=module.main_aapp, b3=module.main_papp}))
     layout:add(play())
     return layout
 end

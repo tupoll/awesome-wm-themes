@@ -203,13 +203,16 @@ keys["global"] = awful.util.table.join(
     awful.key({ "Mod1"            }, "Tab",          function() compact.altTab()                            end),
     -- Revert tag history.
     awful.key({ "Control"         }, "Tab",          awful.tag.history.restore                                  ),
-   
- 
     -- 
     awful.key({ "Mod4"            }, "Tab",          function()
         awful.client.focus.history.previous()
         if client.focus then client.focus:raise() end
     end),
+     --Avplay
+     awful.key({ "Mod1",     }, "Up",             function() os.execute("~/.config/awesome/compact/avplay/dr/play1.sh &")end),
+     awful.key({ "Mod1",     }, "Down",           function() os.execute("~/.config/awesome/compact/avplay/dr/stop.sh")end),
+     awful.key({ "Mod1",     }, "Left",           function() os.execute("~/.config/awesome/compact/avplay/dr/play1.sh &")end),
+     awful.key({ "Mod1",     }, "Right",          function() os.execute("killall avplay")end),
      -- Qauke program
    awful.key({ "Mod4",           }, "Return", function () quake.toggle({ terminal = software.terminal_quake,
                                                                          name = "URxvt",
@@ -217,8 +220,7 @@ keys["global"] = awful.util.table.join(
                                                                          skip_taskbar = true,
                                                                          ontop = true })
                                               end),
-    -- Focus
-    
+    -- Focus    
     awful.key({ "Mod4",           }, "Up",           function() awful.indicator.focus.bd("up")               end),
     awful.key({ "Mod4",           }, "Down",         function() awful.indicator.focus.bd("down")             end),
     -- Move
@@ -227,8 +229,8 @@ keys["global"] = awful.util.table.join(
     awful.key({ "Mod4", "Shift"   }, "Up",           function() awful.indicator.focus.bd("up",nil,true)      end),
     awful.key({ "Mod4", "Shift"   }, "Down",         function() awful.indicator.focus.bd("down",nil,true)    end),
     -- Volume controls
-    awful.key({ "Mod1"            }, ".",       function() spawn("mixer vol +5:+5 pcm +5:+5")    end),
-    awful.key({ "Mod1"            }, ",",  function() spawn("mixer vol -5:-5 pcm -5:-5")    end),
+    awful.key({ "Mod1"            }, ".",       function() spawn("mixer vol +2:+2 pcm +2:+2")    end),
+    awful.key({ "Mod1"            }, ",",  function() spawn("mixer vol -2:-2 pcm -2:-2")    end),
     
     -- Music Player Daemon
     awful.key({ "Mod4", "Shift"   }, "KP_Add",       function() spawn("/usr/bin/mpc volume +5")              end),
@@ -323,7 +325,6 @@ function run_once(cmd)
   awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
  end 
 
---run_once("setxkbmap -layout us,ru -variant , -option -option grp:alt_shift_toggle")
 run_once("~/.autostart.sh")
 -- }}}
 

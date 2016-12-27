@@ -12,8 +12,7 @@ orglendar.register(mytextclock)
 
 -- Return widgets layout
 local function new()
-    local layout = wibox.layout.fixed.horizontal()
-      
+    local layout = wibox.layout.fixed.horizontal()   
     layout:add(mytextclock)    
     return layout
 end
