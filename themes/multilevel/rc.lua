@@ -61,7 +61,7 @@ do
    for s = 1, screen.count() do
       -- Each screen has its own tag table.
       tags[s] = awful.tag({ " 𝟏 ", " 𝟐 ", " 𝟑 ", " 𝟒 ", " 𝟓 ", " 𝟔 "}, s,
-                          {  fm ,  fm ,  m ,  f ,  f ,  fl })
+                          {  fm ,  fm ,  m ,  fm ,  f ,  fl })
    end
 end
 -- }}}

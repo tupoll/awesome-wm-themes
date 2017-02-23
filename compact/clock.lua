@@ -7,7 +7,7 @@ local beautiful = require("beautiful")
 local module = {}
 
 local function new()
-    local clock = awful.widget.textclock("<span font='snap 12' color='"..beautiful.widget["fg"].."'>%H %M</span> ", 30)
+    local clock = awful.widget.textclock("<span font='terminus bold 13' color='"..beautiful.widget["fg"].."'>%H %M</span> ", 30)
     clock:set_align("center")
     clock:set_valign("center")
     clock.fit = function() return 62,10 end

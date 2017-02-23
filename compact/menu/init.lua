@@ -96,8 +96,6 @@ module.mapp["Настройки"] = {
     }
 }
 
-
-
 --passed = applicationsmenu[1]
 --function applicationsmenu() return passed end
 -- Quick menu table.
@@ -107,11 +105,12 @@ module.qapp["File Manager"] = { command="pcmanfm",      key="f", icon="file-mana
 module.qapp["Web browser"]  = { command="firefox",    key="w", icon="browser.svg",          tag=3 }
 module.qapp["Editor"]       = { command="geany",       key="e", icon="editor.svg",           tag=2 }
 module.qapp["MOC"]          = { command="xterm -e mocp",  key="m", icon="thunderbird.svg",             tag=6 }
-module.qapp["Торент"]       = { command="qbittorrent", key="q", icon="qbittorrent.png",      tag=4 }
+module.qapp["Торент"]       = { command="deluge", key="d", icon="deluge.svg",                tag=4 }
 module.qapp["Gscrot"]       = { command="gscrot",      key="s", icon="record.png",                 }
 module.qapp["Vimb"]         = { command="vimb",        key="v", icon="irc.svg",              tag=3 }
 module.qapp["Изображения"]  = { command="ristretto",   key="k", icon="applications-graphics.svg",       tag=5 }
 module.qapp["Gimp"]         = { command="gimp",        key="g", icon="proc.svg",             tag=5 }
+module.qapp["Chromium"]     = { command="chrome",      key="c", icon="google-chrome2.png",   tag=4 }
 
 -- Main menu builder
 module.menu_visible = false

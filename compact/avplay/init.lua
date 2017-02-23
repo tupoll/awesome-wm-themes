@@ -17,6 +17,9 @@ module.aapp["flac"]    = { command="xterm -e ~/.config/awesome/compact/avplay/dr
 module.aapp["mp3"]    = { command="xterm -e ~/.config/awesome/compact/avplay/dr/mp3.sh",     key="m", icon="mp3.png", }
 module.aapp["next"]   = { command="killall avplay",                                          key="k", icon="next.png", }
 module.aapp["stop"]   = { command="xterm -e ~/.config/awesome/compact/avplay/dr/stop.sh",    key="s", icon="stop.png", }
+module.aapp["media_ape"]    = { command="xterm -e ~/.config/awesome/compact/avplay/dr/media_ape.sh",     key="2", icon="ape.png", }
+module.aapp["media_flac"]    = { command="xterm -e ~/.config/awesome/compact/avplay/dr/media_flac.sh",   key="1", icon="flac.png", }
+module.aapp["media_mp3"]    = { command="xterm -e ~/.config/awesome/compact/avplay/dr/media_mp3.sh",     key="3", icon="mp3.png", }
 
 local function run(data)
     local tags = awful.tag.gettags(1)

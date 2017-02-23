@@ -8,9 +8,9 @@ local vicious = require("extern.vicious")
 local module = {}
 
 netdowninfo = wibox.widget.textbox()
-vicious.register(netdowninfo, vicious.widgets.net,"${eth1 down_kb}", 1 )
+vicious.register(netdowninfo, vicious.widgets.net,"${eth0 down_kb}", 1 )
 netupinfo = wibox.widget.textbox()
-vicious.register(netupinfo, vicious.widgets.net,"${eth1 up_kb}", 2 )
+vicious.register(netupinfo, vicious.widgets.net,"${eth0 up_kb}", 2 )
 
 -- Return widgets layout
 local function new()
