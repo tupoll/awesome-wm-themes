@@ -29,9 +29,8 @@ module.PATHS =  {
 module.menu = false
 function module.main()
     if not module.menu then
-        module.menu = radical.context({
-            filer = false, enable_keyboard = true, direction = "bottom", x = screen[1].geometry.width - 715,
-            y = screen[1].geometry.height - beautiful.wibox.height - (#module.PATHS*beautiful.menu_height) - 28,
+        module.menu = radical.box({
+         
         })
         local tags = awful.tag.gettags(1)
         for _,t in ipairs(module.PATHS) do
@@ -55,8 +54,8 @@ end
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()
-    layout:add(iconsvol())
-    layout:add(common.textbox({text="", width=20, b1=module.main }))   
+    layout:add(iconsvol())   
+    layout:add(common.textbox({text="", width=5, b1=module.main }))   
     return layout
 end
 

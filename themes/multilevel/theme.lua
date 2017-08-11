@@ -36,13 +36,14 @@ theme.menu_timeout                    = 10
 theme.default_height                  = 16
 theme.icon_theme                      = nil
 
+theme.menu_width                                = 160
+
 -- Main wibox settings
 theme.wibox={}
 theme.wibox.position                  = "bottom"
 theme.wibox.height                    = 28
 theme.wibox.bg                        = pattern(theme.path.."/background/wibox.png")
 theme.wibox.fg                        = "#4D4D4D"
-
 
 -- Taglist widget
 theme.unitybar={}

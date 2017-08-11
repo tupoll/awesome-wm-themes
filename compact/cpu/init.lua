@@ -3,15 +3,16 @@ local wibox     = require("wibox")
 local beautiful = require("beautiful")
 local radical   = require("radical")
 local common    = require("compact.common")
-local cpuicon    = require("compact.cpu.cpuicon")
-local lain = require("lain")
+local cpuicon   = require("compact.cpu.cpuicon")
+local cpu       = require("compact.cpu.cpu")
+--local lain = require("lain")
 
 
 local module = {}
 
 -- CPU
 
-cpuwidget = wibox.widget.background(lain.widgets.cpu({
+cpuwidget = wibox.container.background(cpu({
 settings = function()
 widget:set_text("" .. cpu_now.usage .. "% ")
 end
@@ -21,7 +22,7 @@ end
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()
-    layout:add(common.textbox({text="", width=10 }))
+    layout:add(common.textbox({text="", width=5 }))
     layout:add(cpuicon())      
     layout:add(cpuwidget) 
     return layout

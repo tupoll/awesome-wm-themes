@@ -43,7 +43,7 @@ end
 function module.imagebox(args)
     local args = args or {}
     local imagewidget  = wibox.widget.imagebox()
-    local background = wibox.widget.background()
+    local background = wibox.container.background()
     local bg = args.bg or beautiful.widget["bg"] or "#00121E"
     local b1 = args.b1 or nil
     local b3 = args.b3 or nil
@@ -74,7 +74,7 @@ function module.textbox(args)
     local b1 = args.b1 or nil
     local b3 = args.b3 or nil
 
-    local background  = wibox.widget.background()
+    local background  = wibox.container.background()
     local textwidget = wibox.widget.textbox()
 
     textwidget:set_markup("<span color='"..fg.."'>"..text.."</span>")

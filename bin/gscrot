@@ -1,3 +1,0 @@
- notify-send "не тупи мышей обводи"
-scrot -d10 -s -t '%Y-%m-%d_%h%M%S-$wx$h.png' -e 'mv $f /home/tupoll/Изображения/$f'
-

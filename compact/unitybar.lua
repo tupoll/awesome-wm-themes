@@ -7,13 +7,13 @@ local theme = require('beautiful')
 local unitybar = { tag_widgets = {} }
 
 local function constrain(wdg, size)
-   return wibox.layout.constraint(wdg, 'exact', size, size)
+   return wibox.container.constraint(wdg, 'exact', size, size)
 end
 
 function update_tag(tag, wdg)
    wdg:reset()
 
-   local bgb = wibox.widget.background()
+   local bgb = wibox.container.background()
    bgb:set_bgimage(tag.selected and unitybar.args.img_focused)
    wdg:set_widget(bgb)
 

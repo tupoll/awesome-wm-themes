@@ -28,7 +28,7 @@ module.PATHS =  {
 module.menu = false
 function module.main()
     if not module.menu then
-        module.menu = radical.context({
+        module.menu = radical.box({
             filer = false, enable_keyboard = true, direction = "bottom", x = screen[1].geometry.width - 715,
             y = screen[1].geometry.height - beautiful.wibox.height - (#module.PATHS*beautiful.menu_height) - 28,
         })

@@ -25,30 +25,24 @@ module.tag = {
 
 -- Setup tags
 local tags = awful.tag.gettags(1)
---awful.tag.setproperty(tags[1], "mwfact", 0.60)
---[[
--- Read tag history file
-function module.selected()
-    local f = io.open(module.history, "r")
-    if f ~= nil then
-        local idx = f:read("*all")
-        f:close()
-        
-    end
-end
 
---]]
--- Try to restore last visible tag
---module.selected()
 
 -- Main menu
 module.menu=false
 function module.main()
     if not module.menu then
         local tags = awful.tag.gettags(1)
-        module.menu = radical.context({
-            filer = false, enable_keyboard = true, direction = "bottom", x = 180,
-            y = screen[1].geometry.height - beautiful.wibox.height - (#tags*beautiful.menu_height) - 22
+        module.menu = radical.box({
+        style      = grouped_3d     ,
+        item_style = radical.item.style.line_3d ,
+        item_height = 18,--48,
+        width = 140,
+        layout = radical.layout.vertical, --horizontal,
+        border_width = 2,
+        border_color = "#88aa00",
+        spacing  = 4,     
+        enable_keyboard = false,
+        item_layout = radical.layout.centerred        
         })
         for i,t in ipairs(tags) do
             module.menu:add_item({
@@ -74,36 +68,10 @@ client.connect_signal("untagged", function(_, t)
         awful.tag.history.restore()
     end
 end)
---[[
--- Signal just before awesome exits 
--- Perform some actions before restarting/exiting awesome wm.
-awesome.connect_signal("exit", function(restarting)
-    if restarting then
-        -- Save last visible tag
-        local f = io.open(module.history, "w")
-        f:write(awful.tag.getidx(awful.tag.selected(1)))
-        f:close()
-        -- Now restart!
-        awful.util.restart()
-    end
-end)
---]]
+
+
 -- Return widget layout
-local function new()
-    local layout = wibox.layout.fixed.horizontal()
-    local style = beautiful.tag or {}
-    local buttons = awful.util.table.join(
-        awful.button({        }, 1, awful.tag.viewonly),
-        awful.button({ "Mod4" }, 1, awful.client.movetotag),
-        awful.button({        }, 3, awful.tag.viewtoggle),
-        awful.button({ "Mod4" }, 3, awful.client.toggletag))
-    layout:add(common.imagebox({icon=beautiful.path.."/widgets/workspace.svg"}))
-    layout:add(common.textbox({text="TAG", width=35, b1=module.main}))
-  --  layout:add(awful.widget.taglist(1, awful.widget.taglist.filter.noempty, buttons, style))
-   -- layout:add(common.arrow(2))
-    return layout
-end
 
 
 
-return setmetatable(module, { __call = function(_, ...) return new(...) end })
+return setmetatable(module, { __call = function(_, ...) return (...) end })

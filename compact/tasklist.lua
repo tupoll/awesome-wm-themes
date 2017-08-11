@@ -17,7 +17,7 @@ end
 
 -- Move client to tag
 local function move2tag(c)
-    local items = radical.context({enable_keyboard = false, style = module.style, item_style = module.item_style})
+    local items = radical.box({enable_keyboard = true, style = module.style, item_style = module.item_style})
     local gt = awful.tag.gettags(1)
     for i, _ in ipairs(gt) do
         items:add_item({
@@ -132,6 +132,7 @@ local function new()
         awful.button({ }, 3, function(c) module.main(c) end),
         awful.button({ }, 2, function(c) c:kill() end)
     )
+    
     return awful.widget.tasklist(1, awful.widget.tasklist.filter.currenttags, buttons, beautiful.task)
 end
 

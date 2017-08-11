@@ -14,7 +14,7 @@ local function new()
     top_layout:add(m())
     
     local bottom_layout = wibox.layout.fixed.horizontal()        
-  --  bottom_layout:add(t())
+  
     bottom_layout:add(a())
     
     layout:add(top_layout)

@@ -8,7 +8,7 @@ local wibox       = require("wibox")
 local beautiful   = require("beautiful")
 local quake       = require("quake")
 local compact       = require("compact")
-local lain        = require("lain")
+local freedesktop        = require("compact.menu.freedesktop")
 
 -- When loaded, this module makes sure that there's always a client that will have focus
 require("awful.autofocus")
@@ -66,15 +66,35 @@ do
 end
 -- }}}
 
-   --Lain widgets
-  mocwidget = lain.widgets.contrib.moc()
+
+-- {{{ Menu
+local myawesomemenu = {
+    { "hotkeys", function() return false, hotkeys_popup.show_help end },
+    { "manual", terminal .. " -e man awesome" },
+    { "edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
+    { "restart", awesome.restart },
+    { "quit", function() awesome.quit() end }
+}
+awful.util.mymainmenu = freedesktop.menu.build({
+    icon_size = beautiful.menu_height or 16,
+    before = {
+        { "Awesome", myawesomemenu, beautiful.dist_icon },
+        -- other triads can be put here
+    },
+    after = {
+        { "Open terminal", terminal },
+        -- other triads can be put here
+    }
+})
+-- }}}
+   
 -- Wibox table
 local bar  = {}
 -- Keybindings table
 local keys = {}
 
 -- Create wibox 'main'
-bar["main"] = awful.wibox({ position = beautiful.wibox.position, height = beautiful.wibox.height })
+bar["main"] = awful.wibar({ position = beautiful.wibox.position, height = beautiful.wibox.height })
 bar["main"]:set_bg(beautiful.wibox.bg)
 
 -- Widgets that are aligned to the left
@@ -88,10 +108,6 @@ bar["middle"]:add(compact.middle())
 bar["right"] = wibox.layout.fixed.horizontal()
 bar["right"]:add(compact.right())
 
-
-
-
-
 -- Now bring it all together (with the tasklist in the middle)
 bar["wibox"] = wibox.layout.align.horizontal()
 bar["wibox"]:set_left(bar["left"])
@@ -99,6 +115,7 @@ bar["wibox"]:set_middle(bar["middle"])
 bar["wibox"]:set_right(bar["right"])
 
 bar["main"]:set_widget(bar["wibox"])
+
 
 -- Spawn a program.
 local function spawn(cmd)
@@ -113,7 +130,7 @@ end
 
 -- Mouse bindings
 keys["mouse"] = awful.util.table.join(
-    awful.button({ }, 3, function() compact.menu.main_app() end)
+   awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end)
 )
 -- Client mouse bindings
 keys["buttons"] = awful.util.table.join(
@@ -172,8 +189,8 @@ keys["global"] = awful.util.table.join(
     awful.key({ "Mod4",           }, "Left",   awful.tag.viewprev       ),
     awful.key({ "Mod4",           }, "Right",  awful.tag.viewnext       ),   
    -- awful.key({ "Mod4"            }, "a",            function(c) c.above = not c.above                    end),
-    awful.key({ "Mod4",           }, "/", function () bar["main"].visible = not bar["main"].visible       end),
-   
+    awful.key({ "Mod4",           }, "/", function ()  bar["main"].visible = not bar["main"].visible       end),
+  --  awful.key({ "Mod4",           }, "'", function ()  bar["tmain"].visible = not bar["tmain"].visible       end),
     -- Prompt
     awful.key({ "Mod4"            }, "l",            function() compact.prompt.lua()                         end),
    
@@ -183,6 +200,7 @@ keys["global"] = awful.util.table.join(
     -- Layout menu
     awful.key({ "Mod4"            }, "space",        function() compact.layout.main()                        end),
     -- Applications menu
+    awful.key({ "Mod4"            }, "w",            function() dmenu.menu.menu()                     end),
     awful.key({ "Mod4"            }, "q",            function() compact.menu.main_qapp()                     end),
     awful.key({ "Mod4"            }, "a",            function() compact.avplay.main_aapp()                     end),
     awful.key({ "Mod4"            }, "e",            function() compact.exit.main_eapp()                     end),
@@ -209,10 +227,10 @@ keys["global"] = awful.util.table.join(
         if client.focus then client.focus:raise() end
     end),
      --Avplay
-     awful.key({ "Mod1",     }, "Up",             function() os.execute("~/.config/awesome/compact/avplay/dr/play1.sh &")end),
-     awful.key({ "Mod1",     }, "Down",           function() os.execute("~/.config/awesome/compact/avplay/dr/stop.sh")end),
-     awful.key({ "Mod1",     }, "Left",           function() os.execute("~/.config/awesome/compact/avplay/dr/play1.sh &")end),
-     awful.key({ "Mod1",     }, "Right",          function() os.execute("killall avplay")end),
+     awful.key({ "Mod1",     }, "Up",             function() os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/play1.sh &")end),
+     awful.key({ "Mod1",     }, "Down",           function() os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/stop.sh ")end),
+     awful.key({ "Mod1",     }, "Left",           function() os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/play.sh &")end),
+     awful.key({ "Mod1",     }, "Right",          function() io.popen("killall avplay ")end),
      -- Qauke program
    awful.key({ "Mod4",           }, "Return", function () quake.toggle({ terminal = software.terminal_quake,
                                                                          name = "URxvt",
@@ -232,11 +250,7 @@ keys["global"] = awful.util.table.join(
     awful.key({ "Mod1"            }, ".",       function() spawn("mixer vol +2:+2 pcm +2:+2")    end),
     awful.key({ "Mod1"            }, ",",  function() spawn("mixer vol -2:-2 pcm -2:-2")    end),
     
-    -- Music Player Daemon
-    awful.key({ "Mod4", "Shift"   }, "KP_Add",       function() spawn("/usr/bin/mpc volume +5")              end),
-    awful.key({ "Mod4", "Shift"   }, "KP_Subtract",  function() spawn("/usr/bin/mpc volume -5")              end),
-    awful.key({ "Mod4"            }, "Prior",        function() spawn("/usr/bin/mpc prev")                   end),
-    awful.key({ "Mod4"            }, "Next",         function() spawn("/usr/bin/mpc next")                   end),
+    
     -- Awesome WM quit/restart
     awful.key({ "Mod4", "Control" }, "r",            awesome.restart                                            ),
     awful.key({ "Mod4", "Control" }, "q",            awesome.quit                                               ),

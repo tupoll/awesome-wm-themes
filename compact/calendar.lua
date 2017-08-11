@@ -7,7 +7,8 @@ local orglendar = require('compact.orglendar')
 
 local module = {}
 
-mytextclock = awful.widget.textclock(" %a %d %b ")
+os.setlocale(os.getenv("LANG"))
+mytextclock = wibox.widget.textclock(" %A %d %B ")
 orglendar.register(mytextclock)
 
 -- Return widgets layout

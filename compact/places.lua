@@ -10,7 +10,7 @@ local HOME = os.getenv("HOME")
 
 module.OPEN = "pcmanfm"
 module.PATHS = {
-    { "Home",        HOME,                 "home.svg",        "n" },
+    { "Home",        HOME,                 "home.svg",      "h" },
     { "Cloud",       HOME.."/Cloud",       "remote.svg",      "r" },
     { "Development", HOME.."/Development", "development.svg", "d" },
     { "Workspace",   HOME.."/Workspace",   "workspace.svg",   "t" },
@@ -26,9 +26,13 @@ module.PATHS = {
 module.menu = false
 function module.main()
     if not module.menu then
-        module.menu = radical.context({
-            filer = false, enable_keyboard = true, direction = "bottom", x = screen[1].geometry.width - 220,
-            y = screen[1].geometry.height - beautiful.wibox.height - (#module.PATHS*beautiful.menu_height) - 28,
+        module.menu = radical.box({
+        style      = grouped_3d     ,
+        item_style = radical.item.style.line_3d ,
+        item_height = 18,--48,
+        width = 140,
+        
+        
         })
         local tags = awful.tag.gettags(1)
         for _,t in ipairs(module.PATHS) do
@@ -53,8 +57,10 @@ end
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()
-    layout:add(common.imagebox({ icon=beautiful.path.."/widgets/places.svg" }))
-    layout:add(common.textbox({ text="PLACES", width=60, b1=module.main }))
+    local widget_img,img = common.imagebox({ icon=beautiful.path.."/widgets/places.svg" })
+    local widget_txt,text = common.textbox({ text="PLACES", width=60, b1=module.main })
+    layout:add(widget_img)
+    layout:add(widget_txt)
     return layout
 end
 
