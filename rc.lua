@@ -7,8 +7,8 @@ awful.screensaver = require("awful.screensaver")
 local wibox       = require("wibox")
 local beautiful   = require("beautiful")
 local quake       = require("quake")
-local compact       = require("compact")
-local freedesktop        = require("compact.menu.freedesktop")
+local compact     = require("compact")
+local freedesktop = require("compact.menu.freedesktop")
 
 -- When loaded, this module makes sure that there's always a client that will have focus
 require("awful.autofocus")
@@ -69,7 +69,7 @@ end
 
 -- {{{ Menu
 local myawesomemenu = {
-    { "hotkeys", function() return false, hotkeys_popup.show_help end },
+    
     { "manual", terminal .. " -e man awesome" },
     { "edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
     { "restart", awesome.restart },
@@ -78,12 +78,10 @@ local myawesomemenu = {
 awful.util.mymainmenu = freedesktop.menu.build({
     icon_size = beautiful.menu_height or 16,
     before = {
-        { "Awesome", myawesomemenu, beautiful.dist_icon },
-        -- other triads can be put here
+        { "Awesome", myawesomemenu, beautiful.dist_icon },        
     },
     after = {
-        { "Open terminal", terminal },
-        -- other triads can be put here
+        { "Open terminal", terminal },        
     }
 })
 -- }}}
@@ -200,7 +198,7 @@ keys["global"] = awful.util.table.join(
     -- Layout menu
     awful.key({ "Mod4"            }, "space",        function() compact.layout.main()                        end),
     -- Applications menu
-    awful.key({ "Mod4"            }, "w",            function() dmenu.menu.menu()                     end),
+    awful.key({ "Mod4"            }, "w",            function() awful.util.mymainmenu:toggle()               end),
     awful.key({ "Mod4"            }, "q",            function() compact.menu.main_qapp()                     end),
     awful.key({ "Mod4"            }, "a",            function() compact.avplay.main_aapp()                     end),
     awful.key({ "Mod4"            }, "e",            function() compact.exit.main_eapp()                     end),
@@ -238,6 +236,15 @@ keys["global"] = awful.util.table.join(
                                                                          skip_taskbar = true,
                                                                          ontop = true })
                                               end),
+                                              
+    --Naughty notification
+    awful.key({ "Mod1",     },    "w",          function () myweather.show()                                end),
+    awful.key({ "Mod1",     },    "c",          function () compact.orglendar.show(0)                       end),
+    awful.key({ "Mod1",  "Mod4"  },    "c",     function () compact.orglendar.hide()                        end),
+    awful.key({ "Mod1",     },    "a",          function () playlist_status( timeout)                       end),
+    awful.key({ "Mod1",     },    "h",          function () zpool_status( timeout)                          end),
+    awful.key({ "Mod1",     },    "m",          function () memory_status( timeout)                         end),  
+                                              
     -- Focus    
     awful.key({ "Mod4",           }, "Up",           function() awful.indicator.focus.bd("up")               end),
     awful.key({ "Mod4",           }, "Down",         function() awful.indicator.focus.bd("down")             end),
