@@ -1,10 +1,9 @@
 return {
-      avplay        = require("compact.avplay"),
-  --    fd_async      = require("compact.fd.async"),
+      avplay        = require("compact.avplay"),  
       menu          = require("compact.menu"),
       layout        = require("compact.layout"),
       common        = require("compact.common"),
-      helpers       = require("compact.helpers"),
+
       unitybar      = require("compact.unitybar"),
       tagmenu       = require("compact.tagmenu"),
       titlebar      = require("compact.titlebar"),
@@ -13,18 +12,21 @@ return {
       prompt        = require("compact.prompt"),
       weather       = require("compact.weather"),
       exit          = require("compact.exit"),
-      net           = require("compact.net"),
+
+      net_dragonfly = require("compact.net_dragonfly"),
+      net_fbsd = require("compact.net_fbsd"),
       places        = require("compact.places"),
       calendar      = require("compact.calendar"),
       orglendar     = require("compact.orglendar"),
-      mixer         = require("compact.mixer"),
+--      mixer         = require("compact.mixer"),
       treble        = require("compact.treble"),
       bass          = require("compact.bass"),
       memory        = require("compact.memory"),
-      cpu           = require("compact.cpu"),
-      zfs           = require("compact.zfs"),
+      cpu           = require("compact.cpu"),     
+     -- hammer2       = require("compact.hammer2"),
       clock         = require("compact.clock"),
       right         = require("compact.right"),
       middle        = require("compact.middle"),
-      left          = require("compact.left")
+      left          = require("compact.left"),
+      zfs           = require("compact.zfs")
 }    

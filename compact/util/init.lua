@@ -22,7 +22,7 @@ local client       = client
 local screen       = screen
 local tonumber     = tonumber
 
-local wrequire     = require("compact.helpers").wrequire
+local wrequire     = require("compact.common.helpers").wrequire
 local setmetatable = setmetatable
 
 -- Lain utilities submodule

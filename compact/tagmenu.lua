@@ -2,7 +2,7 @@ local wibox     = require("wibox")
 local awful     = require("awful")
 local beautiful = require("beautiful")
 local radical   = require("radical")
-local common    = require("compact.common")
+local common    = require("compact.common.helpers1")
 
 
 

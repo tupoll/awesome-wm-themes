@@ -1,30 +1,32 @@
-local awful     = require("awful")
+#7F7F7Flocal awful     = require("awful")
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
 local radical   = require("radical")
-local common    = require("compact.common")
-local cpuicon   = require("compact.cpu.cpuicon")
-local cpu       = require("compact.cpu.cpu")
---local lain = require("lain")
-
+local common    = require("compact.common.helpers1")
+local vicious = require("vicious")
+local blingbling = require("blingbling")
+local cpu = require("vicious.widgets.cpu_dragonfly") 
 
 local module = {}
 
--- CPU
-
-cpuwidget = wibox.container.background(cpu({
-settings = function()
-widget:set_text("" .. cpu_now.usage .. "% ")
-end
-}), "#31313100")
-
-
+local tmp_usage = cpu.tmp_usage
+ cpu_graph = blingbling.line_graph({ height = 28,
+                                      width = 60,
+                                      show_text = true,
+                                      text_color = "#E5E5E5",
+                                      graph_line_color = "#8B6914",
+                                      graph_color = "#8B6914",
+                                      label = "CPU: $percent %",
+                                                               })
+                                     
+cpu_graph.fit = function() return 60,5 end
+vicious.register(cpu_graph, vicious.widgets.cpu,'$1',2)  
+ 
 -- Return widgets layout
 local function new()
-    local layout = wibox.layout.fixed.horizontal()
-    layout:add(common.textbox({text="", width=5 }))
-    layout:add(cpuicon())      
-    layout:add(cpuwidget) 
+    local layout = wibox.layout.fixed.horizontal()         
+    layout:add(cpu_graph)
+     
     return layout
 end
 

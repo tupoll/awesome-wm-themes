@@ -2,7 +2,7 @@ local awful     = require("awful")
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
 local radical   = require("radical")
-local common    = require("compact.common")
+local common    = require("compact.common.helpers1")
 local box_bl    = require("compact.menu.box_bl")
 local freedesktop   = require("compact.menu.freedesktop")
 
@@ -23,7 +23,7 @@ awful.util.mymainmenu = freedesktop.menu.build({
   
     
     before = {
-        { "Awesome", myawesomemenu, beautiful.dist_icon },
+        { "Awesome", myawesomemenu, beautiful.dragonfly_icon},
         -- other triads can be put here
     },
     after = {
@@ -37,7 +37,7 @@ awful.util.mymainmenu = freedesktop.menu.build({
 -- Quick menu table.
 module.qapp = {}
 module.qapp["Terminal        T"]     = { command="urxvt",          key="t", icon="terminal.svg",         tag=1 }
-module.qapp["File Manager    F"] = { command="pcmanfm",        key="f", icon="file-manager.svg",     tag=1 }
+module.qapp["File Manager    F"] = { command="thunar",        key="f", icon="file-manager.svg",     tag=1 }
 module.qapp["Web browser     W"]  = { command="firefox",        key="w", icon="browser.svg",          tag=3 }
 module.qapp["Editor          E"]       = { command="geany",          key="e", icon="editor.svg",           tag=2 }
 module.qapp["MOC             M"]          = { command="xterm -e mocp",  key="m", icon="thunderbird.svg",             tag=6 }
@@ -64,7 +64,7 @@ function module.main_qapp()
         style      = grouped_3d     ,
         item_style = radical.item.style.line_3d ,
         item_height = 18,--48,
-        width = 140,
+        width = 170,
         layout = radical.layout.vertical, --horizontal,
         border_width = 2,
         border_color = "#88aa00",
@@ -92,8 +92,8 @@ end
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()   
-    local widget_img,img = common.imagebox({icon=beautiful.dist_icon, b1=module.main_qapp, b3=function () awful.util.mymainmenu:toggle() end })
-    local widget_txt,text = common.textbox({text="MENU", width=50, b1=module.main_qapp, b3=function () awful.util.mymainmenu:toggle() end  })
+    local widget_img,img = common.imagebox({icon=beautiful.dragonfly_icon, b1=module.main_qapp, b3=function () awful.util.mymainmenu:toggle() end })
+    local widget_txt,text = common.textbox({text=" ", width=10, b1=module.main_qapp, b3=function () awful.util.mymainmenu:toggle() end  })
     layout:add(widget_img)
     layout:add(widget_txt)
    
