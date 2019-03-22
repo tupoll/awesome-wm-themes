@@ -39,7 +39,7 @@ local function worker(args)
     local timeout_forecast      = args.timeout or 86400 -- 24 hrs
     local current_call          = args.current_call  or "curl -s 'http://api.openweathermap.org/data/2.5/weather?id=%s&units=%s&lang=%s&APPID=%s'"
     local forecast_call         = args.forecast_call or "curl -s 'http://api.openweathermap.org/data/2.5/forecast/daily?id=%s&units=%s&lang=%s&cnt=%s&APPID=%s'"
-    local city_id               = args.city_id or 2013348 -- placeholder умолчание на свой код
+    local city_id               = args.city_id or 2027456 -- placeholder умолчание на свой код
     local utc_offset            = args.utc_offset or
                                   function ()
                                       local now = os.time()
