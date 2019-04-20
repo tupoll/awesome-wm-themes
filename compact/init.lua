@@ -18,7 +18,7 @@ return {
       places        = require("compact.places"),
       calendar      = require("compact.calendar"),
       orglendar     = require("compact.orglendar"),
---      mixer         = require("compact.mixer"),
+      mixer         = require("compact.mixer"),
       treble        = require("compact.treble"),
       bass          = require("compact.bass"),
       memory        = require("compact.memory"),
