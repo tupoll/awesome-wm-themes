@@ -3,7 +3,7 @@ local beautiful = require("beautiful")
 local radical   = require("radical")
 local awful     = require("awful")
 local common    = require("compact.common.helpers1")
-local iconsvol  = require("compact.mixer.iconsvol")
+local volume  = require("compact.mixer.volume")
 
 local module = {}
 
@@ -54,7 +54,7 @@ end
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()
-    layout:add(iconsvol())   
+    layout:add(volume())   
     layout:add(common.textbox({text="", width=5, b1=module.main }))   
     return layout
 end

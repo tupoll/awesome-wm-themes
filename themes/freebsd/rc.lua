@@ -254,8 +254,8 @@ keys["global"] = awful.util.table.join(
     awful.key({ "Mod4", "Shift"   }, "Up",           function() awful.indicator.focus.bd("up",nil,true)      end),
     awful.key({ "Mod4", "Shift"   }, "Down",         function() awful.indicator.focus.bd("down",nil,true)    end),
     -- Volume controls
-    awful.key({ "Mod1"            }, ".",       function() spawn("mixer vol +2:+2 pcm +2:+2")    end),
-    awful.key({ "Mod1"            }, ",",  function() spawn("mixer vol -2:-2 pcm -2:-2")    end),
+    awful.key({ "Mod1"            }, ".",       function() awful.spawn.easy_async("mixer vol +4 pcm +4")    end),
+    awful.key({ "Mod1"            }, ",",  function() awful.spawn.easy_async("mixer vol -4 pcm -4")    end),
     
     
     -- Awesome WM quit/restart

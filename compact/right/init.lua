@@ -20,6 +20,7 @@ local y    = require("compact.prompt")
 local f    = require("wibox.widget.systray")
 local e    = require("awful.widget.keyboardlayout")
 
+
 local function new()
     local layout = wibox.layout.flex.horizontal()
     local middle_layout = wibox.layout.fixed.horizontal()

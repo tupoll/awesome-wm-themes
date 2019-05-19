@@ -34,7 +34,7 @@ end
 end
   
  function next()
-    os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/play.sh &")
+    os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/play1.sh &")
 end
     
   function stop()
@@ -42,7 +42,7 @@ end
 end
    
    local function play()
-    os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/play1.sh &")
+    os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/play.sh &")
 end   
     
    local pl = awful.widget.button({ image = icons.."repeat.png" })
@@ -61,7 +61,7 @@ function playlist_status()
                 title = "Проигранное:",
                 position      =  "bottom_left",
                 timeout = 100, hover_timeout = 0.5,
-                width = 450,
+                width = 530,
                 preset  = notification_preset
             }
         end

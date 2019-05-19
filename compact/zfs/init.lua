@@ -31,7 +31,7 @@ home_fs_usage=blingbling.value_text_box({height = 14, width = 60, v_margin = 3})
  
  local notification
       function zfs_status()
-      awful.spawn.easy_async([[zsh -c "df  /home/tupoll|/usr/bin/awk  '{print $1,$5}' | sed '1d' | cut -c9-24 && df /|/usr/bin/awk '{print $6,$5}'| sed '1d' && echo СТАТУС && zpool status |/usr/bin/awk '{print $1,$2}'| sed '5,11d'"]],
+      awful.spawn.easy_async([[zsh -c "df -h  /home/tupoll|/usr/bin/awk  '{print $1,$5}' | sed '1d' | cut -c6-24 && df /|/usr/bin/awk '{print $6,$5}'| sed '1d' && echo СТАТУС && zpool status |/usr/bin/awk '{print $1,$2}'| sed '5,11d'"]],
         function(stdout, _, _, _)
             notification = naughty.notify{
                 text =  stdout,

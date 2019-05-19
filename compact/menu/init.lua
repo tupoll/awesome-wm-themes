@@ -37,7 +37,7 @@ awful.util.mymainmenu = freedesktop.menu.build({
 -- Quick menu table.
 module.qapp = {}
 module.qapp["Terminal        T"]     = { command="urxvt",          key="t", icon="terminal.svg",         tag=1 }
-module.qapp["File Manager    F"] = { command="thunar",        key="f", icon="file-manager.svg",     tag=1 }
+module.qapp["File Manager    F"] = { command="pcmanfm-qt",        key="f", icon="file-manager.svg",     tag=1 }
 module.qapp["Web browser     W"]  = { command="firefox",        key="w", icon="browser.svg",          tag=3 }
 module.qapp["Editor          E"]       = { command="geany",          key="e", icon="editor.svg",           tag=2 }
 module.qapp["MOC             M"]          = { command="xterm -e mocp",  key="m", icon="thunderbird.svg",             tag=6 }
