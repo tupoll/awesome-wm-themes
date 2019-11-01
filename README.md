@@ -19,7 +19,8 @@ chmod 755 /usr/local/bin/gscrot
  notify-send "не тупи мышей обводи"
 scrot -d10 -s -t '%Y-%m-%d_%h%M%S-$wx$h.png' -e 'mv $f /home/tupoll/Изображения/screenshots/'
 
-
+chmod +x ~/.config/awesome/compact/mixer/vol.sh
+chmod +x ~/.config/awesome/compact/mixer/mixer.sh
 chmod +x ~/.config/awesome/compact/memory/memory.sh
 
 cd /usr/ports/multimedia/libav && make install clean
