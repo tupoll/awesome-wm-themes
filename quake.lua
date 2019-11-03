@@ -22,14 +22,15 @@
 -- ensure you use an exception for
 -- QuakeConsoleNeedsUniqueName. Otherwise, you may run into problems
 -- with focus.
+--fixed by awesome4 tupoll 2019
 
 local awful  = require("awful")
-
+local gears = require("gears")
 -- Module "quake"
 local quake = { consoles = {} }
 
-local QuakeConsole = {}
-
+local QuakeConsole = {} 
+local s ={}
 -- Display
 function QuakeConsole:display()
    -- First, we locate the terminal
@@ -73,16 +74,16 @@ function QuakeConsole:display()
    else   y = geom.y + (geom.height - height)/2 end
 
    -- Resize
-   awful.client.floating.set(quake_client, true)
-   quake_client.border_width = 0
-   quake_client.size_hints_honor = false
-   quake_client:geometry({ x = x, y = y, width = width, height = height })
+    quake_client.floating = true
+    quake_client.border_width = self.border
+    quake_client.size_hints_honor = false
+    quake_client:geometry({ x = x, y = y, width = width, height = height })
 
-   -- Sticky and on top
-   quake_client.ontop = self.ontop or false
-   quake_client.above = self.above or false
-   quake_client.skip_taskbar = self.skip_taskbar or false
-   quake_client.sticky = self.sticky or false
+    -- Set not sticky and on top
+    quake_client.sticky = false
+    quake_client.ontop = self.ontop or false
+    quake_client.above = true
+    quake_client.skip_taskbar = true
 
    if self.ignore_bindings then
       quake_client:buttons({})
@@ -91,24 +92,19 @@ function QuakeConsole:display()
 
    -- Toggle display
    if self.visible then
-      awful.client.movetotag(awful.tag.selected(self.screen), quake_client)
-      quake_client.hidden = false
-      quake_client:raise()
-      client.focus = quake_client
-   else -- Hide and detach tags
-      if not quake_client:isvisible() then -- Terminal is on other tag, bring it here
-         -- quake_client.hidden = true
-         awful.client.movetotag(awful.tag.selected(self.screen), quake_client)
-         self.visible = true
-      else
-         quake_client.hidden = true
-         local ctags = quake_client:tags()
-         for i, t in pairs(ctags) do
+        quake_client.hidden = false
+        quake_client:raise()
+        self.last_tag = self.screen.selected_tag
+        quake_client:tags({self.screen.selected_tag})
+       -- capi.client.focus = quake_client
+   else
+        quake_client.hidden = true
+        local ctags = quake_client:tags()
+        for i, t in pairs(ctags) do
             ctags[i] = nil
-         end
-         quake_client:tags(ctags)
-      end
-   end
+        end
+        quake_client:tags(ctags)
+    end
 end
 
 -- Create a console
@@ -146,7 +142,7 @@ function QuakeConsole:new(config)
 			  end)
 
    -- "Reattach" currently running QuakeConsole. This is in case awesome is restarted.
-   local reattach = timer { timeout = 0 }
+   local reattach = gears.timer { timeout = 0 }
    reattach:connect_signal("timeout",
 		       function()
 			  reattach:stop()
