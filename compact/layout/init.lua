@@ -5,6 +5,7 @@ local radical   = require("radical")
 local common    = require("compact.common.helpers1")
 local box_bl      = require("compact.layout.box_bl")
 
+
 local module = {}
 
 -- Layouts table
@@ -35,8 +36,13 @@ function module.main()
         width = 100,        
         border_width = 2,        
         spacing  = 4        
-        })
-        local current = awful.layout.get(awful.tag.getscreen(awful.tag.selected()))
+        })        
+        local current = function()layout.get(screen)
+    screen = screen or capi.mouse.screen
+    local t = get_screen(screen).selected_tag
+    return tag.getproperty(t, "layout") or layout.suit.floating
+end
+            
         for i, layout_real in ipairs(module.layouts) do
             local layout_name = awful.layout.getname(layout_real)
             if layout_name then
@@ -44,7 +50,7 @@ function module.main()
                     icon = beautiful.path.."/layouts/"..layout_name..".png",
                     text = layout_name:gsub("^%l", string.upper), -- Changes the first character of a word to upper case
                     button1 = function()
-                        awful.layout.set(module.layouts[module.menu.current_index] or module.layouts[1], awful.tag.selected())
+                        awful.layout.set(module.layouts[module.menu.current_index] or module.layouts[1], awful.screen.focused().selected_tag)
                         common.hide_menu(module.menu)
                     end,
                     selected = (layout_real == current),

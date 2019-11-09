@@ -2,6 +2,7 @@ local wibox         = require("wibox")
 local awful         = require("awful")
 local naughty       = require('naughty')
 local beautiful     = require("beautiful")
+local timer         = require("gears.timer")
 
 local avplay = {}
 local function worker(args)

@@ -17,7 +17,7 @@ local function reload(t,s)
 
   local old_tags = tracker._internal.old_tags or {}
 
-  local new_tags = tag.gettags(s)
+  local new_tags = awful.screen.focused().tags
   for k,v in ipairs(new_tags) do
     if v ~= old_tags[k] then
 --       print(v.name,k,s,tag.getscreen(v),tag.getidx(v))

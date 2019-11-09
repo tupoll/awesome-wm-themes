@@ -22,9 +22,9 @@ module.aapp["media_flac"]    = { command="zsh -c ~/.config/awesome/compact/avpla
 module.aapp["media_mp3"]    = { command="zsh -c ~/.config/awesome/compact/avplay/dr/media_mp3.sh",     key="3", icon="mp3.png", }
 
 local function run(data)
-    local tags = awful.tag.gettags(1)
-    awful.util.spawn(data.command)
-    if tags[data.tag] then awful.tag.viewonly(tags[data.tag]) end
+    local tags = root.tags(1)
+    awful.spawn(data.command)
+    if tags[data.tag] then tag:view_only() end
     common.hide_menu(module.menu_aapp)
 end
 

@@ -55,7 +55,7 @@ function QuakeConsole:display()
 
    if not quake_client then
       -- The client does not exist, we spawn it
-      awful.util.spawn(self.terminal .. " " .. string.format(self.argname, self.name),
+      awful.spawn(self.terminal .. " " .. string.format(self.argname, self.name),
 		       false, self.screen)
       return
    end

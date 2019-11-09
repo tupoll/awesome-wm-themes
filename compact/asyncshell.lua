@@ -13,9 +13,10 @@
 
 -- Grab environment
 local awful = require('awful')
+local timer         = require("gears.timer")
 
 -- Avoid discrepancies across multiple shells
-awful.util.shell = '/bin/sh'
+awful.shell = '/bin/sh'
 
 -- Initialize tables for module
 asyncshell = { request_table = {}, id_counter = 0 }
@@ -52,10 +53,10 @@ function asyncshell.request(command, callback, timeout)
         id, formatted_command
     )
 
-    if type(awful.spawn) == 'table' and awful.spawn.with_shell then
-        awful.spawn.with_shell(req)
+    if type(awful.spawn) == 'table' and awful.spawn.easy_async_with_shell then
+        awful.spawn.easy_async_with_shell(req)
     else
-        awful.util.spawn_with_shell(req)
+        awful.spawn.easy_async_with_shell(req)
     end
 
     if timeout then

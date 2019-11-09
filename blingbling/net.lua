@@ -15,6 +15,7 @@ local color = require("gears.color")
 local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
 local superproperties = require('blingbling.superproperties')
+local timer = require("gears.timer")
 
 ---Net widget displays two arrows as graph for download/upload activities
 --@module blingbling.widget

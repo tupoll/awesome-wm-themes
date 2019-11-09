@@ -5,6 +5,7 @@ local radical   = require("radical")
 local common    = require("compact.common.helpers1")
 local box_bl    = require("compact.menu.box_bl")
 local freedesktop   = require("compact.menu.freedesktop")
+local screen = require("awful.screen")
 
 local module = {}
 
@@ -15,7 +16,7 @@ local terminal     = "urxvtc" or "xterm"
 local myawesomemenu = {
     { "hotkeys", function() return false, hotkeys_popup.show_help end },
     { "manual", terminal .. " -e man awesome" },
-    { "edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
+--    { "edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
     { "restart", awesome.restart },
     { "quit", function() awesome.quit() end }
 }
@@ -38,7 +39,7 @@ awful.util.mymainmenu = freedesktop.menu.build({
 module.qapp = {}
 module.qapp["Terminal        T"]     = { command="urxvt",          key="t", icon="terminal.svg",         tag=1 }
 module.qapp["File Manager    F"] = { command="pcmanfm-qt",        key="f", icon="file-manager.svg",     tag=1 }
-module.qapp["Web browser     W"]  = { command="firefox",        key="w", icon="browser.svg",          tag=3 }
+module.qapp["Web browser     W"]  = { command="google-chrome-stable",        key="w", icon="browser.svg",          tag=3 }
 module.qapp["Editor          E"]       = { command="geany",          key="e", icon="editor.svg",           tag=2 }
 module.qapp["MOC             M"]          = { command="xterm -e mocp",  key="m", icon="thunderbird.svg",             tag=6 }
 module.qapp["Торент          D"]       = { command="deluge",         key="d", icon="deluge.svg",                tag=4 }
@@ -50,12 +51,12 @@ module.qapp["Chromium        C"]     = { command="chrome",         key="c", icon
 
 -- Action
 local function run(data)
-    local tags = awful.tag.gettags(1)
+    local tags = root.tags(1)
     awful.spawn(data.command)
-    if tags[data.tag] then awful.tag.viewonly(tags[data.tag]) end
+    --if tags[data.tag] then awful.tag.find_by_name(tags[data.tag]) end
+    if tags[data.tag] then awful.tag.find_by_name((function(t) t:view_only() end) (tags[data.tag]))end
     common.hide_menu(module.menu_qapp)common.hide_menu(module.menu_qapp)
 end
-
 -- Quick menu builder
 module.menu_qapp = false
 function module.main_qapp()

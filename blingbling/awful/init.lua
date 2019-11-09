@@ -13,9 +13,9 @@ return
     completion = require("awful.completion");
     layout = require("awful.layout");
     placement = require("awful.placement");
-    prompt = require("awful.prompt");
+    --prompt = require("awful.prompt");
     screen = require("awful.screen");
-    tag = require("awful.tag");
+    --tag = require("awful.tag");
     util = require("awful.util");
     widget = require("awful.widget");
     keygrabber = require("awful.keygrabber");

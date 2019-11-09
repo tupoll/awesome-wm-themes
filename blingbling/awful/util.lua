@@ -74,7 +74,7 @@ end
 -- @param sn Enable startup-notification.
 -- @return The forked PID or an error message
 -- @return The startup notification UID, if the spawn was successful
-function util.spawn(cmd, sn)
+function spawn(cmd, sn)
     if cmd and cmd ~= "" then
         if sn == nil then sn = true end
         return capi.awesome.spawn(cmd, sn)
@@ -83,7 +83,7 @@ end
 
 --- Spawn a program using the shell.
 -- @param cmd The command.
-function util.spawn_with_shell(cmd)
+function spawn.easy_async_with_shell(cmd)
     if cmd and cmd ~= "" then
         cmd = { util.shell, "-c", cmd }
         return capi.awesome.spawn(cmd, false)

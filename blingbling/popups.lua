@@ -80,9 +80,9 @@ mywidget:buttons(awful.util.table.join(
   end),
    awful.button({ }, 1, function()
     if args["terminal"] then
-      awful.util.spawn_with_shell(args["terminal"] .. " -e htop")
+      awful.spawn.easy_async_with_shell(args["terminal"] .. " -e htop")
     else
-      awful.util.spawn_with_shell("xterm" .. " -e htop")
+      awful.spawn.easy_async_with_shell("xterm" .. " -e htop")
     end
   end)
   ))

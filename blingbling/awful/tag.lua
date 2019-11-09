@@ -40,7 +40,7 @@ tag.history.limit = 20
 function tag.move(new_index, target_tag)
     local target_tag = target_tag or tag.selected()
     local scr = tag.getscreen(target_tag)
-    local tmp_tags = tag.gettags(scr)
+    local tmp_tags = awful.screen.focused().tags
 
     if (not new_index) or (new_index < 1) or (new_index > #tmp_tags) then
         return
@@ -105,7 +105,7 @@ function tag.find_fallback(screen, invalids)
     local scr = screen or capi.mouse.screen
     local t = invalids or tag.selectedlist(scr)
 
-    for _, v in pairs(tag.gettags(scr)) do
+    for _, v in pairs(awful.screen.focused().tags) do
         if not util.table.hasitem(t, v) then return v end
     end
 end
@@ -124,7 +124,7 @@ function tag.delete(target_tag, fallback_tag)
     if target_tag == nil then return end
 
     local target_scr = tag.getscreen(target_tag)
-    local ntags = #tag.gettags(target_scr)
+    local ntags = #root.tags(target_scr)
 
     -- We can't use the target tag as a fallback.
     local fallback_tag = fallback_tag
@@ -160,7 +160,7 @@ function tag.delete(target_tag, fallback_tag)
     if tag.selected(target_scr) == nil and ntags > 0 then
         tag.history.restore(nil, 1)
         if tag.selected(target_scr) == nil then
-            tag.gettags(target_scr)[1].selected = true
+            root.tags(target_scr)[1].selected = true
         end
     end
 
@@ -239,7 +239,7 @@ end
 --- Get a list of all tags on a screen
 -- @param s Screen number
 -- @return A table with all available tags
-function tag.gettags(s)
+function root.tags(s)
     local tags = {}
     for i, t in ipairs(root.tags()) do
         if tag.getscreen(t) == s then
@@ -300,7 +300,7 @@ end
 -- @return A table with all selected tags.
 function tag.selectedlist(s)
     local screen = s or capi.mouse.screen
-    local tags = tag.gettags(screen)
+    local tags = root.tags(screen)
     local vtags = {}
     for i, t in pairs(tags) do
         if t.selected then
@@ -407,7 +407,7 @@ end
 --- View no tag.
 -- @param Optional screen number.
 function tag.viewnone(screen)
-    local tags = tag.gettags(screen or capi.mouse.screen)
+    local tags = root.tags(screen or capi.mouse.screen)
     for i, t in pairs(tags) do
         t.selected = false
     end
@@ -418,7 +418,7 @@ end
 -- @param screen Optional screen number.
 function tag.viewidx(i, screen)
     local screen = screen or capi.mouse.screen
-    local tags = tag.gettags(screen)
+    local tags = root.tags(screen)
     local showntags = {}
     for k, t in ipairs(tags) do
         if not tag.getproperty(t, "hide") then
@@ -442,7 +442,7 @@ function tag.getidx(query_tag)
     local query_tag = query_tag or tag.selected()
     if query_tag == nil then return end
 
-    for i, t in ipairs(tag.gettags(tag.getscreen(query_tag))) do
+    for i, t in ipairs(root.tags(tag.getscreen(query_tag))) do
         if t == query_tag then
             return i
         end
@@ -464,7 +464,7 @@ end
 --- View only a tag.
 -- @param t The tag object.
 function tag.viewonly(t)
-    local tags = tag.gettags(tag.getscreen(t))
+    local tags = root.tags(tag.getscreen(t))
     -- First, untag everyone except the viewed tag.
     for _, _tag in pairs(tags) do
         if _tag ~= t then
@@ -483,7 +483,7 @@ end
 -- @param screen Optional screen number of the tags.
 function tag.viewmore(tags, screen)
     local screen = screen or capi.mouse.screen
-    local screen_tags = tag.gettags(screen)
+    local screen_tags = root.tags(screen)
     for _, _tag in ipairs(screen_tags) do
         if not util.table.hasitem(tags, _tag) then
             _tag.selected = false
@@ -546,7 +546,7 @@ function tag.withcurrent(c)
         tags = tag.selectedlist(c.screen)
     end
     if #tags == 0 then
-        tags = tag.gettags(c.screen)
+        tags = root.tags(c.screen)
     end
     if #tags ~= 0 then
         c:tags(tags)

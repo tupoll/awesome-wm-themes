@@ -9,7 +9,7 @@ return
   line_graph = require("blingbling.line_graph");
   progress_graph = require("blingbling.progress_graph");
   triangular_progressgraph = require("blingbling.triangular_progress_graph");
-  volume = require("blingbling.volume");
+  --volume = require("blingbling.volume");
   popups = require("blingbling.popups");
   net = require("blingbling.net");
   task_warrior = require("blingbling.task_warrior");  
@@ -17,7 +17,7 @@ return
   system = require("blingbling.system");	
 	text_box = require("blingbling.text_box");
 	clock = require("blingbling.clock");
-	tagslist = require("blingbling.tagslist");
+	--tagslist = require("blingbling.tagslist");
 	calendar = require("blingbling.calendar")
 }
 

@@ -33,7 +33,7 @@ local util = { _NAME = "compact.util" }
 -- tags.
 function util.menu_clients_current_tags(menu, args)
     -- List of currently selected tags.
-    local cls_tags = awful.tag.selectedlist(mouse.screen)
+    local cls_tags = awful.screen.focused().selected_taglist
 
     -- Final list of menu items.
     local cls_t = {}
@@ -89,9 +89,9 @@ end
 function util.mc(c)
     c = c or magnified_client
     if not c then return end
-    awful.client.floating.set(c, true)
+    c.floating = true
     local mg = screen[mouse.screen].geometry
-    local tag = awful.tag.selected(mouse.screen)
+    local tag = awful.screen.focused().selected_tag
     local mwfact = awful.tag.getmwfact(tag)
     local g = {}
     g.width = math.sqrt(mwfact) * mg.width
@@ -151,7 +151,7 @@ function util.tag_view_nonempty(direction, sc)
    local s = sc or mouse.screen or 1
    local scr = screen[s]
 
-   for i = 1, #awful.tag.gettags(s) do
+   for i = 1, #awful.screen.focused().tags(s) do
        awful.tag.viewidx(direction,s)
        if #awful.client.visible(s) > 0 then
            return
@@ -177,7 +177,7 @@ end
 -- Rename current tag
 -- @author: minism
 function util.rename_tag(mypromptbox)
-    local tag = awful.tag.selected(mouse.screen)
+    local tag = awful.screen.focused().selected_tag
     awful.prompt.run({prompt="Rename tag: "}, mypromptbox[mouse.screen].widget,
     function(text)
         if text:len() > 0 then
@@ -190,7 +190,7 @@ end
 -- Move current tag
 -- pos in {-1, 1} <-> {previous, next} tag position
 function util.move_tag(pos)
-    local tag = awful.tag.selected(mouse.screen)
+    local tag = awful.screen.focused().selected_tag
     local idx = awful.tag.getidx(tag)
     if tonumber(pos) <= -1 then
         awful.tag.move(idx - 1, tag)
@@ -202,8 +202,8 @@ end
 -- Remove current tag (if empty)
 -- Any rule set on the tag shall be broken
 function util.remove_tag()
-    local tag = awful.tag.selected(mouse.screen)
-    local prevtag = awful.tag.gettags(mouse.screen)[awful.tag.getidx(tag) - 1]
+    local tag = awful.screen.focused().selected_tag
+    local prevtag = awful.screen.focused().tags(mouse.screen)[awful.tag.getidx(tag) - 1]
     awful.tag.delete(tag, prevtag)
 end
 --

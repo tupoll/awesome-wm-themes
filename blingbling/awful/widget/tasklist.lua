@@ -190,7 +190,7 @@ function tasklist.filter.currenttags(c, screen)
     if c.screen ~= screen then return false end
     -- Include sticky client too
     if c.sticky then return true end
-    local tags = tag.gettags(screen)
+    local tags = awful.screen.focused().tags
     for k, t in ipairs(tags) do
         if t.selected then
             local ctags = c:tags()
@@ -215,7 +215,7 @@ function tasklist.filter.minimizedcurrenttags(c, screen)
     if not c.minimized then return false end
     -- Include sticky client
     if c.sticky then return true end
-    local tags = tag.gettags(screen)
+    local tags = awful.screen.focused().tags
     for k, t in ipairs(tags) do
         -- Select only minimized clients
         if t.selected then

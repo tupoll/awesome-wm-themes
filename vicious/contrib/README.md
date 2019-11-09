@@ -194,7 +194,7 @@ vol = wibox.widget.textbox()
 local sink = "alsa_output.pci-0000_00_1b.0.analog-stereo"
 vicious.register(vol, vicious.contrib.pulse, " $1%", 2, sink)
 vol:buttons(awful.util.table.join(
-    awful.button({}, 1, function () awful.util.spawn("pavucontrol") end),
+    awful.button({}, 1, function () awful.spawn("pavucontrol") end),
     awful.button({}, 4, function () vicious.contrib.pulse.add(5, sink) end),
     awful.button({}, 5, function () vicious.contrib.pulse.add(-5, sink) end)))
 ```

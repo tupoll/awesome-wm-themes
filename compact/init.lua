@@ -3,16 +3,13 @@ return {
       menu          = require("compact.menu"),
       layout        = require("compact.layout"),
       common        = require("compact.common"),
-
-      unitybar      = require("compact.unitybar"),
-      tagmenu       = require("compact.tagmenu"),
+      unitybar      = require("compact.unitybar"),      
       titlebar      = require("compact.titlebar"),
       tasklist      = require("compact.tasklist"),
       freedesktop   = require("compact.menu.freedesktop"),
       prompt        = require("compact.prompt"),
       weather       = require("compact.weather"),
-      exit          = require("compact.exit"),
-      
+      exit          = require("compact.exit"),      
       net_dragonfly = require("compact.net_dragonfly"),
       net_fbsd = require("compact.net_fbsd"),
       places        = require("compact.places"),

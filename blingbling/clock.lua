@@ -5,6 +5,7 @@ language = string.gsub(os.getenv("LANG"), ".utf8", "")
 local os = os
 local string = string
 local awful = require("awful")
+local timer = require("gears.timer")
 local textbox = require("wibox.widget.textbox")
 local text_box = require("blingbling.text_box")
 local days_of_week_in_kanji={ 

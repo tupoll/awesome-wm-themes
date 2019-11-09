@@ -12,7 +12,7 @@ end
 
 local function select_tag(i,m)
   local t = i._tag
-  tag.viewonly(t)
+  tag:view_only() 
 end
 
 local function toggle_tag(i,m)

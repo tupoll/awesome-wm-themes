@@ -10,7 +10,7 @@ local module = {}
 
 local HOME = os.getenv("HOME")
 
-module.OPEN = "thunar"
+module.OPEN = "pcmanfm-qt"
 module.PATHS = {
     { "Home",        HOME,                 "home.png",      "h" },
     { "usb",       HOME.."/usb",       "usb.png",       "u" },
@@ -34,13 +34,12 @@ function module.main()
         placement = placement.bottom_left
         
         })
-        local tags = awful.tag.gettags(1)
+        local tags = root.tags()
         for _,t in ipairs(module.PATHS) do
             module.menu:add_item({
                 tooltip = t[2],
                 button1 = function()
-                    awful.util.spawn(module.OPEN.." "..t[2])
-                    awful.tag.viewonly(tags[4])
+                    awful.spawn(module.OPEN.." "..t[2])               
                     common.hide_menu(module.menu)
                 end,
                 text=t[1], icon=beautiful.path.."/places/"..t[3], underlay = string.upper(t[4])

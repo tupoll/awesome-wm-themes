@@ -13,7 +13,7 @@ return
     tasklist = require("awful.widget.tasklist");
     button = require("awful.widget.button");
     launcher = require("awful.widget.launcher");
-    prompt = require("awful.widget.prompt");
+   -- prompt = require("awful.widget.prompt");
     progressbar = require("awful.widget.progressbar");
     graph = require("awful.widget.graph");
     layoutbox = require("awful.widget.layoutbox");

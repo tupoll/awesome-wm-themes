@@ -5,7 +5,7 @@
       * (c) 2015, Luke Bonham                     
                                                   
 --]]
-
+local timer         = require("gears.timer")
 local newtimer     = require("compact.common.helpers").newtimer
 local read_pipe    = require("compact.common.helpers").read_pipe
 

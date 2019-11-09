@@ -28,8 +28,8 @@ os.setlocale(os.getenv("LANG"))
 software = { terminal = "urxvt",
              terminal_cmd = "urxvt -e ",
              terminal_quake = "urxvt -pe tabbed",
-             editor = "ec",
-             editor_cmd = "ec ",
+             editor = "nano",
+             editor_cmd = "nano ",
              browser = "firefox",
              browser_cmd = "firefox " }
 
@@ -60,7 +60,7 @@ do
    local f, t, b, fl, fs, fm, m = layouts[1], layouts[2], layouts[3], layouts[4], layouts[5], layouts[6], layouts[7]
    for s = 1, screen.count() do
       -- Each screen has its own tag table.
-      tags[s] = awful.tag({ " 𝟏 ", " 𝟐 ", " 𝟑 ", " 𝟒 ", " 𝟓 ", " 𝟔 "}, s,
+      tags[s] = awful.tag({  " 𝟏 ", " 𝟐 ", " 𝟑 ", " 𝟒 ", " 𝟓 ", " 𝟔 "}, s,
                           {  fm ,  fm ,  m ,  fm ,  f ,  fl })
    end
 end
@@ -117,13 +117,13 @@ bar["main"]:set_widget(bar["wibox"])
 
 -- Spawn a program.
 local function spawn(cmd)
-    awful.util.spawn(cmd, false)
+    awful.spawn(cmd, false)
 end
 
 -- Kill window
 local function killClient()
     awful.dbg.info("Select the window whose client you wish to kill with button 1....")
-    awful.util.spawn("xkill")
+    awful.spawn("xkill")
 end
 
 -- Mouse bindings
@@ -198,7 +198,7 @@ keys["global"] = awful.util.table.join(
     -- Layout menu
     awful.key({ "Mod4"            }, "space",        function() compact.layout.main()                        end),
     -- Applications menu
-    awful.key({ "Mod4"            }, "w",            function() awful.util.mymainmenu:toggle()               end),
+    awful.key({ "Mod4"            }, "w",            function() awful.mymainmenu:toggle()               end),
     awful.key({ "Mod4"            }, "q",            function() compact.menu.main_qapp()                     end),
     awful.key({ "Mod4"            }, "a",            function() compact.avplay.main_aapp()                     end),
     awful.key({ "Mod4"            }, "e",            function() compact.exit.main_eapp()                     end),
@@ -276,15 +276,15 @@ keys["global"] = awful.util.table.join(
 )
 
 -- Bind numpad to tag switcher
-local tags = awful.tag.gettags(1)
+local tags = root.tags(1)
 local np_map = { 87, 88, 89, 83, 84, 85, 79, 80, 81 }
 for i,_ in ipairs(tags) do
-    local tag = awful.tag.gettags(1)[i]
+    local tag = root.tags(1)[i]
     keys["global"] = awful.util.table.join(keys["global"],
         awful.key({ "Mod4"            }, "#"..(np_map[i] or 0),
-            function() if tag then awful.tag.viewonly(tag) end end),
+            function(t) if tag then t:view_only() end end),
         awful.key({ "Mod4", "Control" }, "#"..(np_map[i] or 0),
-            function() if tag and client.focus then awful.client.movetotag(tag) awful.tag.viewonly(tag) end end)
+            function(t) if tag and client.focus then awful.client.movetotag(tag) t:view_only() end end)
     )
 end
 
@@ -315,7 +315,7 @@ client.connect_signal("manage", function(c,startup)
     -- Enable sloppy focus
     c:connect_signal("mouse::enter", function(c) client.focus = c end)
     if c.type == "dialog" then
-        awful.client.floating.set(c)
+        c.floating = true
         awful.placement.centered(c)
         c.ontop = true
     --    if beautiful.titlebar["dialog"] then  widgets.titlebar(c) end
@@ -343,7 +343,7 @@ function run_once(cmd)
   if firstspace then
      findme = cmd:sub(0, firstspace-1)
   end
-  awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
+  awful.spawn.easy_async_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
  end 
 
 run_once("~/.autostart.sh")
