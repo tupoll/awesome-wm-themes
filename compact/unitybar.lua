@@ -29,11 +29,11 @@ function update_tag(tag, wdg)
          im:set_image(c.icon or unitybar.args.default_icon)
          im.client = c
          im:buttons(awful.util.table.join(
-                       awful.button({}, 1, function()
-                                       awful.tag.viewonly(tag)
+                       awful.button({}, 1, function(t)
+                                       tag:view_only() 
                                        c:raise()
                                        client.focus = c
-                                           end)))
+                                                 end)))
          table.insert(visible_clients, im)
          if client.focus == c then
             pivot = #visible_clients
@@ -57,7 +57,7 @@ function update_tag(tag, wdg)
                                                      unitybar.args.fg_normal, tag.name))
       middle:buttons(
          awful.util.table.join(
-            awful.button({}, 1, function() awful.tag.viewonly(tag) end)))
+            awful.button({}, 1, function(t) tag:view_only()  end)))
       aligned:set_middle(num)
       return
    end
@@ -124,9 +124,14 @@ function unitybar.new(args)
    args.bg_urgent = args.bg_urgent or theme.bg_urgent or "#ff0000"
    unitybar.args = args
 
-   local s = args.screen or 1
-   local tags = awful.tag.gettags(s)
+   
 
+   
+   
+   local s = args.screen or 1
+   
+   local tags = awful.screen.focused().tags or root.tags(s)
+                                
    unitybar.tag_widgets[s] = {}
 
    local bar = wibox.layout.fixed.horizontal()

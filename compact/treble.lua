@@ -32,14 +32,14 @@ function module.main()
             filer = false, enable_keyboard = true, direction = "bottom", x = screen[1].geometry.width - 715,
             y = screen[1].geometry.height - beautiful.wibox.height - (#module.PATHS*beautiful.menu_height) - 28,
         })
-        local tags = awful.tag.gettags(1)
+        local tags = root.tags(1)
         for _,t in ipairs(module.PATHS) do
             module.menu:add_item({
                 tooltip = t[2],
-                button1 = function()
-                    awful.util.spawn(module.OPEN.." "..t[2])
-               --     awful.tag.viewonly(tags)
-                    common.hide_menu(module.menu)
+                button1 = function(t)
+                    awful.spawn(module.OPEN.." "..t[2])
+                     tag:view_only()  
+                    common.hide_menu(module.menu)                   
                 end,
                 text=t[1], icon=beautiful.path.."/mixer/"..t[3] 
             })

@@ -32,13 +32,13 @@ function module.main()
             filer = false, enable_keyboard = true, direction = "bottom", x = screen[1].geometry.width - 715,
             y = screen[1].geometry.height - beautiful.wibox.height - (#module.PATHS*beautiful.menu_height) - 28,
         })
-        local tags = root.tags(1)
+        local tags = awful.tag.gettags(1)
         for _,t in ipairs(module.PATHS) do
             module.menu:add_item({
                 tooltip = t[2],
-                button1 = function(t)
-                    awful.spawn(module.OPEN.." "..t[2])
-                    tag:view_only()
+                button1 = function()
+                    awful.util.spawn(module.OPEN.." "..t[2])
+               --     awful.tag.viewonly(tags)
                     common.hide_menu(module.menu)
                 end,
                 text=t[1], icon=beautiful.path.."/mixer/"..t[3] 
@@ -52,4 +52,17 @@ function module.main()
     end
 end
 
+
+--[[
+
+-- Return widgets layout
+local function new()
+    local layout = wibox.layout.fixed.horizontal()
+    layout:add(common.arrow(3))
+    layout:add(common.imagebox({ icon=beautiful.path.."/mixer/gnome-volume-control.png" }))
+    layout:add(common.textbox({ text="VOL", width=60, b1=module.main }))
+    layout:add(volume())
+    return layout
+end
+--]]
 return setmetatable(module, { __call = function(_, ...) return new(...) end })

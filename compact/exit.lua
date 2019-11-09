@@ -15,9 +15,9 @@ module.eapp["shutdown"] = { command="sudo /sbin/poweroff", key="s", icon="gnome-
 
 
 local function run(data)
-    local tags = awful.tag.gettags(1)
-    awful.util.spawn(data.command)
-    if tags[data.tag] then awful.tag.viewonly(tags[data.tag]) end
+    local tags = root.tags(1)
+    awful.spawn(data.command)
+    if tags[data.tag] then tag:view_only() end
     common.hide_menu(module.menu_eapp)
 end
 

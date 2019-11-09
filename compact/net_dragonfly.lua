@@ -3,6 +3,7 @@ local wibox     = require("wibox")
 local radical   = require("radical")
 local awful     = require("awful")
 local common    = require("compact.common.helpers1")
+local timer     = require("gears.timer")
 
 local module = {}
 

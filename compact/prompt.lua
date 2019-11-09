@@ -2,8 +2,20 @@ local awful     = require("awful")
 local beautiful = require("beautiful")
 
 local module = {}
+local args ={}
 
 module.prompt = awful.widget.prompt()
+
+
+    keypressed_callback = keypressed_callback or args.keypressed_callback
+    changed_callback    = changed_callback    or args.changed_callback
+    done_callback       = done_callback       or args.done_callback
+    history_max         = history_max         or args.history_max
+    history_path        = history_path        or args.history_path
+    completion_callback = completion_callback or args.completion_callback
+    exe_callback        = exe_callback        or args.exe_callback
+    textbox             = textbox             or args.textbox
+
 
 -- Command prompt
 function module.run()
@@ -15,8 +27,8 @@ function module.run()
         prompt = beautiful.prompt["cmd"]
     },
         module.prompt.widget,
-        function(...) awful.util.spawn(...) end,
-        awful.completion.shell,
+        function(...) awful.spawn.easy_async_with_shell(...) end,
+        --awful.completion.shell,
         awful.util.getdir("cache").. "/history_run", 50
     )
 end
@@ -31,8 +43,8 @@ function module.cmd()
         prompt = beautiful.prompt["run"]
     },
         module.prompt.widget,
-        function(...) awful.util.spawn("urxvt-aw ".. ...) end,
-        awful.completion.shell,
+        function(...) awful.spawn.easy_async_with_shell("urxvt-aw ".. ...) end,
+        --awful.completion.shell,
         awful.util.getdir("cache").. "/history_cmd", 50
     )
 end
