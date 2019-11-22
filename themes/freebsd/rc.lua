@@ -1,6 +1,5 @@
 local awful       = require("awful")
 awful.rules       = require("awful.rules")
-awful.clientdb    = require("awful.clientdb")
 awful.dbg         = require("awful.dbg")
 awful.indicator   = require("awful.indicator")
 awful.screensaver = require("awful.screensaver")
@@ -302,9 +301,6 @@ awful.rules.rules = {{ rule = { },
 }}    
 
 -- }}}
-
--- Initializes the windows rules system
-awful.clientdb.load()
 
 -- Sometimes dialogs apears to fast...
 table.insert(awful.rules.rules, {rule = { type = "dialog" }, properties = { floating = true }})

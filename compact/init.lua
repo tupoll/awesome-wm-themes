@@ -5,16 +5,14 @@ return {
       common        = require("compact.common"),
 
       unitybar      = require("compact.unitybar"),
-      --tagmenu       = require("compact.tagmenu"),
+     
       titlebar      = require("compact.titlebar"),
       tasklist      = require("compact.tasklist"),
       freedesktop   = require("compact.menu.freedesktop"),
       prompt        = require("compact.prompt"),
       weather       = require("compact.weather"),
-      exit          = require("compact.exit"),
-      
-     -- net_dragonfly = require("compact.net_dragonfly"),
-      net_fbsd = require("compact.net_fbsd"),
+      exit            = require("compact.exit"),
+      net             = require("compact.net"),
       places        = require("compact.places"),
       calendar      = require("compact.calendar"),
       orglendar     = require("compact.orglendar"),
