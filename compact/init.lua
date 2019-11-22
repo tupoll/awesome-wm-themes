@@ -5,7 +5,7 @@ return {
       common        = require("compact.common"),
 
       unitybar      = require("compact.unitybar"),
-     
+      os              = require("compact.os"),
       titlebar      = require("compact.titlebar"),
       tasklist      = require("compact.tasklist"),
       freedesktop   = require("compact.menu.freedesktop"),
