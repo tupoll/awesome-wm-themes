@@ -21,10 +21,10 @@ return {
       bass          = require("compact.bass"),
       memory        = require("compact.memory"),
       cpu           = require("compact.cpu"),     
-     -- hammer2       = require("compact.hammer2"),
+     
       clock         = require("compact.clock"),
       right         = require("compact.right"),
       middle        = require("compact.middle"),
       left          = require("compact.left"),
-      zfs           = require("compact.zfs")
+      mount           = require("compact.mount")
 }    
