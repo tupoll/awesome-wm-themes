@@ -6,7 +6,7 @@
      Licence:      GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
         NOTE:      -------
 --]]
-
+local gears         = require("gears")
 local awful     = require("awful")
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
@@ -14,7 +14,7 @@ local beautiful = require("beautiful")
 local capi = {
     mouse = mouse,
     screen = screen,
-    timer = timer,
+    timer = gears.timer,
     keygrabber = keygrabber
 }
 
@@ -38,12 +38,12 @@ local function run()
         end
     end
     if area then area.visible = true end
-    for _,r in ipairs(module.args.activate) do awful.util.spawn(r, false) end
+    for _,r in ipairs(module.args.activate) do awful.spawn(r, false) end
     module.running = true
 end
 local function stop()
     if area and area.visible then area.visible = false end
-    for _,r in ipairs(module.args.deactivate) do awful.util.spawn(r, false) end
+    for _,r in ipairs(module.args.deactivate) do awful.spawn(r, false) end
     module.running = false
     module.count = 0
     count = 0

@@ -21,9 +21,8 @@ end
       w_timer:start()
   
 local function new()
-    local layout = wibox.layout.fixed.horizontal()
-    local widget_txt,text = common.textbox({text="  OS-", width=30 })    
-    layout:add(widget_txt, os_widget)
+    local layout = wibox.layout.fixed.horizontal()       
+    layout:add(os_widget)
     return layout
 end
 

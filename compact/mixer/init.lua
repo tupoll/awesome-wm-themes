@@ -1,9 +1,10 @@
+
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
 local radical   = require("radical")
-local awful     = require("awful")
+local memory  = require("compact.memory.memory_linux")
 local common    = require("compact.common.helpers1")
-local volume  = require("compact.mixer.volume")
+local volume  = require("compact.mixer.mixer_volume")
 
 local module = {}
 
@@ -60,3 +61,4 @@ local function new()
 end
 
 return setmetatable(module, { __call = function(_, ...) return new(...) end })
+

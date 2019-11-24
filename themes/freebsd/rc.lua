@@ -235,6 +235,7 @@ keys["global"] = awful.util.table.join(
                                                                          skip_taskbar = true,
                                                                          ontop = true })
                                               end),
+   awful.key({ "Mod1",     }, "y",          function() awful.spawn("zsh -c ~/.local/bin/yatrans-gtk.py")end),
                                               
     --Naughty notification
     awful.key({ "Mod1",     },    "w",          function () myweather.show()                                end),

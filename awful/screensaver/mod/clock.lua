@@ -6,7 +6,7 @@
      Licence:      GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
         NOTE:      -------
 --]]
-
+local gears     = require("gears")
 local awful     = require("awful")
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
@@ -14,7 +14,7 @@ local beautiful = require("beautiful")
 local capi = {
     mouse = mouse,
     screen = screen,
-    timer = timer,
+    timer = gears.timer,
 }
 
 module = {}
