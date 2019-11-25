@@ -47,8 +47,11 @@ if it’s not enough we move the last script to /usr/local/bin  or another place
 
 2) In the os-widget menu, select the operating system:
 Linux - will need to be re-logged after clicking.
-FreeBSD - restart awesome-wm -restart.
-DragonFly: dragonfly.
+FreeBSD - restart awesome-wm: restart.
+DragonFly:
+gsed must be installed
+chmod 755 ~/.config/awesome/compact/os/make_dragonfly.sh
+restart awesome-wm:  restart
 
 Yandex-translate:
 git clone https://github.com/delvin-fil/Yandex-translator-GUI.git
