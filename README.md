@@ -34,27 +34,3 @@ tupoll @ shell ~% cat /home/tupoll/Downloads/city.list.json | grep Vladivostok
 ####
 The font size is adjusted to the monitor resolution. The left-hand offset of the widgets is adjusted in the rightmost widget.
 # awesome-freebsd-ru
-
-
-When you first start awesome-wm:
-
-1) Change the access rights to run scripts *.sh-FreeBSD:
- chmod 755 ~/.config/awesome/compact/os/make_freebsd.sh
-Linux: chmod 755 ~/.config/awesome/compact/os/make_linux.sh
-chmod 755 ~/.config/awesome/compact/mount/df_linux.sh
-as well as ~/.config/awesome/compact/memory/memory_linux.sh
-if it’s not enough we move the last script to /usr/local/bin  or another place and allow sudo to run it.
-
-2) In the os-widget menu, select the operating system:
-Linux - will need to be re-logged after clicking.
-FreeBSD - restart awesome-wm: restart.
-DragonFly:
-gsed must be installed
-chmod 755 ~/.config/awesome/compact/os/make_dragonfly.sh
-restart awesome-wm:  restart
-
-Yandex-translate:
-git clone https://github.com/delvin-fil/Yandex-translator-GUI.git
- move yatrans-gtk.py to ~ /.local/bin  or change the path in rc.lua
-pip3.6 install optional packages are in the repositories for
-Gentoo (Funtoo) linux.
