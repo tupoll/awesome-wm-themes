@@ -13,7 +13,7 @@ module.oapp = {}
 
 module.oapp["Linux"] = { command="'zsh' '-c' 'urxvt -e ~/.config/awesome/compact/os/make_linux.sh'",               key="l", icon="start-here-gentoo4.png", }
 module.oapp["FreeBSD"]    = { command="'zsh' '-c' 'urxvt -e ~/.config/awesome/compact/os/make_freebsd.sh'",     key="f", icon="free_bsd.png", }
-module.oapp["DragonFly"]    = { command="urxvt -e notify-send 'DragonFlyBSD'",   key="d", icon="dragonfly-3.png", }
+module.oapp["DragonFly"]    = { command="'zsh' '-c' 'urxvt -e ~/.config/awesome/compact/os/make_dragonfly.sh'",   key="d", icon="dragonfly-3.png", }
 
 
 local function run(data)
