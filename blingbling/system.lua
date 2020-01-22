@@ -111,7 +111,7 @@ end
 --@param accept_image an image file for the accept menu entry
 --@param cancel_image an image file for the cancel menu entry
 function system.rebootmenu(button_image, accept_image, cancel_image)
-  if not buttom_image then
+  if not button_image then
 		button_image = superproperties.reboot or nil
 	end
 	if not accept_image then
@@ -157,10 +157,4 @@ function system.logoutmenu(button_image, accept_image, cancel_image)
                                            menu = logoutmenu })
   return logoutbutton
 end
-return system--{
-  --shutdownmenu = shutdownmenu;
-  --rebootmenu = rebootmenu;
-	--lockmenu = lockmenu;
-  --mainmenu = mainmenu;
-	--logoutmenu = logoutmenu
---}
+return system

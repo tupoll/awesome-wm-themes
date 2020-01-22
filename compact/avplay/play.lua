@@ -9,7 +9,7 @@ local function worker(args)
     local args = args or {}
 
     -- Settings
-    local icons         = beautiful.path.."/avplay/"
+    local res         = ".config/awesome/themes/pattern/avplay/"
     local interface     = args.interface or "avplay"
     local timeout       = args.timeout or 5     
     local widget 	= args.widget == nil and wibox.layout.fixed.horizontal() or args.widget == false and nil or args.widget
@@ -46,10 +46,10 @@ end
     os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/play.sh &")
 end   
     
-   local pl = awful.widget.button({ image = icons.."repeat.png" })
-   local st = awful.widget.button({ image = icons.."stop.png" }) 
-   local av = awful.widget.button({ image = icons.."play.png" })
-   local ff = awful.widget.button({ image = icons.."next.png" })
+   local pl = awful.widget.button({ image = res .. "repeat.png" })
+   local st = awful.widget.button({ image = res .. "stop.png" }) 
+   local av = awful.widget.button({ image = res .. "play.png" })
+   local ff = awful.widget.button({ image = res .. "next.png" })
       
 	    widget:add(pl, st, av, ff)
             

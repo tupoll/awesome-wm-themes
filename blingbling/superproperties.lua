@@ -3,6 +3,9 @@
 --Users can create a theme.blingbling table in theirs theme.lua and defines some values for theirs widgets.
 --@module blingbling.superproperties
 local beautiful = require("beautiful")
+local function init(path)
+  beautiful.init(path)
+end
 local blingbling_theme= (type(beautiful.blingbling) == "table") and beautiful.blingbling  or {}
 local tagslist_theme = blingbling_theme.tagslist or {}
 local tagslist_theme_normal = tagslist_theme.normal or {}
@@ -32,6 +35,7 @@ return {
   text_color= blingbling_theme.text_color or "#ffffff" ;
   font_size= blingbling_theme.font_size or 9 ;
   font = blingbling_theme.font or "sans";
+  value_format = blingbling_theme.value_format or "%2.f";
   text_background_color = blingbling_theme.text_background_color or "#00000066" ;
   background_text_border = blingbling_theme.background_text_border or "#ffffff";
 --theme values for popups module:
@@ -51,7 +55,10 @@ return {
 	accept = blingbling_theme.accept or nil;
 	cancel = blingbling_theme.cancel or nil;
 	lock = blingbling_theme.lock or nil;
---theme values for tagslist	
+  values_text_color = { {"#00ff00", 0},
+                        {"#0000ff", 0.5},
+                        {"#ff0000", .75}};
+  --theme values for tagslist	
 	tagslist=	{
 						normal ={ background_color = tagslist_theme_normal.background_color or beautiful.bg_normal,
 											text_background_color = tagslist_theme_normal.text_background_color or "#000000",
@@ -182,5 +189,6 @@ return {
 								font_size= calendar_theme_info_cell_style.font_size or 9,
 								font = calendar_theme_info_cell_style.font or "sans"
 							},
-						}
+						};
+  init = init
 }

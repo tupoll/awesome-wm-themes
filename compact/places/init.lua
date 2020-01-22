@@ -9,8 +9,9 @@ local box_bl    = require("compact.places.box_bl")
 local module = {}
 
 local HOME = os.getenv("HOME")
+local res = ".config/awesome/themes/pattern/places/"
 
-module.OPEN = "pcmanfm-qt"
+module.OPEN = "thunar"
 module.PATHS = {
     { "Home",        HOME,                 "home.png",      "h" },
     { "usb",       HOME.."/usb",       "usb.png",       "u" },
@@ -42,7 +43,7 @@ function module.main()
                     awful.spawn(module.OPEN.." "..t[2])               
                     common.hide_menu(module.menu)
                 end,
-                text=t[1], icon=beautiful.path.."/places/"..t[3], underlay = string.upper(t[4])
+                text=t[1], icon=res .. t[3], underlay = string.upper(t[4])
             })
         end
         common.reg_menu(module.menu)
@@ -57,7 +58,7 @@ end
 local function new()
     local layout = wibox.layout.fixed.horizontal()
 --    layout:add(common.textbox({text="", width=10 }))
-    local widget_img,img = common.imagebox({ icon=beautiful.path.."/widgets/places.svg" })
+    local widget_img,img = common.imagebox({ icon=res .. "/places.svg" })
     local widget_txt,text = common.textbox({ text="PLACES", width=60, b1=module.main })
     layout:add(widget_img)
     layout:add(widget_txt)

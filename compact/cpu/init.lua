@@ -1,4 +1,4 @@
-#7F7F7Flocal awful     = require("awful")
+local awful     = require("awful")
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
 local radical   = require("radical")
@@ -17,7 +17,11 @@ local tmp_usage = cpu.tmp_usage
                                       graph_line_color = "#8B6914",
                                       graph_color = "#8B6914",
                                       label = "CPU: $percent %",
-                                                               })
+                                      graph_background_color = "#00000000",
+                                      text_background_color = "#00000000",
+                                      text_color = "#7F7F7F",
+                                      font = 'Terminus Bold',
+                                      font_size = 10 })
                                      
 cpu_graph.fit = function() return 60,5 end
 vicious.register(cpu_graph, vicious.widgets.cpu,'$1',2)  

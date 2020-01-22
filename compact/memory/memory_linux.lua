@@ -16,7 +16,11 @@ mem_graph = blingbling.line_graph({ height = 29,
                                       graph_line_color = "#0C5A0C",
                                       graph_color = "#0C5A0C",
                                       label = "MEM: $percent %",
-                                     })
+                                      graph_background_color = "#00000000",
+                                      text_background_color = "#00000000",
+                                      text_color = "#7F7F7F",
+                                      font = 'Terminus Bold',
+                                      font_size = 10 })
 mem_graph.fit = function() return 60,5 end
 	vicious.register(mem_graph, vicious.widgets.mem, '$1', 2)
 

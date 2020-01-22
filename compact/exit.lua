@@ -4,6 +4,8 @@ local beautiful = require("beautiful")
 local radical   = require("radical")
 local common    = require("compact.common.helpers1")
 local placement = require( "awful.placement" )
+local HOME = os.getenv("HOME")
+local res = ".config/awesome/themes/pattern/launcher/exit/"
 
 local module = {}
 
@@ -52,7 +54,7 @@ function module.main_eapp()
             module.menu_eapp:add_item({
                 button1 = function() run(v) end,
                 text = i or "N/A", underlay = string.upper(v.key),
-                icon = beautiful.path.."/launcher/exit/"..v.icon or beautiful.unknown
+                icon = res .. v.icon 
             })
         end
         common.reg_menu(module.menu_eapp)
@@ -66,11 +68,11 @@ end
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()
-    local widget_img,img = common.imagebox({icon=beautiful.path.."/logos/awesome.png"})
+    --local widget_img,img = common.imagebox({icon=beautiful.path.."/logos/awesome.png"})
     local widget_txt,text = common.textbox({text="ВЫХОД", width=50, b1=module.main_eapp, b3=module.main_eapp })
-    local widget_txt1,text = common.textbox({text="   ", width=50 })
-    local widget_txt2,text = common.textbox({text=" ", width=650 })
-    layout:add(widget_img, widget_txt, widget_txt1, widget_txt2)         
+    local widget_txt1,text = common.textbox({text=" ", width=30 })
+    local widget_txt2,text = common.textbox({text="   ", width=400 })
+    layout:add( widget_txt1,  widget_txt,  widget_txt2)         
     return layout
 end
 

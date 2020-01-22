@@ -4,7 +4,7 @@ local beautiful = require("beautiful")
 local radical   = require("radical")
 local memory  = require("compact.memory.memory_linux")
 local common    = require("compact.common.helpers1")
-local volume  = require("compact.mixer.mixer_volume")
+local volume  = require("compact.mixer.oss")
 
 local module = {}
 

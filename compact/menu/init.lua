@@ -6,6 +6,8 @@ local common    = require("compact.common.helpers1")
 local box_bl    = require("compact.menu.box_bl")
 local freedesktop   = require("compact.menu.freedesktop")
 local screen = require("awful.screen")
+local HOME = os.getenv("HOME")
+local res = ".config/awesome/themes/pattern/launcher/quick/"
 
 local module = {}
 
@@ -24,7 +26,7 @@ awful.util.mymainmenu = freedesktop.menu.build({
   
     
     before = {
-        { "Awesome", myawesomemenu, beautiful.dragonfly_icon},
+        { "Awesome", myawesomemenu, beautiful.distr_icon},
         -- other triads can be put here
     },
     after = {
@@ -37,17 +39,18 @@ awful.util.mymainmenu = freedesktop.menu.build({
 
 -- Quick menu table.
 module.qapp = {}
-module.qapp["Terminal        T"]     = { command="urxvt",          key="t", icon="terminal.svg",         tag=1 }
-module.qapp["File Manager    F"] = { command="pcmanfm-qt",        key="f", icon="file-manager.svg",     tag=1 }
-module.qapp["Web browser     W"]  = { command="google-chrome-stable",        key="w", icon="browser.svg",          tag=3 }
-module.qapp["Editor          E"]       = { command="geany",          key="e", icon="editor.svg",           tag=2 }
-module.qapp["MOC             M"]          = { command="xterm -e mocp",  key="m", icon="thunderbird.svg",             tag=6 }
-module.qapp["Торент          D"]       = { command="deluge",         key="d", icon="deluge.svg",                tag=4 }
-module.qapp["Gscrot          S"]       = { command="zsh -c gscrot",         key="s", icon="record.png",                 }
-module.qapp["Vimb            V"]         = { command="vimb",           key="v", icon="irc.svg",              tag=3 }
-module.qapp["Изображения     R"]  = { command="ristretto",      key="r", icon="applications-graphics.svg",       tag=5 }
-module.qapp["Gimp            G"]         = { command="gimp",           key="g", icon="proc.svg",             tag=5 }
-module.qapp["Chromium        C"]     = { command="chrome",         key="c", icon="google-chrome2.png",   tag=4 }
+module.qapp["Terminal             T"]     = { command="urxvt",          key="t", icon="terminal.svg",         tag=1 }
+module.qapp["File Manager         F"] = { command="thunar",        key="f", icon="file-manager.svg",     tag=1 }
+module.qapp["Web browser          W"]  = { command="brave-bin ",        key="w", icon="browser.svg",          tag=3 }
+module.qapp["Editor               E"]       = { command="geany",          key="e", icon="editor.svg",           tag=2 }
+module.qapp["MOC                  M"]          = { command="xterm -e mocp",  key="m", icon="thunderbird.svg",             tag=6 }
+module.qapp["Торент               D"]       = { command="deluge",         key="d", icon="deluge.svg",                tag=4 }
+module.qapp["Gscrot               S"]       = { command="zsh -c gscrot",         key="s", icon="record.png",                 }
+module.qapp["Телевизор            K"]         = { command="/home/tupoll/.local/bin/xine_dvb.sh" ,           key="k", icon="irc.svg",              tag=6 }
+module.qapp["Изображения          R"]  = { command="gthumb",      key="r", icon="applications-graphics.svg",       tag=5 }
+module.qapp["Gimp                 G"]         = { command="gimp",           key="g", icon="proc.svg",             tag=5 }
+module.qapp["Chromium             C"]     = { command="chrome",         key="c", icon="google-chrome2.png",   tag=4 }
+module.qapp["Sublime              V"]     = { command="subl",         key="v", icon="sublime-text.png",   tag=4 }
 
 -- Action
 local function run(data)
@@ -79,7 +82,7 @@ function module.main_qapp()
             module.menu_qapp:add_item({
                 button1 = function() run(v) end,
                 text = i or "N/A", underlay = string.upper(v.key),
-                icon = beautiful.path.."/launcher/quick/"..v.icon or beautiful.unknown
+                icon = res .. v.icon 
             })
         end
         common.reg_menu(module.menu_qapp)
@@ -93,7 +96,7 @@ end
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()   
-    local widget_img,img = common.imagebox({icon=beautiful.dragonfly_icon, b1=module.main_qapp, b3=function () awful.util.mymainmenu:toggle() end })
+    local widget_img,img = common.imagebox({icon=beautiful.distr_icon, b1=module.main_qapp, b3=function () awful.util.mymainmenu:toggle() end })
     local widget_txt,text = common.textbox({text=" ", width=10, b1=module.main_qapp, b3=function () awful.util.mymainmenu:toggle() end  })
     layout:add(widget_img)
     layout:add(widget_txt)

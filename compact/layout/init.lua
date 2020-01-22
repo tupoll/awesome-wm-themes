@@ -4,24 +4,26 @@ local wibox     = require("wibox")
 local radical   = require("radical")
 local common    = require("compact.common.helpers1")
 local box_bl      = require("compact.layout.box_bl")
-
+local HOME = os.getenv("HOME")
+local res = ".config/awesome/themes/pattern/layouts/"
 
 local module = {}
 
 -- Layouts table
-module.layouts = {
-    awful.layout.suit.magnifier,         -- 1
-    awful.layout.suit.tile,              -- 2
-    awful.layout.suit.tile.left,         -- 3
-    awful.layout.suit.tile.bottom,       -- 4
-    awful.layout.suit.tile.top,          -- 5
-    awful.layout.suit.fair,              -- 6
-    awful.layout.suit.fair.horizontal,   -- 7
-    awful.layout.suit.spiral,            -- 8
-    awful.layout.suit.spiral.dwindle,    -- 9
-    awful.layout.suit.max,               -- 10
-    awful.layout.suit.max.fullscreen,    -- 11
-    awful.layout.suit.floating,          -- 12
+module.layouts = {                   
+    awful.layout.suit.tile,               --1
+    awful.layout.suit.tile.left,          --2
+    awful.layout.suit.tile.bottom,        --3
+    awful.layout.suit.tile.top,           --4
+    awful.layout.suit.floating,           --5
+    awful.layout.suit.fair,               --6
+    awful.layout.suit.fair.horizontal,    --7
+    awful.layout.suit.spiral,             --8
+    awful.layout.suit.spiral.dwindle,     --9
+    awful.layout.suit.max,                --10 
+    awful.layout.suit.max.fullscreen,     --11
+    awful.layout.suit.magnifier,          --12
+    awful.layout.suit.corner.nw,          --13
 }
 
 
@@ -47,7 +49,7 @@ end
             local layout_name = awful.layout.getname(layout_real)
             if layout_name then
                 module.menu:add_item({
-                    icon = beautiful.path.."/layouts/"..layout_name..".png",
+                    icon = res .. layout_name .. ".png",
                     text = layout_name:gsub("^%l", string.upper), -- Changes the first character of a word to upper case
                     button1 = function()
                         awful.layout.set(module.layouts[module.menu.current_index] or module.layouts[1], awful.screen.focused().selected_tag)
@@ -69,9 +71,9 @@ end
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()
-    local widget_img,img = common.imagebox({icon=beautiful.path.."/layouts/"..awful.layout.getname(awful.layout.get(1))..".png" })
+    local widget_img,img = common.imagebox({icon=res .. awful.layout.getname(awful.layout.get(1))..".png" })
     local function update_layout_icon()
-        img:set_image(beautiful.path.."/layouts/"..awful.layout.getname(awful.layout.get(1))..".png")
+        img:set_image(res .. awful.layout.getname(awful.layout.get(1)) .. ".png")
     end
     local widget_txt,text = common.textbox({ text="LAYOUT", width=60, b1=module.main })
 

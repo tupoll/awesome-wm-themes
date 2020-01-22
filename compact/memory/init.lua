@@ -1,7 +1,7 @@
 
 local wibox     = require("wibox")
 local awful     = require("awful")
-local memory  = require("compact.memory.memory_bsd")
+local memory  = require("compact.memory.memory_linux") --or memory_bsd
 
 local module = {}
 

@@ -1,9 +1,13 @@
--- @author cedlemo 
+-- @author cedlemo
 local naughty= require("naughty")
 local lgi = require("lgi")
 local cairo = lgi.cairo
+local pango = lgi.Pango
+local pangocairo = lgi.PangoCairo
 local string = require("string")
 local os = require('os')
+local awful = require('awful')
+local wibox = require('wibox')
 local math = math
 local table = table
 local print = print
@@ -120,12 +124,12 @@ function helpers.draw_background_tiles(cr, height, v_margin , width, h_margin)
 --tiles: width 4 px height 2px horizontal separator=1 px vertical separator=2px
 --			v_separator
 --		 _______\ /_______
---		|_______| |_______| 
+--		|_______| |_______|
 --	 	 _______   _______  <--h_separator
 --		|_______| |_______|	<--tiles_height
 --		/        \
 --		tiles_width
-   
+
   tiles_width=4
   tiles_height=2
   h_separator=1
@@ -134,32 +138,32 @@ function helpers.draw_background_tiles(cr, height, v_margin , width, h_margin)
   local max_line=math.floor((height - v_margin*2) /(tiles_height+h_separator))
   --what to do with the rest of the height:
   local h_rest=(height - v_margin*2) - (max_line * (tiles_height+h_separator))
-  if h_rest >= (tiles_height) then 
+  if h_rest >= (tiles_height) then
      max_line= max_line + 1
      h_rest= h_rest - tiles_height
   end
   if h_rest > 0 then
 	  h_rest =h_rest / 2
-  end	
+  end
   --find nb columns we can draw with tile of 4px width and 2 px separator (6px) and center them horizontaly
   local max_column=math.floor((width - h_margin*2)/6)
   local v_rest=(width- h_margin*2)-(max_column*( tiles_width + v_separator))
-  if v_rest >= (tiles_width) then 
+  if v_rest >= (tiles_width) then
     max_column= max_column + 1
     v_rest= v_rest - tiles_width
   end
   if v_rest > 0 then
 	  h_rest =h_rest / 2
-  end	
-  
+  end
+
   x=width-(tiles_width + v_rest)
-  y=height -(v_margin +tiles_height + h_rest) 
+  y=height -(v_margin +tiles_height + h_rest)
   for i=1,max_column do
     for j=1,max_line do
       cr:rectangle(x,y,4,2)
       y= y-(tiles_height + h_separator)
     end
-      y=height -(v_margin + tiles_height + h_rest) 
+      y=height -(v_margin + tiles_height + h_rest)
       x=x-(tiles_width + v_separator)
   end
 end
@@ -167,7 +171,7 @@ end
 ---Draw text on a rectangle which width and height depend on the text width and height.
 --@param cr a cairo context already initialised with oocairo.context_create( )
 --@param text the text to display
---@param x the x coordinate of the left of the text 
+--@param x the x coordinate of the left of the text
 --@param y the y coordinate of the bottom of the text
 --@param text_background_color a string "#rrggbb" or "#rrggbbaa" for the rectangle color
 --@param text_color a string "#rrggbb" or "#rrggbbaa" for the text color
@@ -175,30 +179,30 @@ end
 --@param show_text_centered_on_y a boolean value not mandatory (false by default) if true, y parameter is the coordinate of the middle of the text
 --@param show_text_on_left_of_x a boolean value not mandatory (false by default) if true, x parameter is the right of the text
 --@param show_text_on_bottom_of_y a boolean value not mandatory (false by default) if true, y parameter is the top of the text
-function helpers.draw_text_and_background(cr, text, x, y, text_background_color, text_color, show_text_centered_on_x, show_text_centered_on_y, show_text_on_left_of_x, show_text_on_bottom_of_y)
+function helpers.draw_text_and_background(cr, text, x, y, text_background_color, text_color, text_x_center, text_y_center, text_x_left, text_y_bottom)
     --Text background
     ext=cr:text_extents(text)
     x_modif = 0
     y_modif = 0
-    
-    if show_text_centered_on_x == true then
-      x_modif = ((ext.width + ext.x_bearing) / 2) + ext.x_bearing / 2 
-      show_text_on_left_of_x = false
+
+    if text_x_centered == true then
+      x_modif = ((ext.width + ext.x_bearing) / 2) + ext.x_bearing / 2
+      text_x_left = false
     else
-      if show_text_on_left_of_x == true then
-        x_modif = ext.width + 2 *ext.x_bearing     
-      else 
+      if text_x_left == true then
+        x_modif = ext.width + 2 *ext.x_bearing
+      else
         x_modif = x_modif
       end
     end
-    
-    if show_text_centered_on_y == true then
+
+    if text_y_centered == true then
       y_modif = ((ext.height +ext.y_bearing)/2 ) + ext.y_bearing / 2
-      show_text_on_left_of_y = false
+      text_y_left = false
     else
-      if show_text_on_bottom_of_y == true then
-        y_modif = ext.height + 2 *ext.y_bearing     
-      else 
+      if text_y_bottom == true then
+        y_modif = ext.height + 2 *ext.y_bearing
+      else
         y_modif = y_modif
       end
     end
@@ -214,19 +218,64 @@ function helpers.draw_text_and_background(cr, text, x, y, text_background_color,
     cr:show_text(text)
 end
 
+---Draw text on a rectangle which width and height depend on the text width and height.
+--@param cr a cairo context already initialised
+--@param text the text to display
+--@param x the x coordinate of the left of the text
+--@param y the y coordinate of the bottom of the text
+--@param bg_color a string "#rrggbb" or "#rrggbbaa" for the rectangle color
+--@param fg_color a string "#rrggbb" or "#rrggbbaa" for the text color
+--@param x_position a string "start", "middle" or "end" which define how the drawing will be positioned from x ("start" by default)
+--@param y_position a string "start", "middle" or "end" which define how the drawing will be positioned from y ("start" by default)
+function helpers.draw_layout_and_background(cr, text, x, y, font, bg_color, fg_color, x_position, y_position)
+  local layout = pangocairo.create_layout(cr)
+  local font_desc = pango.FontDescription.from_string(font)
+	layout:set_font_description(font_desc)
+	layout.text = text
+  local _, logical = layout:get_pixel_extents()
+  local height = logical.height
+  local width = logical.width
+
+  local text_x = x -- x position start
+  local text_y = y -- y position start
+
+
+  if x_position == "middle" then
+    text_x = text_x - width / 2
+  elseif x_position == "end" then
+    text_x = text_x - width
+  end
+
+  if y_position == "middle" then
+    text_y = text_y - height / 2
+  elseif y_position == "end" then
+    text_y = text_y - height
+  end
+
+  cr:rectangle(text_x, text_y, width, height)
+  local r,g,b,a = helpers.hexadecimal_to_rgba_percent(bg_color)
+  cr:set_source_rgba(r,g,b,a)
+  cr:fill()
+
+  cr:move_to(text_x, text_y)
+  local r,g,b,a = helpers.hexadecimal_to_rgba_percent(fg_color)
+  cr:set_source_rgba(r,g,b,a)
+  cr:show_layout(layout)
+end
+
 ---Drawn one foreground arrow with a background arrow that depend on a value.
 --If the value is egal to 0 then the foreground arrow is not drawn.
 --@param cr a cairo context already initialised with oocairo.context_create( )
 --@param x the x coordinate in the cairo context where the arrow start
 --@param y_bottom the bottom corrdinate of the arrows
 --@param y_top the top coordinate of the arrows
---@param value a number 
---@param background_arrow_color the color of the background arrow, a string "#rrggbb" or "#rrggbbaa" 
+--@param value a number
+--@param background_arrow_color the color of the background arrow, a string "#rrggbb" or "#rrggbbaa"
 --@param arrow_color the color of the foreground arrow, a string "#rrggbb" or "#rrggbbaa"
 --@param arrow_line_color the color of the outline of the foreground arrow , a string "#rrggbb" or "#rrggbbaa"
 --@param up boolean value if false draw a down arrow, if true draw a up arrow
 function helpers.draw_up_down_arrows(cr,x,y_bottom,y_top,value,background_arrow_color, arrow_color, arrow_line_color,up)
-    if up ~= false then 
+    if up ~= false then
       invert = 1
     else
       invert= -1
@@ -268,9 +317,9 @@ function helpers.draw_up_down_arrows(cr,x,y_bottom,y_top,value,background_arrow_
   end
 end
 
----Draw a vertical bar with gradient color, so it looks like a cylinder, and it's height depends on a value. 
+---Draw a vertical bar with gradient color, so it looks like a cylinder, and it's height depends on a value.
 --@param cr a cairo context already initialised with oocairo.context_create( )
---@param h_margin the left and right margin of the bar in the cr 
+--@param h_margin the left and right margin of the bar in the cr
 --@param v_margin the top and bottom margin of the bar in the cr
 --@param width the width used to display the left margin, the bar and the right margin
 --@param height the height used to display the top margin, the bar and the bottom margin
@@ -279,7 +328,7 @@ function helpers.draw_vertical_bar(cr,h_margin,v_margin, width,height, represent
   x=h_margin
   bar_width=width - 2*h_margin
   bar_height=height - 2*v_margin
-  y=v_margin 
+  y=v_margin
   if represent["background_bar_color"] == nil then
     r,g,b,a = helpers.hexadecimal_to_rgba_percent("#000000")
   else
@@ -298,7 +347,7 @@ function helpers.draw_vertical_bar(cr,h_margin,v_margin, width,height, represent
     bar_width=width - 2*h_margin
     bar_height=height - 2*v_margin
     if represent["invert"] == true then
-      y=v_margin 
+      y=v_margin
     else
       y=height - (bar_height*represent["value"] + v_margin )
     end
@@ -310,11 +359,11 @@ function helpers.draw_vertical_bar(cr,h_margin,v_margin, width,height, represent
     gradient:add_color_stop_rgba(1, r, g, b, 0.1)
     cr:set_source(gradient)
     cr:fill()
-  end  
+  end
 end
----Draw an horizontal bar with gradient color, so it looks like a cylinder, and it's height depends on a value. 
+---Draw an horizontal bar with gradient color, so it looks like a cylinder, and it's height depends on a value.
 --@param cr a cairo context already initialised with oocairo.context_create( )
---@param h_margin the left and right margin of the bar in the cr 
+--@param h_margin the left and right margin of the bar in the cr
 --@param v_margin the top and bottom margin of the bar in the cr
 --@param width the width used to display the left margin, the bar and the right margin
 --@param height the height used to display the top margin, the bar and the bottom margin
@@ -324,7 +373,7 @@ function helpers.draw_horizontal_bar( cr,h_margin,v_margin, width, height, repre
   x=h_margin
   bar_width=width - 2*h_margin
   bar_height=height - 2*v_margin
-  y=v_margin 
+  y=v_margin
   if represent["background_bar_color"] == nil then
     r,g,b,a = helpers.hexadecimal_to_rgba_percent("#000000")
   else
@@ -354,7 +403,7 @@ function helpers.draw_horizontal_bar( cr,h_margin,v_margin, width, height, repre
     gradient:add_color_stop_rgba(1, r, g, b, 0.1)
     cr:set_source(gradient)
     cr:fill()
-  end  
+  end
 end
 
 ---Draw a rectangle width rounded corners.
@@ -366,64 +415,50 @@ end
 --@param color a string "#rrggbb" or "#rrggbbaa" for the color of the rectangle
 --@param rounded_size a float value from 0 to 1 (0 is no rounded corner) or a table of float value
 function helpers.draw_rounded_corners_rectangle(cr,x,y,width, height, color, rounded_size)
---if rounded_size =0 it is a classical rectangle (whooooo!)  
+  if helpers.is_transparent(color) then return nil end
+
+  --if rounded_size =0 it is a classical rectangle (whooooo!)
   local height = height
   local width = width
   local x = x
   local y = y
   local rounded_sizes = {}
-	
-	if type(rounded_size) == "number" then
-		rounded_sizes[1]=rounded_size or 0
-		rounded_sizes[2]=rounded_size or 0
-		rounded_sizes[3]=rounded_size or 0
-		rounded_sizes[4]=rounded_size or 0
-	elseif type(rounded_size) == "table" then
-		rounded_sizes[1]=rounded_size[1] or 0
-		rounded_sizes[2]=rounded_size[2] or 0
-		rounded_sizes[3]=rounded_size[3] or 0
-		rounded_sizes[4]=rounded_size[4] or 0
-	end
-	
-	local rounded_size = rounded_size or 0
-  if height > width then
-    radius=0.5 * width
-  else
-    radius=0.5 * height
+
+  if type(rounded_size) == "number" then
+    for i = 1,4 do
+      rounded_sizes[i]=rounded_size or 0
+    end
+  elseif type(rounded_size) == "table" then
+    for i = 1,4 do
+      rounded_sizes[i] = rounded_size[i] or 0
+    end
   end
 
+  radius = height > width and 0.5 * width or 0.5 * height
+
   PI = 2*math.asin(1)
-  r,g,b,a=helpers.hexadecimal_to_rgba_percent(color)
-  cr:set_source_rgba(r,g,b,a)
+  r,g,b,a = helpers.hexadecimal_to_rgba_percent(color)
+  cr:set_source_rgba(r, g, b, a)
   --top left corner
-  cr:arc(x + radius*rounded_sizes[1],y + radius*rounded_sizes[1], radius*rounded_sizes[1],PI, PI * 1.5)
+  cr:arc(x + radius*rounded_sizes[1],
+         y + radius*rounded_sizes[1],
+         radius*rounded_sizes[1], PI, PI * 1.5)
   --top right corner
-  cr:arc(width - radius*rounded_sizes[2],y + radius*rounded_sizes[2], radius*rounded_sizes[2],PI*1.5, PI * 2)
+  cr:arc(width - radius*rounded_sizes[2],
+         y + radius*rounded_sizes[2],
+         radius*rounded_sizes[2], PI*1.5, PI * 2)
   --bottom right corner
-  cr:arc(width - radius*rounded_sizes[3],height -  radius*rounded_sizes[3], radius*rounded_sizes[3],PI*0, PI * 0.5)
+  cr:arc(width - radius*rounded_sizes[3],
+         height -  radius*rounded_sizes[3],
+         radius*rounded_sizes[3],PI*0, PI * 0.5)
   --bottom left corner
-  cr:arc(x + radius*rounded_sizes[4],height -  radius*rounded_sizes[4], radius*rounded_sizes[4],PI*0.5, PI * 1)
+  cr:arc(x + radius*rounded_sizes[4],
+         height -  radius*rounded_sizes[4],
+         radius*rounded_sizes[4],PI*0.5, PI * 1)
   cr:close_path()
   cr:fill()
-
---  if border ~= nil then
---    cr:set_line_width(1)
---
---    r,g,b,a=helpers.hexadecimal_to_rgba_percent(border)
---    cr:set_source_rgba(r,g,b,a)
---    --top left corner
---    cr:arc(x +1 + radius*rounded_sizes[1],y+1 + radius*rounded_sizes[1], radius*rounded_sizes[1],PI, PI * 1.5)
---    --top right corner
---    cr:arc(width -1 - radius*rounded_sizes[2],y +1+ radius*rounded_sizes[2], radius*rounded_sizes[2],PI*1.5, PI * 2)
---    --bottom right corner
---    cr:arc(width -1 - radius*rounded_sizes[3],height -1 -  radius*rounded_sizes[3], radius*rounded_sizes[3],PI*0, PI * 0.5)
---    --bottom left corner
---    cr:arc(x +1 + radius*rounded_sizes[4],height -1 -  radius*rounded_sizes[4], radius*rounded_sizes[4],PI*0.5, PI * 1)
---    cr:close_path()
---    cr:stroke()
---  end
-
 end
+
 ---Set a rectangle width rounded corners that define the area to draw.
 --@param cr a cairo context already initialised with oocairo.context_create( )
 --@param x the x coordinate of the left top corner
@@ -432,7 +467,7 @@ end
 --@param height the height of the rectangle
 --@param rounded_size a float value from 0 to 1 (0 is no rounded corner)
 function helpers.clip_rounded_corners_rectangle(cr,x,y,width, height, rounded_size)
---if rounded_size =0 it is a classical rectangle (whooooo!)  
+--if rounded_size =0 it is a classical rectangle (whooooo!)
   local height = height
   local width = width
   local x = x
@@ -470,7 +505,7 @@ end
 --@param value_to_represent the percent of the max width used to calculate the width of the foreground rectangle
 --@param graph_line_color a string "#rrggbb" or "#rrggbbaa" for the outiline color of the background rectangle
 function helpers.draw_rounded_corners_horizontal_graph(cr,x,y,width, height, background_color, graph_color, rounded_size, value_to_represent, graph_line_color)
---if rounded_size =0 it is a classical rectangle (whooooo!)  
+--if rounded_size =0 it is a classical rectangle (whooooo!)
   local height = height
   local width = width
   local x = x
@@ -516,7 +551,7 @@ function helpers.draw_rounded_corners_horizontal_graph(cr,x,y,width, height, bac
 
   r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
   cr:set_source_rgba(r,g,b,a)
- 
+
   if value <= 1 and value > limit_2 then
     cr:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
     ratio = (value - limit_2) / (1 - limit_2)
@@ -583,7 +618,7 @@ end
 --@param value_to_represent the percent of the max height used to calculate the height of the foreground rectangle
 --@param graph_line_color a string "#rrggbb" or "#rrggbbaa" for the outiline color of the background rectangle
 function helpers.draw_rounded_corners_vertical_graph(cr,x,y,width, height, background_color, graph_color, rounded_size, value_to_represent, graph_line_color)
---if rounded_size =0 it is a classical rectangle (whooooo!)  
+--if rounded_size =0 it is a classical rectangle (whooooo!)
   local height = height
   local width = width
   local x = x
@@ -645,7 +680,7 @@ function helpers.draw_rounded_corners_vertical_graph(cr,x,y,width, height, backg
     --  radius*rounded_size |  height - 2*( radius*rounded) | radius * rounded_size
     --                  |               |                         |
     --                  |           ____|  _______________________|
-    --                  |_______   |      |     
+    --                  |_______   |      |
     --                   ___    |  |      |
     --                  /___\ <-   |      |
     --                 |     |     |      |
@@ -662,7 +697,7 @@ function helpers.draw_rounded_corners_vertical_graph(cr,x,y,width, height, backg
     --dbg({value, limit_2, limit_1})
     r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
     cr:set_source_rgba(r,g,b,a)
- 
+
     if value <= 1 and value > limit_2 then
       ratio = (value - limit_2) / (1 - limit_2)
       cr:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0  , PI * 0.5)
@@ -719,7 +754,7 @@ function helpers.draw_rounded_corners_vertical_graph(cr,x,y,width, height, backg
 end
 
 ---Generate a text in front of a centered rectangle with rounded corners (or not) in  a cairo context.
---It returns a table ={ width = the width of the image, height = the height of the image} 
+--It returns a table ={ width = the width of the image, height = the height of the image}
 --@param cr a cairo context already initialised with oocairo.context_create( )
 --@param width the width of the widget
 --@param height the height of the widget
@@ -736,24 +771,135 @@ function helpers.generate_rounded_rectangle_with_text(cr, width, height, text, p
   --find the height and width of the image:
   cr:set_font_size(font_size)
   local ext = cr:text_extents(text)
-  
+
   data.height = (font_size + 2* padding) > height and (font_size + 2* padding) or height
   data.width = (ext.width +ext.x_bearing*2 + 2*padding) > width and (ext.width +ext.x_bearing *2  + 2*padding) or width
-  
+
   --draw the background
   draw_rounded_corners_rectangle(cr,0,0,data.width, data.height, background_color, rounded_size, border)
-  
+
   --draw the text
   cr:move_to((data.width/2) -((ext.width+ext.x_bearing*2)/2), (data.height)/2 + (font_size/2))
   r,g,b,a=helpers.hexadecimal_to_rgba_percent(text_color)
   cr:set_font_size(font_size)
   cr:set_source_rgba(r,g,b,a)
   cr:show_text(text)
-  
+
   return data
 end
 
+---Draw a rectangular triangle filled with given color
+--@param cr cairo context
+--@param first  point coordinates {x= 1.0, y = 2.0}
+--@param second point coordinates {x= 1.0, y = 2.0}
+--@param third  point coordinates {x= 1.0, y = 2.0}
+--@param color  a color as a string "#rrggbb" or "#rrggbbaa"
+function helpers.draw_triangle(cr, first, second, third, color)
+  local r,g,b,a = helpers.hexadecimal_to_rgba_percent(color)
+  cr:new_path()
+  cr:set_source_rgba(r,g,b,a)
+  cr:move_to(first.x, first.y)
+  cr:line_to(second.x, second.y)
+  cr:line_to(third.x, third.y)
+  cr:close_path()
+  cr:fill()
+end
 
+--- Draw a rectangular triangular outline of the given color
+--@param cr cairo context
+--@param first  point coordinates {x= 1.0, y = 2.0}
+--@param second point coordinates {x= 1.0, y = 2.0}
+--@param third  point coordinates {x= 1.0, y = 2.0}
+--@param color  a color as a string "#rrggbb" or "#rrggbbaa"
+function helpers.draw_triangle_outline(cr, first, second, third, color)
+  local r,g,b,a = helpers.hexadecimal_to_rgba_percent(color)
+  cr:new_path()
+  cr:set_source_rgba(r,g,b,a)
+  cr:move_to(first.x, first.y)
+  cr:line_to(second.x, second.y)
+  cr:line_to(third.x, third.y)
+  cr:close_path()
+  cr:set_antialias("subpixel")
+  cr:set_line_width(1)
+  cr:stroke()
+end
+--- Compute the width of each bar in a graph
+--It returns the width of the bar and a value
+--that corresponds to the remaing space divided
+--by 2
+--@param nb_bars the number of bars
+--@param width the width of the graph
+--@param sep the size between two bars
+function compute_bar_width(nb_bars, width, sep)
+  local bar_width = 0
+  local h_rest = 0
+  local total_sep = (nb_bars - 1) * sep
+  bar_width=math.floor ((width - total_sep) / nb_bars)
+  h_rest = width - (total_sep + nb_bars * bar_width)
+  --center the graph according to h_rest (2, 3 or 4)
+  if h_rest ==2 or h_rest == 3 then
+    h_rest = 1
+  end
+  if h_rest == 4 then
+    h_rest = 2
+  end
+  return bar_width, h_rest
+end
+function helpers.draw_triangle_using_bars(cr, width, height, h_margin, v_margin, color)
+  local nb_bars=5
+  local bar_separator = 2
+  local bar_width, h_rest = compute_bar_width(nb_bars, width - 2*h_margin, bar_separator)
+  x=h_margin+h_rest
+  y=height - v_margin
+  for i=1, nb_bars do
+    cr:rectangle(x,y-((0.2*i)*(height - 2*v_margin)),bar_width,((0.2*i)*(height - 2*v_margin)))
+    x=x+(bar_width + bar_separator)
+  end
+
+  local r,g,b,a=helpers.hexadecimal_to_rgba_percent(color)
+  cr:set_source_rgba(r, g, b, a)
+  cr:fill()
+end
+--- Display a value using bars or parts of bar in a triangular form
+--@param cr cairo context
+--@param width width of the graph
+--@param height height of the graph
+--@param h_margin horizontal space left at left and right of the graph
+--@param v_margin vertical space left at top and bottom of the graph
+--@param color the color of the graph
+--@param value to represent
+function helpers.draw_triangle_graph_using_bars(cr, width, height, h_margin, v_margin, color, value)
+  local nb_bars=5
+  local bar_separator = 2
+  local bar_width, h_rest = compute_bar_width(nb_bars, width - 2*h_margin, bar_separator)
+  if value > 0 then
+    local ranges={0,0.2,0.4,0.6,0.8,1,1.2}
+    nb_bars=0
+    for i,  limite in ipairs(ranges) do
+      if value < limite then
+        nb_bar = i-1
+        break
+      end
+    end
+    x=h_margin + h_rest
+    y=height - v_margin
+    for i=1, nb_bar do
+      if i ~= nb_bar then
+        cr:rectangle(x,y-((0.2*i)*(height - 2*v_margin)),bar_width,(0.2*i)*(height - 2*v_margin))
+        x=x+(bar_width + bar_separator)
+      else
+        val_to_display =value - ((nb_bar-1) * 0.2)
+
+        cr:rectangle(x,y-((0.2*i)*(height - 2*v_margin)),bar_width * (val_to_display/0.2),(0.2*i)*(height - 2*v_margin))
+      end
+    end
+
+    r,g,b,a=helpers.hexadecimal_to_rgba_percent(color)
+    cr:set_source_rgba(r, g, b, a)
+
+    cr:fill()
+  end
+end
 ---Remove an element from  a table using key.
 --@param hash the table
 --@param key the key to remove
@@ -782,79 +928,175 @@ function helpers.get_days_in_month(month, year)
 end
 
 ---Find the weeks numbers of a given month.
---Week begin on monday
---http://fr.wikipedia.org/wiki/ISO_8601
--- find the week number of a date:
---1 find the day number (in the year) of the thursday of the same week of our date
---2 find the week day of the 04 january of the year of our date
---3 find the number of days between the 04-01 and the first monday before this date
---4 find the number of days between the 04-01 and the date we focus on
---5 add the two last value, add 3 and divide by 7
---First it checks the number of the first week of a month and then it calculate the next six weeks numbers. The value returned is a table of six number.
+--Implementation as per the ISO 8601 definition (http://en.wikipedia.org/wiki/ISO_week_date)
+--Fully compatible with original, returns table with 6 week numbers
 --@param month the month
 --@param year the year
-function helpers.get_ISO8601_weeks_number_of_month(month,year)
-
-  --the date we focus on
-  local my_day=1
-  local my_year = year
-  local my_month = month 
-  local day=my_day
-  local year=my_year
-  local month=my_month
-  local w_day =os.date('*t', os.time{year=year,month=month, day=day})['wday']
-  local thursday=5
---define nb days in month
-  if is_leap_year(year) then
-    days_in_m[2] = 29
+function helpers.get_ISO8601_weeks_number_of_month(month, year)
+  local wday = os.date("*t", os.time{year=year,month=month,day=1}).wday-1
+  wday = wday == 0 and 7 or wday
+  local yday = os.date("*t", os.time{year=year,month=month,day=1}).yday
+  local nweeks = is_leap_year(month == 12 and year+1 or year) and 53 or 52 -- Make a correction for leap weeks!
+  local week = math.floor((yday-wday+10)/7) -- First week of the month
+  if (week < 1) then week = nweeks+week end
+  if (week > nweeks) then week = week-nweeks end
+  local t = {week}
+  for i = 1, 5 do -- Calculate the next 5 weeks, correct where necessary
+    t[i+1] = ((week+i) > nweeks and (week+i)-nweeks or week+i)
   end
-
---1
-  local closer_thursday = {}
-  local difference=0
-
-  if w_day ~= thursday then
-    difference= thursday - w_day
-    if difference > 0 then
-      for i=1, difference do
-        if day == days_in_m[month] then
-          day=1
-          month=month + 1
-        else
-          day = day +1
-        end
-      end
-      closer_thursday = os.date('*t', os.time{year=year,month=month, day=day})
-    else
-      for i=1, math.abs(difference) do
-        if day == 1 then
-          month=month -1 
-          day=days_in_m[month]
-        else
-          day = day -1
-        end
-      end
-      closer_thursday = os.date('*t', os.time{year=year,month=month, day=day})
+  return t
+end
+---Get the number of cpu cores
+--@return a number
+function helpers.get_nb_cores()
+  local f=io.open("/proc/stat")
+  local nb=0
+  for line in f:lines() do
+    if string.find(line,"cpu%d+%s") then nb = nb + 1 end
+  end
+  return nb
+end
+---Get the cpu name
+--@return a string describing the cpu
+function helpers.get_cpu_name()
+  local file = io.open("/proc/cpuinfo")
+  for line in file:lines() do
+    local cpu = string.match(line,"model%sname%s:%s*(.*)")
+    if cpu then return cpu end
+  end
+end
+---Get all the currently mounted devices
+--@return an indexed table from 1 to n, where each element is a table with the "mnt", and "dev" key.
+function helpers.get_mounted_devices()
+  local buf = awful.util.pread("mount")
+  buf = helpers.split(buf, "\n")
+  local devices = {}
+  local n = 0 --devices will be an array of table {dev, mnt} (allowing to keep an alphabetical order on /dev/sxxx
+  for i=1,#buf do
+    local dev, mnt = string.match(buf[i],"(/dev/[^%s]*)%s+on%s+([^%s]+).*")
+    if dev and mnt then
+      n=n+1
+      devices[n]={mnt=mnt, dev=dev}
     end
-  else
-    closer_thursday = os.date('*t', os.time{year=year,month=month, day=day})
-  end 
---2 find the week day of the 04 january of the year of our date
-  local fourth_january=os.date('*t', os.time{year=year,month=01, day=04})
-  local monday = 2
---3 find the number of days between the 04-01 and the first monday before this date
-  local difference_one= monday - fourth_january.wday  
-  if difference_one > 0 then
-    difference_one = 7 - difference_one 
-  else
-    difference_one = difference_one*(-1)
   end
---4 find the number of days between the 04-01 and the date we focus on
-  local difference_two=closer_thursday.yday - fourth_january.yday
---5 add the two last value, add 3 and divide by 7
-  local current_week= (difference_two +3 + difference_one +1) / 7
-  local weeks ={ current_week, current_week +1, current_week +2, current_week + 3, current_week + 4, current_week +5}
-  return weeks
+  table.sort(devices, function(a,b) return a.dev < b.dev end)
+  return devices
+end
+---Get the total amount of RAM in kb
+--@return a number
+function helpers.get_total_mem_in_kb()
+  local file = io.open("/proc/meminfo")
+  for line in file:lines() do
+    local mem = string.match(line,"MemTotal:%s*(%d*)")
+    if mem then return mem end
+  end
+end
+---Get the input device names
+--@return an table with "keyboard" and "mouse" keys
+function helpers.get_input_devices()
+  local file = io.open("/proc/bus/input/devices")
+  local devices={}
+  local i= 0
+  for line in file:lines() do
+    local name, ev, handlers = nil
+    if string.match(line,"I:%s") then
+      devices[#devices+1]={}
+    end
+    name=string.match(line,"N:%sName=\"(.*)\"")
+    if (name) then
+      devices[#devices].name=name
+    end
+    ev=string.match(line,"B:%sEV=(.*)")
+    if (ev) then
+      devices[#devices].ev=ev
+    end
+    handlers=string.match(line,"H:%sHandlers=(.*)")
+    if (handlers) then
+      devices[#devices].handlers=handlers
+    end
+  end
+  local inputs={}
+  for _,device in ipairs(devices) do
+    if string.match(device.ev, "120013") then
+      inputs.keyboard= device.name
+    end
+    if device.handlers and string.match(device.handlers, "mouse") then
+      inputs.mouse=device.name
+    end
+  end
+  file:close()
+  return inputs
+end
+---Get the current graphic card
+--@return a string
+function helpers.get_graphic_card()
+  local buf = awful.util.pread("lspci | grep VGA")
+  local graph_card = string.match(buf,"[^%s]*%s+VGA%s+compatible%s+controller:%s+(.*)")
+  return graph_card
+end
+--- Get OS related informations from /etc/os-release
+--@return a key/value table
+function helpers.get_os_release_informations()
+  local file = io.open("/etc/os-release")
+  local infos = {}
+  for line in file:lines() do
+    local key,value = string.match(line,"([^%s]+)=%s*\"?([^\"]*)\"?")
+    if key and value then
+      infos[#infos +1]={key=key,value = value}
+    end
+  end
+  return infos
+end
+--- Function used in order to have a tasklist with icons only
+--The classical usage of it is:
+--awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons,nil,icons_only_tasklist)
+function helpers.icons_only_tasklist(w, buttons, label, data, objects)
+    w:reset()
+    local l = wibox.layout.fixed.horizontal()
+    for i, o in ipairs(objects) do
+        local cache = data[o]
+        if cache then
+            ib = cache.ib
+        else
+            local common = require("awful.widget.common")
+            ib = wibox.widget.imagebox()
+            ib:buttons(common.create_buttons(buttons, o))
+
+            data[o] = {
+                ib = ib
+            }
+        end
+        local text, bg, bg_image, icon = label(o)
+        ib:set_image(icon)
+    l:add(ib)
+   end
+   w:add(l)
+end
+
+---Function used in widgets in order to create a local table of
+--all the widget properties which are a mix between the properties
+--provided by the user trought the widget interface, or the properties
+--defined by superproperties
+--@param properties a table with the names of all the properties
+--@param data the data table of the module that references all the same widgets
+--@param graph the widget itself
+--@param superproperties the table of the superporperties
+function helpers.load_properties( properties, data, graph, superproperties)
+  local props = {}
+  for _i, prop in ipairs(properties) do
+    props[prop] = data[graph][prop] or superproperties[prop]
+    if prop == "v_margin" then
+      if data[graph].v_margin and data[graph].v_margin <= data[graph].height/4 then
+        props.v_margin = data[graph].v_margin
+      end
+    end
+    if prop == "h_margin" then
+      if data[graph].h_margin and data[graph].h_margin <= data[graph].height/3 then
+        props.h_margin = data[graph].h_margin
+      end
+    end
+  end
+  return props
 end
 
 return helpers

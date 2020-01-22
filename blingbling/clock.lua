@@ -1,61 +1,51 @@
 --@author cedlemo
-language = string.gsub(os.getenv("LANG"), ".utf8", "")
-
-
 local os = os
 local string = string
 local awful = require("awful")
-local timer = require("gears.timer")
 local textbox = require("wibox.widget.textbox")
 local text_box = require("blingbling.text_box")
 local days_of_week_in_kanji={ 
-"воскресенье", "понедельник","вторник","среда","четверг","пятница","суббота"
+"日曜日", "月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"
 }
 local days_of_week_in_kana={
-"Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница",
-"В субботу"
+"にちようび","げつようび","かようび","すいようび","もくようび","きんようび",
+"どようび"
 }
 
 local kanji_numbers={
-"1","2","3","4","5","6","7","8",
-"9","10","11","12","13",
-"14", "15","16","17",
-"18","19","20","21","22",
-"23","24", "25","26",
-"27","28","29","30",
-"31"
+"一","ニ","三","四","五","六","七","八","九","十"
 }
 local kanas_numbers={
-"Чаша", "Panax", "хорошо", "пять", "смерть", "г-н", "в", "один", "во всем", "оговорка"
+"いち","に","さん","し","ご","ろく","しち","はち","く","じゅう"
 }
 local days_of_month_in_kanas={  
-"1","2","3","4","5","6","7","8",
-"9","10","11","12","13",
-"14", "15","16","17",
-"18","19","20","21","22",
-"23","24", "25","26",
-"27","28","29","30",
-"31"
+"ついたち","ふつか","みっか","よっか","いつか","むいか","なのか","ようか",
+"ここのか","とおか","ジュウイチニチ","ジュウニニチ","ジュウサンニチ",
+"じゅうよっか", "ジュウゴニチ","ジュウロクニチ","ジュウシチニチ",
+"ジュウハチニチ","ジュウクニチ","はつか","ニジュウイチニチ","ニジュウニニチ",
+"ニジュウサンニチ","にじゅうよっか", "ニジュウゴニチ","ニジュウロクニチ",
+"ニジュウシチニチ","ニジュウハチニチ","ニジュウクニチ","サンジュウニチ",
+"サンジュウイチニチ"
 }
 ---A clock module 
 --@module blingbling.clock
 
 local function get_day_of_month_in_kanji(n)
-	--if n<=10 then
-		--return kanji_numbers[n] .. "день"
-	--elseif n<20 then
-		--return kanji_numbers[10]..(kanji_numbers[n-10] or "") .. "день"
-	--elseif n<30 then
-		--return kanji_numbers[2]..kanji_numbers[10]..(kanji_numbers[n-20] or "").. "день"
-	if n<=31 then
-		return kanji_numbers[n] .. "день"   --return kanji_numbers[n]..kanji_numbers[n]..(kanji_numbers[n-30] or "").. "день"
+	if n<=10 then
+		return kanji_numbers[n] .. "日"
+	elseif n<20 then
+		return kanji_numbers[10]..(kanji_numbers[n-10] or "") .. "日"
+	elseif n<30 then
+		return kanji_numbers[2]..kanji_numbers[10]..(kanji_numbers[n-20] or "").. "日"
+	elseif n<=31 then
+		return kanji_numbers[3]..kanji_numbers[10]..(kanji_numbers[n-30] or "").. "日"
 	end
 end
 local function get_month_in_kanji(n)
 	if n<=10 then
-		return kanji_numbers[n].."месяц"
+		return kanji_numbers[n].."月"
 	elseif n<=12 then
-		return kanji_numbers[12]..(kanji_numbers[n-12] or "").."месяц"
+		return kanji_numbers[10]..(kanji_numbers[n-10] or "").."月"
 	end
 end
 romajis_days_of_month={}
@@ -84,7 +74,7 @@ local function get_current_time_in_japanese( str)
 	--if type(string) ~= "string" then
 	--	return nil
 	--end
-	local result = str or "%m、%d、%w、%H%M" 
+	local result = str or "%m、%d、%w、%H時%M分" 
 	result = string.gsub(result,"%%w",get_current_day_of_week_in_kanji())
 	result = string.gsub(result,"%%d",get_current_day_of_month_in_kanji())
 	result = string.gsub(result,"%%m",get_current_month_in_kanji())

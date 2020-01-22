@@ -1,0 +1,4 @@
+
+return {
+         zfs      = require("compact.mount.zfs"),        
+  }

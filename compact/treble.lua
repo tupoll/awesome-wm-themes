@@ -3,6 +3,8 @@ local beautiful = require("beautiful")
 local radical   = require("radical")
 local awful     = require("awful")
 local common    = require("compact.common.helpers1")
+local HOME = os.getenv("HOME")
+local res = ".config/awesome/themes/pattern/mixer/"
 
 local module = {}
 
@@ -41,7 +43,7 @@ function module.main()
                --     awful.tag.viewonly(tags)
                     common.hide_menu(module.menu)
                 end,
-                text=t[1], icon=beautiful.path.."/mixer/"..t[3] 
+                text=t[1], icon=res .."/mixer/" ..t[3] 
             })
         end
         common.reg_menu(module.menu)
