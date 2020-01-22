@@ -22,11 +22,9 @@ end
   
 local function new()
     local layout = wibox.layout.fixed.horizontal()
-    local widget_txt1,text = common.textbox({ text=" ", width=30 })    
-    local widget_img1,img = common.imagebox({ icon=beautiful.path.."/widgets/up.png" })             
-    local widget_img2,img = common.imagebox({ icon=beautiful.path.."/widgets/down.png" })        
-    local widget_txt2,text = common.textbox({ text="", width=5})
-    layout:add(widget_txt1 ,widget_img2, netwidget, widget_txt2, widget_img1)   
+    local widget_txt1,text = common.textbox({ text="UP", width=20 })       
+    local widget_txt2,text = common.textbox({ text="  DOWN  ", width=50})
+    layout:add(widget_txt1, netwidget, widget_txt2)   
     return layout
 end
 
