@@ -35,8 +35,6 @@ awful.util.mymainmenu = freedesktop.menu.build({
     }
 })
 
-
-
 -- Quick menu table.
 module.qapp = {}
 module.qapp["Terminal             T"]     = { command="urxvt",          key="t", icon="terminal.svg",         tag=1 }
@@ -51,21 +49,6 @@ module.qapp["Изображения          R"]  = { command="gthumb",      key
 module.qapp["Gimp                 G"]         = { command="gimp",           key="g", icon="proc.svg",             tag=5 }
 module.qapp["Chromium             C"]     = { command="chrome",         key="c", icon="google-chrome2.png",   tag=4 }
 module.qapp["Sublime              V"]     = { command="subl",         key="v", icon="sublime-text.png",   tag=4 }
-
--- Quick menu table keymap ru
-module.qapp = {}
-module.qapp["Terminal             T"]     = { command="urxvt",          key="е", icon="terminal.svg",         tag=1 }
-module.qapp["File Manager         F"] = { command="thunar",        key="а", icon="file-manager.svg",     tag=1 }
-module.qapp["Web browser          W"]  = { command="brave-bin ",        key="ц", icon="browser.svg",          tag=3 }
-module.qapp["Editor               E"]       = { command="geany",          key="у", icon="editor.svg",           tag=2 }
-module.qapp["MOC                  M"]          = { command="xterm -e mocp",  key="ь", icon="thunderbird.svg",             tag=6 }
-module.qapp["Торент               D"]       = { command="deluge",         key="в", icon="deluge.svg",                tag=4 }
-module.qapp["Gscrot               S"]       = { command="zsh -c gscrot",         key="ы", icon="record.png",                 }
-module.qapp["Телевизор            K"]         = { command="/home/tupoll/.local/bin/xine_dvb.sh" ,           key="л", icon="irc.svg",              tag=6 }
-module.qapp["Изображения          R"]  = { command="gthumb",      key="к", icon="applications-graphics.svg",       tag=5 }
-module.qapp["Gimp                 G"]         = { command="gimp",           key="п", icon="proc.svg",             tag=5 }
-module.qapp["Chromium             C"]     = { command="chrome",         key="с", icon="google-chrome2.png",   tag=4 }
-module.qapp["Sublime              V"]     = { command="subl",         key="м", icon="sublime-text.png",   tag=4 }
 
 -- Action
 local function run(data)

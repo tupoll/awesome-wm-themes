@@ -15,10 +15,6 @@ module.eapp = {}
 module.eapp["reboot"] = { command="sudo /sbin/reboot", key="r", icon="gnome-session-reboot.svg", }
 module.eapp["shutdown"] = { command="sudo /sbin/poweroff", key="s", icon="gnome-session-hibernate.svg", }
 
---Keymap ru
-module.eapp["reboot"] = { command="sudo /sbin/reboot", key="к", icon="gnome-session-reboot.svg", }
-module.eapp["shutdown"] = { command="sudo /sbin/poweroff", key="ы", icon="gnome-session-hibernate.svg", }
-
 local function run(data)
     local tags = root.tags(1)
     awful.spawn(data.command)
