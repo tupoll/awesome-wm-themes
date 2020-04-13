@@ -23,13 +23,13 @@ theme.icon_theme                      = nil
 
 -- {{{ Styles
 theme.font                            = "Roboto Medium 8"
-theme.bg_normal                       = "#0A1535"
-theme.bg_focus                        = "#003687"
+theme.bg_normal                       = pattern(res.."/background/radical.png")
+theme.bg_focus                        = pattern(res.."/background/notifi.png")
 theme.bg_urgent                       = "#1A1A1A"
 theme.bg_minimize                     = "#040A1A"
 theme.bg_highlight                    = "#0E2051"
 theme.bg_alternate                    = "#043A88"
-theme.fg_normal                       = "#BFBFBF"
+theme.fg_normal                       = "#CAAF7D"
 theme.fg_focus                        = "#BFBFBF"
 theme.fg_urgent                       = "#FF7777"
 theme.fg_minimize                     = "#1577D3"
@@ -47,7 +47,7 @@ theme.menu_border_color               = "#7F7F7F"
 theme.menu_fg_normal                  = "#BFBFBF"
 theme.menu_bg_normal                  = pattern(res.."/background/radical.png")
 theme.menu_bg_focus                   = pattern(res.."/background/radical_focus.png")
-theme.menu_fg_focus                   = "#FFC0CB"
+theme.menu_fg_focus                   = "#CAAF7D"
 theme.menu_bg_header                  = pattern(res.."/background/radical_header.png")
 theme.menu_bg_highlight               = pattern(res.."/background/radical_highlight.png")
 theme.menu_bg_alternate               = "#98732F"
@@ -125,8 +125,5 @@ naughty.config.defaults.bg            = pattern(res.."/background/notifi.png")
 naughty.config.defaults.border_color  = "#4D4D4D"
 naughty.config.defaults.border_width  = dpi(1)
 naughty.config.defaults.hover_timeout = 1
-
-
-
 
 return theme

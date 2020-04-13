@@ -17,7 +17,7 @@ home_fs_usage=blingbling.value_text_box({height = 14, width = 60, v_margin = 3})
 	home_fs_usage:set_background_color("#00000000")
 	home_fs_usage:set_label("home: $percent %")
 
-	vicious.register(home_fs_usage, vicious.widgets.fs, "${/home used_p}", 120 )
+	vicious.register(home_fs_usage, vicious.widgets.fs, "${/home/tupoll used_p}", 120 )
 	
 	root_fs_usage=blingbling.value_text_box({height = 14, width = 60, v_margin = 3})
 	root_fs_usage:set_text_background_color(beautiful.widget_background)

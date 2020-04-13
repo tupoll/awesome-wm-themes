@@ -2,64 +2,33 @@ local awful     = require("awful")
 local beautiful = require("beautiful")
 local wibox     = require("wibox")
 local radical   = require("radical")
+local item      = require("radical.item")
 local common    = require("compact.common.helpers1")
-local box_bl      = require("compact.layout.box_bl")
 local HOME = os.getenv("HOME")
 local res = ".config/awesome/themes/pattern/layouts/"
+local layoutlist = require("compact.layout.layoutlist")
 
 local module = {}
-
--- Layouts table
-module.layouts = {                   
-    awful.layout.suit.tile,               --1
-    awful.layout.suit.tile.left,          --2
-    awful.layout.suit.tile.bottom,        --3
-    awful.layout.suit.tile.top,           --4
-    awful.layout.suit.floating,           --5
-    awful.layout.suit.fair,               --6
-    awful.layout.suit.fair.horizontal,    --7
-    awful.layout.suit.spiral,             --8
-    awful.layout.suit.spiral.dwindle,     --9
-    awful.layout.suit.max,                --10 
-    awful.layout.suit.max.fullscreen,     --11
-    awful.layout.suit.magnifier,          --12
-    awful.layout.suit.corner.nw,          --13
-}
-
 
 -- Menu
 module.menu = false
 function module.main()
     if not module.menu then
-        module.menu = box_bl({
-        style      = grouped_3d     ,
-        item_style = radical.item.style.line_3d ,
-        item_height = 18,--48,
-        width = 100,        
-        border_width = 2,        
-        spacing  = 4        
-        })        
-        local current = function()layout.get(screen)
-    screen = screen or capi.mouse.screen
-    local t = get_screen(screen).selected_tag
-    return tag.getproperty(t, "layout") or layout.suit.floating
-end
-            
-        for i, layout_real in ipairs(module.layouts) do
-            local layout_name = awful.layout.getname(layout_real)
-            if layout_name then
-                module.menu:add_item({
-                    icon = res .. layout_name .. ".png",
-                    text = layout_name:gsub("^%l", string.upper), -- Changes the first character of a word to upper case
-                    button1 = function()
-                        awful.layout.set(module.layouts[module.menu.current_index] or module.layouts[1], awful.screen.focused().selected_tag)
-                        common.hide_menu(module.menu)
-                    end,
-                    selected = (layout_real == current),
-                    underlay = i,
-                })
-            end
-        end
+        module.menu = awful.popup {        
+        widget = layoutlist {
+        screen      = 1,
+        visible     = true,        
+        base_layout = wibox.layout.flex.vertical        
+    },
+    maximum_height = #awful.layout.layouts * 24,
+    minimum_height = #awful.layout.layouts * 24,
+    placement      = awful.placement.bottom_left,
+    timeout = 0,    
+    ontop = true,
+}
+
+function layout_up() awful.layout.inc(1) end
+
         common.reg_menu(module.menu)
     elseif module.menu.visible then
         common.hide_menu(module.menu)
@@ -68,6 +37,7 @@ end
     end
 end
 
+
 -- Return widgets layout
 local function new()
     local layout = wibox.layout.fixed.horizontal()
@@ -75,7 +45,7 @@ local function new()
     local function update_layout_icon()
         img:set_image(res .. awful.layout.getname(awful.layout.get(1)) .. ".png")
     end
-    local widget_txt,text = common.textbox({ text="LAYOUT", width=60, b1=module.main })
+    local widget_txt,text = common.textbox({text="LAYOUT", width=60, b1=module.main, b3= function (_,  main) awful.layout.inc( -1) end})
 
     awful.tag.attached_connect_signal(1, "property::selected", update_layout_icon)
     awful.tag.attached_connect_signal(1, "property::layout",   update_layout_icon)

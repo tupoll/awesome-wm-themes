@@ -48,8 +48,9 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 local themes = {
-    "pattern",      -- 1
-    "pattern_freebsd"     -- 2
+    "pattern",             -- 1
+    "pattern_freebsd",     -- 2
+    "pattern_transparent"  -- 3
 }
 local chosen_theme = themes[2]
 
@@ -273,6 +274,8 @@ globalkeys = gears.table.join(
 
     -- Standard program
 --Altkey:
+--layout
+    awful.key({ altkey,           }, "space", function() compact.layout.main()  awful.layout.inc( -1)             end),
     awful.key({ altkey,  }, "y",   function () awful.spawn(".local/bin/yatrans-gtk.py") end),
     awful.key({ altkey,           }, "b" ,           function() compact.bass.main()  end),
     awful.key({ altkey,           }, "t" ,           function() compact.treble.main() end),
@@ -318,7 +321,7 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function() compact.layout.main()                end,
+    awful.key({ modkey,           }, "space", function() compact.layout.main()  awful.layout.inc( 1)             end,
               {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),

@@ -47,11 +47,6 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
---beautiful.get().config = ".local/share/awesome/themes/pattern" 
---beautiful.init(gears.filesystem.get_configuration_dir() .. "theme_pattern.lua")
---beautiful.init(".config/awesome/theme_pattern.lua")
---beautiful.get().wallpaper = ".config/awesome/themes/pattern/3D_black_background_8.jpg"
---beautiful.get().icons = ".config/awesome/themes/pattern"
 local themes = {
     "pattern",      -- 1
     "darkblue"     -- 2
@@ -82,15 +77,33 @@ software = { terminal = "urxvt",
 local modkey = "Mod4"
 local altkey = "Mod1"
 -- Table of layouts to cover with awful.layout.inc, order matters.
-awful.layout.layouts = {
-    awful.layout.suit.spiral,           -- 1
-   awful.layout.suit.tile,    -- 2
-   awful.layout.suit.tile.bottom, -- 3
-   awful.layout.suit.tile.left,     --4 
-   awful.layout.suit.max.fullscreen,     --5    
-   awful.layout.suit.floating,      --6
-   awful.layout.suit.magnifier,  --7
+--local layouts = require("compact.layout")
+layouts = {
+    awful.layout.suit.tile,               --1
+    awful.layout.suit.tile.left,          --2
+    awful.layout.suit.tile.bottom,        --3
+    awful.layout.suit.tile.top,           --4
+    awful.layout.suit.floating,           --5
+    awful.layout.suit.fair,               --6
+    awful.layout.suit.fair.horizontal,    --7
+    awful.layout.suit.spiral,             --8
+    awful.layout.suit.spiral.dwindle,     --9
+    awful.layout.suit.max,                --10 
+    awful.layout.suit.max.fullscreen,     --11
+    awful.layout.suit.magnifier,          --12
+    awful.layout.suit.corner.nw,          --13
 }
+-- {{{ Tags
+-- Define a tag table which hold all screen tags.
+tags = {}
+do
+   local f, t, b, fl, fs, fm, m = layouts[1], layouts[2], layouts[3], layouts[4], layouts[5], layouts[6], layouts[7]
+   for s = 1, screen.count() do
+      -- Each screen has its own tag table.
+      tags[s] = awful.tag({  " 𝟏 ", " 𝟐 ", " 𝟑 ", " 𝟒 ", " 𝟓 ", " 𝟔 "}, s,
+                          {  fm ,  fm ,  m ,  fm ,  f ,  fl })
+   end
+end
 -- }}}
 
 -- {{{ Menu
@@ -174,25 +187,16 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    local layouts = {}
-    tags = {}
-do
-   local f, t, b, fl, fs, fm, m = layouts[1], layouts[2], layouts[3], layouts[4], layouts[5], layouts[6], layouts[7]
-   for s = 1, screen.count() do
-      -- Each screen has its own tag table.
-      tags[s] = awful.tag({  " 𝟏 ", " 𝟐 ", " 𝟑 ", " 𝟒 ", " 𝟓 ", " 𝟔 "}, s,
-                          {  fm ,  fm ,  m ,  fm ,  f ,  fl })
-   end
-end
+    
 -- }}}   
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
-    s.mylayoutbox = awful.widget.layoutbox(s)
-    s.mylayoutbox:buttons(gears.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(-1) end),
-                           awful.button({ }, 4, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(-1) end)))
+    --s.mylayoutbox = awful.widget.layoutbox(s)
+    --s.mylayoutbox:buttons(gears.table.join(
+      --                     awful.button({ }, 1, function () awful.layout.inc( 1) end),
+        --                   awful.button({ }, 3, function () awful.layout.inc(-1) end),
+          --                 awful.button({ }, 4, function () awful.layout.inc( 1) end),
+            --               awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     
     -- Create the wibox
     s.mywibox = awful.wibar({ position = beautiful.wibox.position, height = beautiful.wibox.height, screen = s })
@@ -202,7 +206,7 @@ end
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,          
-            compact.left(),
+            compact.left(),           
         },
             compact.middle(), -- Middle widget
         { -- Right widgets
@@ -268,6 +272,8 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
+--layout
+    awful.key({ altkey,           }, "space", function() compact.layout.main()  awful.layout.inc( -1)             end),    
 --Altkey:
     awful.key({ altkey,  }, "y",   function () awful.spawn("yatrans-gtk") end),
     awful.key({ altkey,           }, "b" ,           function() compact.bass.main()  end),
@@ -297,6 +303,8 @@ globalkeys = gears.table.join(
                                                                          ontop = true })
                                               end,
               {description = "open a terminal", group = "launcher"}),
+    awful.key({ modkey,           }, "/", function () mouse.screen.mywibox.visible = not mouse.screen.mywibox.visible end),
+ 
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
@@ -314,7 +322,7 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
+    awful.key({ modkey,           }, "space", function() compact.layout.main()  awful.layout.inc( 1)             end,
               {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
@@ -388,8 +396,6 @@ clientkeys = gears.table.join(
         {description = "(un)maximize horizontally", group = "client"})
 
 )
-
-
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
@@ -532,13 +538,9 @@ client.connect_signal("manage", function (c)
     end
 end)
 
-
-
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
---client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
---client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}

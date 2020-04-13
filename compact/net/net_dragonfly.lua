@@ -4,6 +4,8 @@ local radical   = require("radical")
 local awful     = require("awful")
 local common    = require("compact.common.helpers1")
 local timer     = require("gears.timer")
+--⇓ ⇑ ↑ ↓ ⤒ ⤓ ⇩⇩ ⇩⇧ ⇫⇧⇫⇫⇧⇫
+
 
 local module = {}
 
@@ -22,8 +24,9 @@ end
   
 local function new()
     local layout = wibox.layout.fixed.horizontal()
-    local widget_txt1,text = common.textbox({ text="UP", width=20 })       
-    local widget_txt2,text = common.textbox({ text="  DOWN  ", width=50})
+    local widget_txt1,text = common.textbox({ text="⇓", width=20})    
+    
+    local widget_txt2,text = common.textbox({ text="⇑", width=50})
     layout:add(widget_txt1, netwidget, widget_txt2)   
     return layout
 end

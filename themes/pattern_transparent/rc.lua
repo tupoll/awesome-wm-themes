@@ -102,7 +102,7 @@ do
    for s = 1, screen.count() do
       -- Each screen has its own tag table.
       tags[s] = awful.tag({  " 𝟏 ", " 𝟐 ", " 𝟑 ", " 𝟒 ", " 𝟓 ", " 𝟔 "}, s,
-                          {  fm ,  fm ,  m ,  fm ,  f ,  fl })
+                          {  fm ,  fm ,  m ,  fm ,  fs ,  fl })
    end
 end
 -- }}}
@@ -273,6 +273,8 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
+--layout
+   awful.key({ altkey,           }, "space", function() compact.layout.main()  awful.layout.inc( -1)             end),    
 --Altkey:
     awful.key({ altkey,  }, "y",   function () awful.spawn(".local/bin/yatrans-gtk.py") end),
     awful.key({ altkey,           }, "b" ,           function() compact.bass.main()  end),
@@ -319,7 +321,7 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function() compact.layout.main()                end,
+    awful.key({ modkey,           }, "space", function() compact.layout.main()  awful.layout.inc( 1)             end,
               {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),

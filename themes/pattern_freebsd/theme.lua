@@ -23,8 +23,8 @@ theme.icon_theme                      = nil
 
 -- {{{ Styles
 theme.font                            = "Roboto Medium 8"
-theme.bg_normal                       = "#0A1535"
-theme.bg_focus                        = "#003687"
+theme.bg_normal                       = pattern(res.."/background/radical.png")
+theme.bg_focus                        = pattern(res.."/background/radical_focus.png")
 theme.bg_urgent                       = "#1A1A1A"
 theme.bg_minimize                     = "#040A1A"
 theme.bg_highlight                    = "#0E2051"

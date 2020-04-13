@@ -14,7 +14,6 @@ local function pattern(image)
 end
 
 local theme                            = {}
-theme.path                            = awful.util.getdir("config").."/themes/pattern"
 local res                              = os.getenv("HOME") .. "/.config/awesome/themes/pattern"
 theme.wallpaper                        = res .. "/3D_black_background_8.jpg"
 theme.menu_submenu_icon                = res .. "/icons/submenu.png"
@@ -23,13 +22,13 @@ theme.icon_theme                      = nil
 
 -- {{{ Styles
 theme.font                            = "Roboto Medium 8"
-theme.bg_normal                       = "#0A1535"
-theme.bg_focus                        = "#003687"
+theme.bg_normal                       = pattern(res.."/background/radical.png")
+theme.bg_focus                        = pattern(res.."/background/radical_focus.png")
 theme.bg_urgent                       = "#1A1A1A"
 theme.bg_minimize                     = "#040A1A"
 theme.bg_highlight                    = "#0E2051"
 theme.bg_alternate                    = "#043A88"
-theme.fg_normal                       = "#BFBFBF"
+theme.fg_normal                       = "#9A7F4D"
 theme.fg_focus                        = "#BFBFBF"
 theme.fg_urgent                       = "#FF7777"
 theme.fg_minimize                     = "#1577D3"
@@ -44,45 +43,45 @@ theme.menu_height                     = dpi(18)
 theme.menu_width                      = dpi(120)
 theme.menu_border_width               = dpi(1)
 theme.menu_border_color               = "#7F7F7F"
-theme.menu_fg_normal                  = "#BFBFBF"
+theme.menu_fg_normal                  = "#DCDCCC"
 theme.menu_bg_normal                  = pattern(res.."/background/radical.png")
 theme.menu_bg_focus                   = pattern(res.."/background/radical_focus.png")
-theme.menu_fg_focus                   = "#FFC0CB"
+theme.menu_fg_focus                   = "#9A7F4D"
 theme.menu_bg_header                  = pattern(res.."/background/radical_header.png")
 theme.menu_bg_highlight               = pattern(res.."/background/radical_highlight.png")
 theme.menu_bg_alternate               = "#98732F"
 theme.tooltip_bg                      = pattern(res.."/background/tooltip.png")
-theme.tooltip_fg                      = "#7F7F7F"
+theme.tooltip_fg                      = "#DCDCCC"
 -- }}}
 -- Main wibox settings
 theme.wibox={}
 theme.wibox.position                  = "bottom"
 theme.wibox.height                    = dpi(24)
 theme.wibox.bg                        = pattern(res.."/background/wibox.png")
-theme.wibox.fg                        = "#7F7F7F"
+theme.wibox.fg                        = "#9A7F4D"
 
 -- Text widget
 theme.widget={}
 theme.widget["font"]                  = "Roboto Medium 8"
-theme.widget["fg"]                    = "#7F7F7F"
+theme.widget["fg"]                    = "#9A7F4D"
 theme.widget["bg"]                    = "00000000"   --pattern(res.."/background/wibox.png")
 theme.widget["align"]                 = "center"
 theme.widget["valign"]                = "center"
 
 -- Prompt style
 theme.prompt={}  
-theme.prompt["fg_cursor"]             = "#BFBFBF"
+theme.prompt["fg_cursor"]             = "#DCDCCC"
 theme.prompt["bg_cursor"]             = "#0F276600"
 theme.prompt["ul_cursor"]             = "single"
 theme.prompt["font"]                  = "Roboto 8"
-theme.prompt["cmd"]                   = "<span foreground='#1692D0' font='Sci Fied 8'>CMD:</span> "
-theme.prompt["run"]                   = "<span foreground='#1692D0' font='Sci Fied 8'>RUN:</span> "
-theme.prompt["lua"]                   = "<span foreground='#1692D0' font='Sci Fied 8'>LUA:</span> "
+theme.prompt["cmd"]                   = "<span foreground='#B6BB62' font='Sci Fied 8'>CMD:</span> "
+theme.prompt["run"]                   = "<span foreground='#B6BB62' font='Sci Fied 8'>RUN:</span> "
+theme.prompt["lua"]                   = "<span foreground='#B6BB62' font='Sci Fied 8'>LUA:</span> "
 
 -- Tasklist widget
 theme.task={}
 theme.task["font"]                    = "Liberation sans 9"
-theme.task["fg_normal"]               = "#155898"
+theme.task["fg_normal"]               = "#9A7F4D"
 theme.task["bg_normal"]               = pattern(res.."/background/tasklist_normal.png")
 theme.task["fg_focus"]                = "#4D4D4D"
 theme.task["bg_focus"]                = pattern(res.."/background/tasklist_focus.png")
@@ -120,7 +119,7 @@ naughty.config.defaults.gap           = 10
 naughty.config.defaults.ontop         = true
 naughty.config.defaults.icon_size     = dpi(24)
 naughty.config.defaults.font          = "Roboto Medium 9"
-naughty.config.defaults.fg            = "#7F7F7F"
+naughty.config.defaults.fg            = "#DCDCCC"
 naughty.config.defaults.bg            = pattern(res.."/background/notify.png")
 naughty.config.defaults.border_color  = "#4D4D4D"
 naughty.config.defaults.border_width  = dpi(1)
