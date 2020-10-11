@@ -37,6 +37,7 @@ chmod +x ~/.config/awesome/themes/pattern_freebsd/freebsd_pattern.sh
 ~/.config/awesome/themes/pattern_freebsd/freebsd_pattern.sh
 chmod +x ~/.config/awesome/themes/pattern_transparent/dragonfly_pattern.sh
 ~/.config/awesome/themes/pattern_transparent/dragonfly_pattern.sh
+'''
 Google-translator-GUI:
 Please read the README.md at https://github.com/delvin-fil/Google-translator-GUI.git
  
