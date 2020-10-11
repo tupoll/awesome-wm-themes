@@ -19,6 +19,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+local playbar       = require("compact.sox.playbar")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -276,7 +277,7 @@ globalkeys = gears.table.join(
 --Altkey:
 --layout
     awful.key({ altkey,           }, "space", function() compact.layout.main()  awful.layout.inc( -1)             end),
-    awful.key({ altkey,  }, "y",   function () awful.spawn(".local/bin/yatrans-gtk.py") end),
+    awful.key({ altkey,  }, "y",   function () awful.spawn(".local/bin/translatorgtk") end),
     awful.key({ altkey,           }, "b" ,           function() compact.bass.main()  end),
     awful.key({ altkey,           }, "t" ,           function() compact.treble.main() end),
     awful.key({ altkey,     },    "w",          function () myweather.show()                                end),
@@ -288,14 +289,11 @@ globalkeys = gears.table.join(
 -- Volume controls
     awful.key({ altkey,            }, ".",       function() awful.spawn("mixer vol +2:+2 pcm +2:+2")    end),
     awful.key({ altkey,            }, ",",  function() awful.spawn("mixer vol -2:-2 pcm -2:-2")    end),     
- --Avplay
-     awful.key({ altkey,     }, "Up",             function() os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/play1.sh &")end),
-     awful.key({ altkey,     }, "Down",           function() os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/stop.sh ")end),
-     awful.key({ altkey,     }, "Left",           function() os.execute("zsh -c ~/.config/awesome/compact/avplay/dr/play.sh &")end),
-     awful.key({ altkey,     }, "Right",          function() io.popen("killall avplay ")end),   
-
+ --SOX
+    awful.key({ altkey,            }, "p",            function() playbar.main_aapp() end),
+    
     awful.key({ modkey,            }, "q",            function() compact.menu.main_qapp() end),
-    awful.key({ modkey,            }, "a",            function() compact.avplay.main_aapp() end),
+    awful.key({ modkey,            }, "a",            function() compact.sox.main_aapp() end),
     awful.key({ modkey,            }, "e",            function() compact.exit.main_eapp()  end),
     awful.key({ modkey,           }, "Return", function () quake.toggle({ terminal = software.terminal_quake,
                                                                          name = "URxvt",

@@ -3,7 +3,7 @@ local beautiful = require("beautiful")
 local wibox     = require("wibox")
 local radical   = require("radical")
 local l    = require("compact.layout")
-local a       = require("compact.avplay")
+local a       = require("compact.sox")
 local p    = require("compact.places")
 
 local function new()

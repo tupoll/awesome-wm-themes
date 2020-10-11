@@ -7,7 +7,7 @@ local beautiful = require("beautiful")
 local module = {}
 
 local function new()
-    local clock = wibox.widget.textclock("<span font='Anorexia 13' color='"..beautiful.widget["fg"].."'>%H %M</span> ", 30)
+    local clock = wibox.widget.textclock("<span font='LCDMono Bold 13' color='"..beautiful.widget["fg"].."'>%H %M</span> ", 30)
     clock:set_align("center")
     clock:set_valign("center")
     clock.fit = function() return 80,20 end

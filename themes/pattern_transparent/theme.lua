@@ -19,6 +19,7 @@ local res                              = os.getenv("HOME") .. "/.config/awesome/
 theme.wallpaper                        = res .. "/wooden_black_white_illusion_board_9673_1280x800.jpg"
 theme.menu_submenu_icon                = res .. "/icons/submenu.png"
 theme.distr_icon                       = res .. "/logos/dragonfly-3.png"
+theme.sox_icon                         = res .. "/play/sox.svg"
 theme.icon_theme                      = nil
 
 -- {{{ Styles

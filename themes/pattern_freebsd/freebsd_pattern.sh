@@ -1,5 +1,5 @@
 #!//usr/local/bin/zsh
-ln -sf   ~/.config/awesome/themes/pattern/avplay  ~/.config/awesome/themes/pattern_freebsd/avplay
+ln -sf   ~/.config/awesome/themes/pattern/play  ~/.config/awesome/themes/pattern_freebsd/play
 ln -sf   ~/.config/awesome/themes/pattern/background ~/.config/awesome/themes/pattern_freebsd/background
 ln -sf   ~/.config/awesome/themes/pattern/icons  ~/.config/awesome/themes/pattern_freebsd/icons
 ln -sf   ~/.config/awesome/themes/pattern/launcher  ~/.config/awesome/themes/pattern_freebsd/launcher

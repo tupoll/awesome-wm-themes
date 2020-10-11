@@ -35,9 +35,12 @@ awful.util.mymainmenu = freedesktop.menu.build({
     }
 })
 
+language = string.gsub(os.getenv("LANG"), ".utf8", "")
+os.setlocale(os.getenv("LANG"))
+
 -- Quick menu table.
 module.qapp = {}
-module.qapp["Terminal             T"]     = { command="urxvt",          key="t", icon="terminal.svg",         tag=1 }
+module.qapp["Terminal             T"]     = { command="urxvt",     key="t", icon="terminal.svg",         tag=1 }
 module.qapp["File Manager         F"] = { command="thunar",        key="f", icon="file-manager.svg",     tag=1 }
 module.qapp["Web browser          W"]  = { command="brave-bin ",        key="w", icon="browser.svg",          tag=3 }
 module.qapp["Editor               E"]       = { command="geany",          key="e", icon="editor.svg",           tag=2 }

@@ -21,10 +21,9 @@ scrot -d10 -s -t '%Y-%m-%d_%h%M%S-$wx$h.png' -e 'mv $f /home/tupoll/Изобра
 
 chmod +x ~/.config/awesome/compact/memory/memory.sh
 
-cd /usr/ports/multimedia/libav && make install clean
-pkg lock libav
+cd /usr/ports/audio/sox && make install clean
+pkg lock sox
 
-When assembling specify flag 'sdl'
 ####
 to get to lain.weather widget checking in, download the file city.list.json.gz parse your id:
 tupoll @ shell ~% cat /home/tupoll/Downloads/city.list.json | grep Vladivostok
@@ -38,8 +37,6 @@ chmod +x ~/.config/awesome/themes/pattern_freebsd/freebsd_pattern.sh
 ~/.config/awesome/themes/pattern_freebsd/freebsd_pattern.sh
 chmod +x ~/.config/awesome/themes/pattern_transparent/dragonfly_pattern.sh
 ~/.config/awesome/themes/pattern_transparent/dragonfly_pattern.sh
-Yandex-translate:
-git clone https://github.com/delvin-fil/Yandex-translator-GUI.git
- move yatrans-gtk.py to ~ /.local/bin  or change the path in rc.lua
-pip3.6 install optional packages are in the repositories for
-Gentoo (Funtoo) linux.
+Google-translator-GUI:
+Please read the README.md at https://github.com/delvin-fil/Google-translator-GUI.git
+ 

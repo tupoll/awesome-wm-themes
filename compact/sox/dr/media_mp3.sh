@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/local/bin/zsh
 
 rm -rf ~/tmp/playlist1
 rm -r ~/tmp/avplay

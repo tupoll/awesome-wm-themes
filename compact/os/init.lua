@@ -4,7 +4,7 @@ local awful     = require("awful")
 local common    = require("compact.common.helpers1")
 local timer     = require("gears.timer")
 local os_txt    = require("compact.os.os_txt")
-local box_bl    = require("compact.avplay.box_bl")
+local box_bl    = require("compact.sox.box_bl")
 local beautiful = require("beautiful")
 
 local module = {}

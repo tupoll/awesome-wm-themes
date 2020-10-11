@@ -12,7 +12,7 @@ head -n 2 ~/tmp/avplay/playlist | tail -n1 >~/tmp/avplay/name
 
 A=$(cat ~/tmp/avplay/name |  /usr/bin/awk '{print $0}')
 cp $A $DIR2
-avplay -nodisp $DIR2/*.* 
+play $DIR2/*.* rate -v 48000 bass +10 treble +15
 rm -rf $DIR2
 rm -rf ~/tmp/avplay/name
 
@@ -21,8 +21,8 @@ head -n 3 ~/tmp/avplay/playlist | tail -n1 >~/tmp/avplay/name
 
 B=$(cat ~/tmp/avplay/name |  /usr/bin/awk '{print $0}')
 cp $B $DIR2
-avplay -nodisp $DIR2/*.*  
+play $DIR2/*.* rate -v 48000 bass +10 treble +15 
 rm -rf $DIR2
 rm -rf ~/tmp/avplay/name
 
-~/.config/awesome/compact/avplay/dr/play2.sh
+~/.config/awesome/compact/sox/dr/play2.sh

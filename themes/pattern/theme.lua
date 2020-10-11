@@ -18,6 +18,7 @@ local res                              = os.getenv("HOME") .. "/.config/awesome/
 theme.wallpaper                        = res .. "/3D_black_background_8.jpg"
 theme.menu_submenu_icon                = res .. "/icons/submenu.png"
 theme.distr_icon                       = res .. "/logos/funtoo_logo1.png"
+theme.sox_icon                         = res .. "/play/sox.svg"
 theme.icon_theme                      = nil
 
 -- {{{ Styles
