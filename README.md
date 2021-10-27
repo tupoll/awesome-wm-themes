@@ -11,7 +11,7 @@ awesome devel (Too long)
 ### Install
 
 ```bash
-git clone https://github.com/tupoll/awesome.git ~/.config/awesome
+git clone https://github.com/tupoll/awesome-wm-themes.git ~/.config/awesome
 ```
 touch /usr/local/bin/gscrot 
 chmod 755 /usr/local/bin/gscrot
