@@ -1,4 +1,3 @@
-
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
@@ -20,7 +19,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 local playbar       = require("compact.sox.playbar")
-
+local vol           = require("compact.sox.vol")
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -201,6 +200,7 @@ awful.screen.connect_for_each_screen(function(s)
             --               awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     
     -- Create the wibox
+    local mywibox ={}
     s.mywibox = awful.wibar({ position = beautiful.wibox.position, height = beautiful.wibox.height, screen = s })
     s.mywibox:set_bg(beautiful.wibox.bg)
     -- Add widgets to the wibox
@@ -221,9 +221,9 @@ end)
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
-    awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
+    awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end)
+  --  awful.button({ }, 4, awful.tag.viewnext),
+  --  awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
 
@@ -276,6 +276,7 @@ globalkeys = gears.table.join(
     -- Standard program
 --Altkey:
 --layout
+    awful.key({ altkey,  }, "x",   function () awful.spawn("setxkbmap -layout us,ru -variant , -option grp:alt_shift_toggle &") end),
     awful.key({ altkey,           }, "space", function() compact.layout.main()  awful.layout.inc( -1)             end),
     awful.key({ altkey,  }, "y",   function () awful.spawn(".local/bin/translatorgtk") end),
     awful.key({ altkey,           }, "b" ,           function() compact.bass.main()  end),
@@ -283,17 +284,28 @@ globalkeys = gears.table.join(
     awful.key({ altkey,     },    "w",          function () myweather.show()                                end),
     awful.key({ altkey,     },    "c",          function () compact.orglendar.show(0)                       end),
     awful.key({ altkey,  modkey  },    "c",     function () compact.orglendar.hide()                        end),
-    awful.key({ altkey,     },    "a",          function () playlist_status( timeout)                       end),
+    
     awful.key({ altkey,     },    "h",          function () zpool_status( timeout)                          end),
     awful.key({ altkey,     },    "m",          function () memory_status( timeout)                         end),
 -- Volume controls
     awful.key({ altkey,            }, ".",       function() awful.spawn("mixer vol +2:+2 pcm +2:+2")    end),
     awful.key({ altkey,            }, ",",  function() awful.spawn("mixer vol -2:-2 pcm -2:-2")    end),     
  --SOX
-    awful.key({ altkey,            }, "p",            function() playbar.main_aapp() end),
-    
+    awful.key({ altkey,     },    "a",          function () playlist_status( timeout)                       end),
+    awful.key({ altkey,     },    "F6",          function () awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/drivers/play.sh") end),
+    awful.key({ altkey,     },    "F5",          function () awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/drivers/play1.sh") end),
+    awful.key({ altkey,     },    "F7",          function () os.execute("pkill -f play") end),
+    awful.key({ altkey,     },    "F1",          function () awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/list.lua") end),
+    awful.key({ altkey,     },    "F2",          function () awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/playlist.lua") end),
+    awful.key({ altkey,     },    "F8",          function () os.execute("killall sox") end),
+    awful.key({ altkey,     },    "F9",          function () vol.main()  end),
     awful.key({ modkey,            }, "q",            function() compact.menu.main_qapp() end),
-    awful.key({ modkey,            }, "a",            function() compact.sox.main_aapp() end),
+    --Vibox visible
+    awful.key({ modkey,           }, "/",        function ()  myscreen = awful.screen.focused() 
+                                                              myscreen.mywibox.visible = not myscreen.mywibox.visible
+                                                              end,
+                                                              {description = "toggle statusbar"}),
+                                                              
     awful.key({ modkey,            }, "e",            function() compact.exit.main_eapp()  end),
     awful.key({ modkey,           }, "Return", function () quake.toggle({ terminal = software.terminal_quake,
                                                                          name = "URxvt",
