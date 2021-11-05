@@ -4,7 +4,6 @@ local wibox     = require("wibox")
 local common    = require("compact.common.helpers1")
 local beautiful = require("beautiful")
 
-
 local module = {}
 
 local function new()
@@ -15,7 +14,7 @@ local function new()
     local widget = wibox.container.background(mytextclock, beautiful.widget["bg"])
     orglendar.register(mytextclock)
     local layout = wibox.layout.fixed.horizontal() 
-    local widget_txt,text = common.textbox({text=" ", width=40 })  
+    local widget_txt,text = common.textbox({text=" ", width=10 })  
     layout:add(widget ,widget_txt)    
     return layout
 end
