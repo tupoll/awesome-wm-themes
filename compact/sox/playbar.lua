@@ -1,80 +1,111 @@
-local awful     = require("awful")
 local wibox     = require("wibox")
-local beautiful = require("beautiful")
 local radical   = require("radical")
+local awful     = require("awful")
+local naughty       = require('naughty')
+local beautiful = require("beautiful")
 local common    = require("compact.common.helpers1")
-local box_sox    = require("compact.sox.box_sox")
-local freedesktop   = require("compact.menu.freedesktop")
-local screen = require("awful.screen")
+local timer    = require("gears.timer")
+local vol       =require("compact.sox.vol")
 local HOME = os.getenv("HOME")
-local res = ".config/awesome/themes/pattern_freebsd/play/"
-
-local module = {}
-
--- Main menu table
-
-local terminal     = "urxvtc" or "xterm"
 
 
--- Quick menu table.
-module.aapp = {}
-module.aapp["play             r"]     = { command="zsh -c ~/.config/awesome/compact/sox/dr/play1.sh ",        key="r", icon="repeat.png"}
-module.aapp["play             p"]     = { command="zsh -c ~/.config/awesome/compact/sox/dr/play.sh ",         key="p", icon="play.png"}
-module.aapp["stop             s"]     = { command=" pkill -f play",         key="s", icon="stop.png"}
-local function run(data)
-    local tags = root.tags(1)
-    awful.spawn(data.command)
-    if tags[data.tag] then tag:view_only() end
-    common.hide_menu(module.menu_aapp)
-end
 
--- Quick menu builder
-module.menu_aapp = false
-function module.main_aapp()
-    if not module.menu_aapp then
-        module.menu_aapp = box_sox({
-        style      = radical.style.grouped_3d,
-        arrow_type = 0,
-        item_style = radical.item.style.rounded,
-        width = 160,
-        item_width=22,
-        item_height=25,
-        layout = radical.layout.vertical, --horizontal,
-        border_width = 2,
-        --border_color = "#88aa00",
-        spacing  = 0,
-        bg_focus       = beautiful.menu_bg_focus or "#05021E",
-        bg_normal            = beautiful.bg_normal ,
-        fg_focus       = beautiful.menu_fg_focus or "#57E557",
-        fg             = beautiful.menu_fg_normal or "#7F7F7F",
-        item_layout = radical.layout.centerred,
-        autodiscard = true,
-           
-        })
-        for i,v in pairs(module.aapp) do
-            module.menu_aapp:add_key_hook({}, string.lower(v.key), "press", function() run(v) end)
-         --   module.menu_aapp:add_key_binding({}, string.lower(v.key), function() run(v.key) end)
-            module.menu_aapp:add_item({
-                button1 = function() run(v) end,
-                text = i or "N/A", underlay = string.upper(v.key),
-                icon = res .. v.icon
-            })
-        end
-        common.reg_menu(module.menu_aapp)
-    elseif module.menu_aapp.visible then
-        common.hide_menu(module.menu_aapp)
-    else
-        common.show_menu(module.menu_aapp)
-    end
-end
-
--- Return widgets layoutmodule.main_aapp 
-local function new()
-    local layout = wibox.layout.fixed.horizontal()   
-    local widget_img,img = common.imagebox({icon=beautiful.sox_icon, b1=module.main_aapp})
-    layout:add(widget_img)
+local sox = {}
+local function worker(args)
+    local args = args or {}
     
-    return layout
-end
+    local res         = ".config/awesome/themes/pattern_freebsd/play/"
+    local interface     = args.interface or "play"
+    local timeout       = args.timeout or 5     
+    local widget 	= args.widget == nil and wibox.layout.fixed.horizontal() or args.widget == false and nil or args.widget
+    local indent 	= args.indent or 5
 
-return setmetatable(module, { __call = function(_, ...) return new(...) end })
+    local function keymap(...)
+   local t = {}
+   for _, k in ipairs({...}) do
+      local but
+      if type(k[1]) == "table" then
+         but = awful.button(k[1], k[2], k[3])
+      else
+         but = awful.button({}, k[1], k[2])
+      end
+      t = awful.util.table.join(t, but)
+   end
+   return t
+end
+  local mouse = { LEFT = 1, MIDDLE = 2, RIGHT = 3, WHEEL_UP = 4, WHEEL_DOWN = 5 }
+
+
+ 
+local function playlist() awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/list.lua") end 
+local function stop() os.execute("pkill -f play") end
+local function forward() os.execute("killall sox") end
+local function revers() awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/drivers/play1.sh") end
+local function start() awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/drivers/play.sh") end
+local function myplaylist() awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/playlist.lua") end 
+
+
+
+      local play = awful.widget.button({ image = res .. "play.png" })
+      local pl = awful.widget.button({ image = res .. "playlist.png" })
+      local st = awful.widget.button({ image = res .. "stop.png" })
+      local ff = awful.widget.button({ image = res .. "next.png" })
+      local rv = awful.widget.button({ image = res .. "repeat.png" })
+      local mypl = awful.widget.button({ image = res .. "ape.png" })
+      local soxvol = awful.widget.button({ image = res .. "sox-vol.png"})
+      widget:add(pl, mypl, rv, play, st, ff, soxvol) 
+              
+        local notification
+function playlist_status()
+    awful.spawn.easy_async([[zsh -c '~/.config/awesome/compact/sox/playlist_status.lua']],
+        function(stdout, _, _, _)
+            notification = naughty.notify{
+                text =  stdout,
+                title = "Проигранное:",
+                position      =  "bottom_left",
+                timeout = 100, hover_timeout = 0.5,
+                width = 530,
+                preset  = notification_preset
+            }
+        end
+    )
+end
+local naughty_timer = timer({ timeout = 10})
+naughty_timer:connect_signal("timeout" ,playlist_status)
+
+widget:connect_signal("mouse::enter", function() playlist_status() end)
+widget:connect_signal("mouse::leave", function() naughty.destroy(notification) end) 
+widget:connect_signal("mouse::enter", function()naughty_timer:start(notification) end)
+widget:connect_signal("mouse::leave", function()naughty_timer:stop(notification) end)
+     
+      pl:buttons(
+      keymap({ mouse.LEFT, function()  playlist() end  }))
+           
+      play:buttons(
+      keymap({ mouse.LEFT, function() start() end },
+      { mouse.LEFT, function()naughty.destroy(n)end }))
+      
+      st:buttons(
+      keymap({ mouse.LEFT, function() stop() end },
+      { mouse.LEFT, function()naughty.destroy(n)end }))
+      
+      ff:buttons(
+      keymap({ mouse.LEFT, function() forward() end },
+      { mouse.LEFT, function()naughty.destroy(n)end }))
+      
+      rv:buttons(
+      keymap({ mouse.LEFT, function()  revers() end  },     
+      { mouse.LEFT, function()naughty.destroy(n)end }))
+      
+      mypl:buttons(
+      keymap({ mouse.LEFT, function()  myplaylist() end  },     
+      { mouse.LEFT, function()naughty.destroy(n)end }))
+      
+      soxvol:buttons(
+      keymap({ mouse.LEFT, function() vol.main()  end  }))     
+      
+           
+    return widget
+  end  
+      
+return setmetatable(sox, {__call = function(_,...) return worker(...) end})
