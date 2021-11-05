@@ -69,9 +69,9 @@ local function new()
     local layout = wibox.layout.fixed.horizontal()
     --local widget_img,img = common.imagebox({icon=beautiful.path.."/logos/awesome.png"})
     local widget_txt,text = common.textbox({text="ВЫХОД", width=50, b1=module.main_eapp, b3=module.main_eapp })
-    local widget_txt1,text = common.textbox({text=" ", width=30 })
-    local widget_txt2,text = common.textbox({text="   ", width=400 })
-    layout:add( widget_txt1,  widget_txt,  widget_txt2)         
+    local widget_txt1,text = common.textbox({text=" ", width=12 })
+    local widget_txt2,text = common.textbox({text="   ", width=310 })  --text="   ", width=400
+    layout:add(widget_txt1, widget_txt, widget_txt2)         
     return layout
 end
 
