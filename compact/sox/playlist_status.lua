@@ -1,0 +1,16 @@
+#!/usr/local/bin/lua52
+local s =("#!/usr/local/bin/zsh\n")
+local a =('echo "******************************************************************"\n')
+local b =("cat ~/tmp/playlist1 | cut -c21-100 | sed -e :a -e '$q;N;25,$D;ba'\n")
+local c = ('echo "---------------Сейчас играет--------------------------------------"\n')
+local d = ("cat ~/tmp/sox/name | cut -c21-100\n")
+local e = ("echo '------------------------------------------------------------------'\n")
+local f = ("echo 'Следующие:'\n")
+local h = ("cat ~/tmp/playlist | cut -c21-100")
+
+playlist_status = io.open("/tmp/status", "w")
+playlist_status:write(s, a, b, c, d, e, f, h)
+playlist_status:close()
+os.execute("chmod 755 /tmp/status")
+os.execute("/tmp/status")
+os.execute("rm -f /tmp/status")
