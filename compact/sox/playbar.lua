@@ -8,8 +8,6 @@ local timer    = require("gears.timer")
 local vol       =require("compact.sox.vol")
 local HOME = os.getenv("HOME")
 
-
-
 local sox = {}
 local function worker(args)
     local args = args or {}
@@ -34,8 +32,6 @@ local function worker(args)
    return t
 end
   local mouse = { LEFT = 1, MIDDLE = 2, RIGHT = 3, WHEEL_UP = 4, WHEEL_DOWN = 5 }
-
-
  
 local function playlist() awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/list.lua") end 
 local function stop() os.execute("pkill -f play") end
@@ -43,8 +39,6 @@ local function forward() os.execute("killall sox") end
 local function revers() awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/drivers/play1.sh") end
 local function start() awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/drivers/play.sh") end
 local function myplaylist() awful.spawn.easy_async_with_shell(".config/awesome/compact/sox/playlist.lua") end 
-
-
 
       local play = awful.widget.button({ image = res .. "play.png" })
       local pl = awful.widget.button({ image = res .. "playlist.png" })
