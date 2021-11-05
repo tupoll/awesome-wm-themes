@@ -17,7 +17,7 @@ touch /usr/local/bin/gscrot
 chmod 755 /usr/local/bin/gscrot
  % cat /usr/local/bin/gscrot
  notify-send "не тупи мышей обводи"
-scrot -d10 -s -t '%Y-%m-%d_%h%M%S-$wx$h.png' -e 'mv $f /home/tupoll/Изображения/screenshots/'
+scrot -d10 -s '%Y-%m-%d_%h%M%S-$wx$h.png' -e 'mv $f /home/tupoll/Изображения/screenshots/'
 
 chmod +x ~/.config/awesome/compact/memory/memory.sh
 
@@ -35,8 +35,10 @@ When you first start awesome-wm:
 make links to theme icons
 chmod +x ~/.config/awesome/themes/pattern_freebsd/freebsd_pattern.sh
 ~/.config/awesome/themes/pattern_freebsd/freebsd_pattern.sh
-chmod +x ~/.config/awesome/themes/pattern_transparent/dragonfly_pattern.sh
-~/.config/awesome/themes/pattern_transparent/dragonfly_pattern.sh
+chmod +x ~/.config/awesome/themes/dragonfly/dragonfly_dark.sh
+~/.config/awesome/themes/dragonfly/dragonfly_dark.sh
+39
+
 '''
 Google-translator-GUI:
 Please read the README.md at https://github.com/delvin-fil/Google-translator-GUI.git
