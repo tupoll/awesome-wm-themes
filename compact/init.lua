@@ -1,6 +1,7 @@
 return {
       sox           = require("compact.sox"),
-      playbar      = require("compact.sox.playbar"),  
+      playbar      = require("compact.sox.playbar"),
+      vol           = require("compact.sox.vol"),
       menu          = require("compact.menu"),
       layout        = require("compact.layout"),
       common        = require("compact.common"),
