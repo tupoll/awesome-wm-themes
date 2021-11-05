@@ -1,0 +1,29 @@
+1-Устанавливаем файловый менеджер thunar.
+2-Правка-особые действия-добавляем иконку-текcт-команду:echo -n %f | /usr/bin/awk '{print $0}'>>~/tmp/playlist
+
+Hotkeys:
+Перва клавиша ALT(altkey-F1--playlist)
+F1--Собрать всю музыку mp3,flac,ape из директории ...
+F2--Создать ф.м. thunar плаулист для SOX
+F5--Реверс play(проигрывание наоборот)
+F6--Проигрывание всей музыки из директории ...
+F7--Stop
+F8--Следующая песня
+F9--Регулировка уровня громкости(hotkeys menu:UP, DOWN, ENTER)
+
+Смените директорию ~/Музыка на свою!
+-----------------------------------------------------------------------------------------------------------------
+1-Install the thunar file manager.
+2-Edit-special actions-add icon-text-command: echo -n% f | / usr / bin / awk '{print $ 0}' >> ~ / tmp / playlist
+
+Hotkeys:
+First ALT key (altkey-F1 - playlist)
+F1 - Collect all music mp3, flac, ape from directory ...
+F2 - Create FM thunar playlist for SOX
+F5 - Reverse play (playing in reverse)
+F6 - Play all music from directory ...
+F7 - Stop
+F8 - Next song
+F9 - Volume control (hotkeys menu: UP, DOWN, ENTER)
+
+Change the ~ / Music directory to your own!
