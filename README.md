@@ -40,4 +40,13 @@ chmod +x ~/.config/awesome/themes/pattern_transparent/dragonfly_pattern.sh
 '''
 Google-translator-GUI:
 Please read the README.md at https://github.com/delvin-fil/Google-translator-GUI.git
- 
+ ####Attention#####
+Change the permissions to run files:
+chmod 755 .config/awesome/compact/sox/list.lua
+chmod 755 .config/awesome/compact/sox/playlist.lua    
+chmod 755 .config/awesome/compact/sox/playlist_status.lua
+chmod 755 .config/awesome/compact/sox/drivers/play0.sh
+chmod 755 .config/awesome/compact/sox/drivers/play.sh 
+chmod 755 .config/awesome/compact/sox/drivers/play1.sh
+chmod 755 .config/awesome/compact/sox/drivers/play2.sh
+chmod 755 .config/awesome/compact/sox/drivers/play3.sh
