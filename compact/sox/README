@@ -14,7 +14,7 @@ F9--Регулировка уровня громкости(hotkeys menu:UP, DOWN
 Смените директорию ~/Музыка на свою!
 -----------------------------------------------------------------------------------------------------------------
 1-Install the thunar file manager.
-2-Edit-special actions-add icon-text-command: echo -n% f | / usr / bin / awk '{print $ 0}' >> ~ / tmp / playlist
+2-Edit-special actions-add icon-text-command:echo -n %f | /usr/bin/awk '{print $0}'>>~/tmp/playlist 
 
 Hotkeys:
 First ALT key (altkey-F1 - playlist)
