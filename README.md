@@ -35,9 +35,8 @@ When you first start awesome-wm:
 make links to theme icons
 chmod +x ~/.config/awesome/themes/pattern_freebsd/freebsd_pattern.sh
 ~/.config/awesome/themes/pattern_freebsd/freebsd_pattern.sh
-chmod +x ~/.config/awesome/themes/dragonfly/dragonfly_dark.sh
-~/.config/awesome/themes/dragonfly/dragonfly_dark.sh
-39
+chmod +x ~/.config/awesome/themes/dragonfly/dragonfly.sh
+
 
 '''
 Google-translator-GUI:
