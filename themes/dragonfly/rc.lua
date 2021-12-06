@@ -50,10 +50,9 @@ end
 local themes = {
     "pattern",             -- 1
     "pattern_freebsd",     -- 2
-    "pattern_transparent",  -- 3
-    "dragonfly"       --4
+    "dragonfly"  -- 3
 }
-local chosen_theme = themes[4]
+local chosen_theme = themes[3]
 
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
@@ -276,7 +275,7 @@ globalkeys = gears.table.join(
 
     -- Standard program
 --Altkey:
-   --layout
+--layout
     awful.key({ altkey,  }, "x",   function () awful.spawn("setxkbmap -layout us,ru -variant , -option grp:alt_shift_toggle &") end),
     awful.key({ altkey,           }, "space", function() compact.layout.main()  awful.layout.inc( -1)             end),
     awful.key({ altkey,  }, "y",   function () awful.spawn(".local/bin/translatorgtk") end),
